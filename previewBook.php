@@ -18,6 +18,22 @@ if (isset($_GET['book_id'])) {
         $creation_date = $row['creation_date'];
         $last_edit_date = $row['last_edit_date'];
     }
+
+    // Book Authors list
+    $authorsQry = "SELECT auth_name 
+    FROM g_books_authors
+    INNER JOIN c_authors
+    ON g_books_authors.auth_id = c_authors.auth_id
+    WHERE g_books_authors.book_id = '$book_id'";
+    $authorsResult = mysqli_query($conn, $authorsQry);
+
+    // Book subjects list
+    $subjectsQry = "SELECT subj_name 
+    FROM f_books_subjects
+    INNER JOIN b_subjects
+    ON f_books_subjects.subj_id = b_subjects.subj_id
+    WHERE f_books_subjects.book_id = '$book_id'";
+    $subjectsResult = mysqli_query($conn, $subjectsQry);
 }
 ?>
 <!DOCTYPE html>
@@ -45,9 +61,6 @@ if (isset($_GET['book_id'])) {
                     <input type="text" class="form-control text-center" value="<?php echo $book_id ?>" name="book_id"
                         id="book_id" readonly>
                 </div>
-            </div>
-            <!-- 2nd row -->
-            <div class="row mt-3">
                 <div class="col-md-9">
                     <label for="book_title" class="form-label">عنوان الكتاب</label>
                     <input type="text" class="form-control" value="<?php echo $book_title ?>" name="book_title"
@@ -55,7 +68,33 @@ if (isset($_GET['book_id'])) {
                 </div>
             </div>
 
+            <!-- 2nd row -->
+            <div class="row mt-3">
+                <div class="col-md-9">
+                    <label for="author" class="form-label">المؤلفين</label>
+                    <?php
+                    while ($row = mysqli_fetch_array($authorsResult)) {
+                    ?>
+                    <input type="text" class="form-control mb-2" value="<?php echo $row['auth_name']; ?>"
+                        name="auth_name" id="author" readonly>
+                    <?php } ?>
+                </div>
+            </div>
+
             <!-- 3rd row -->
+            <label for="subject_name" class="form-label mt-3">المواضيع</label>
+            <div class="row">
+                <?php
+                while ($row = mysqli_fetch_array($subjectsResult)) {
+                ?>
+                <div class="col-md-auto">
+                    <input type="text" class="form-control" value="<?php echo  $row['subj_name']; ?>" name="subj_name"
+                        id="subject_name" readonly>
+                </div>
+                <?php } ?>
+            </div>
+
+            <!-- 4th row -->
             <div class="row mt-3">
                 <div class="col-md-3">
                     <label for="creation_date" class="form-label">تاريخ الإضافة</label>

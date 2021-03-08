@@ -2,6 +2,18 @@
 include 'check.php';
 include 'header.php';
 
+//select all authors
+$selectAuthQry = "SELECT auth_id, auth_name FROM c_authors";
+$authListResult = mysqli_query($conn, $selectAuthQry);
+$rowsAuth = mysqli_fetch_all($authListResult, MYSQLI_ASSOC);
+$lastAuthKey = key(array_slice($rowsAuth, -1, 1, true));
+
+//select all subjects
+$selectsubjQry = "SELECT subj_id, subj_name FROM b_subjects";
+$subjListResult = mysqli_query($conn, $selectsubjQry);
+$rowsSubj = mysqli_fetch_all($subjListResult, MYSQLI_ASSOC);
+$lastSubjKey = key(array_slice($rowsSubj, -1, 1, true));
+
 // GET values from booksList.php
 if (isset($_GET['book_id'])) {
     $book_id = $_GET['book_id'];
@@ -17,21 +29,113 @@ if (isset($_GET['book_id'])) {
         $book_id = $row['book_id'];
         $book_title = $row['book_title'];
     }
+
+    // book Authors list
+    $authorsQry = "SELECT g_books_authors.auth_id, auth_name 
+    FROM g_books_authors
+    INNER JOIN c_authors
+    ON g_books_authors.auth_id = c_authors.auth_id
+    WHERE g_books_authors.book_id = '$book_id'";
+    $authorsResult = mysqli_query($conn, $authorsQry);
+
+    // book subjects list
+    $subjectsQry = "SELECT f_books_subjects.subj_id, subj_name 
+    FROM f_books_subjects
+    INNER JOIN b_subjects
+    ON f_books_subjects.subj_id = b_subjects.subj_id
+    WHERE f_books_subjects.book_id = '$book_id'";
+    $subjectsResult = mysqli_query($conn, $subjectsQry);
 }
 // Edit book
 if (isset($_POST['editBook'])) {
+    $editBookErrs = array("ERRORS >>: <br>");
+
     $book_id = $_POST['book_id'];
     $book_title = $_POST['book_title'];
     $last_edit_date = $date;
 
-    $editCopierQry = "UPDATE a_books set book_id = '$book_id', book_title='$book_title', last_edit_date='$last_edit_date' WHERE book_id = '$prev_id'";
+    $editBookQry = "UPDATE a_books set book_id = '$book_id', book_title='$book_title', last_edit_date='$last_edit_date' WHERE book_id = '$prev_id'";
 
-    if (mysqli_query($conn, $editCopierQry) and mysqli_affected_rows($conn) > 0) {
+    //********** Update Books_Subjects Queries **********/
+    if (isset($_POST['subj_name1']) and $_POST['subj_name1'] !== "") {
+        $subj_explode = explode(' # ', $_POST['subj_name1']);
+        $subj_name1 = $subj_explode[0]; // multi
+        $updateSubjQry1 = "INSERT INTO f_books_subjects (book_id, subj_id) VALUES('$book_id', '$subj_name1') ON DUPLICATE KEY UPDATE subj_id = '$subj_name1'";
+    } else $updateSubjQry1 = "SELECT 1";
+
+    if (isset($_POST['subj_name2']) and $_POST['subj_name2'] !== "") {
+        $subj_explode = explode(' # ', $_POST['subj_name2']);
+        $subj_name2 = $subj_explode[0]; // multi
+        $updateSubjQry2 = "INSERT INTO f_books_subjects (book_id, subj_id) VALUES('$book_id', '$subj_name2') ON DUPLICATE KEY UPDATE subj_id = '$subj_name2'";
+    } else $updateSubjQry2 = "SELECT 1";
+
+    if (isset($_POST['subj_name3']) and $_POST['subj_name3'] !== "") {
+        $subj_explode = explode(' # ', $_POST['subj_name3']);
+        $subj_name3 = $subj_explode[0]; // multi
+        $updateSubjQry3 = "INSERT INTO f_books_subjects (book_id, subj_id) VALUES('$book_id', '$subj_name3') ON DUPLICATE KEY UPDATE subj_id = '$subj_name3'";
+    } else $updateSubjQry3 = "SELECT 1";
+
+    if (isset($_POST['subj_name4']) and $_POST['subj_name4'] !== "") {
+        $subj_explode = explode(' # ', $_POST['subj_name4']);
+        $subj_name4 = $subj_explode[0]; // multi
+        $updateSubjQry4 = "INSERT INTO f_books_subjects (book_id, subj_id) VALUES('$book_id', '$subj_name4') ON DUPLICATE KEY UPDATE subj_id = '$subj_name4'";
+    } else $updateSubjQry4 = "SELECT 1";
+
+    if (isset($_POST['subj_name5']) and $_POST['subj_name5'] !== "") {
+        $subj_explode = explode(' # ', $_POST['subj_name5']);
+        $subj_name5 = $subj_explode[0]; // multi
+        $updateSubjQry5 = "INSERT INTO f_books_subjects (book_id, subj_id) VALUES('$book_id', '$subj_name5') ON DUPLICATE KEY UPDATE subj_id = '$subj_name5'";
+    } else $updateSubjQry5 = "SELECT 1";
+
+
+    //********** Update Books_Authors Queries **********/
+    $auth_explode = explode(' # ', $_POST['auth_name1']);
+    $auth_name1 = $auth_explode[0]; // multi
+    $updateAuthQry1 = "INSERT INTO g_books_authors(book_id, auth_id) VALUES('$book_id', '$auth_name1') ON DUPLICATE KEY UPDATE auth_id = '$auth_name1'";
+
+    if (isset($_POST['auth_name2']) and $_POST['auth_name2'] !== "") {
+        $auth_explode = explode(' # ', $_POST['auth_name2']);
+        $auth_name2 = $auth_explode[0]; // multi
+        $updateAuthQry2 = "INSERT INTO g_books_authors(book_id, auth_id) VALUES('$book_id', '$auth_name2') ON DUPLICATE KEY UPDATE auth_id = '$auth_name2'";
+    } else $updateAuthQry2 = "SELECT 1";
+
+    if (isset($_POST['auth_name3']) and $_POST['auth_name3'] !== "") {
+        $auth_explode = explode(' # ', $_POST['auth_name3']);
+        $auth_name3 = $auth_explode[0]; // multi
+        $updateAuthQry3 = "INSERT INTO g_books_authors(book_id, auth_id) VALUES('$book_id', '$auth_name3') ON DUPLICATE KEY UPDATE auth_id = '$auth_name3'";
+    } else $updateAuthQry3 = "SELECT 1";
+
+    //********** Update Books_Subjects **********/
+    if (!mysqli_query($conn, $updateSubjQry1)) array_push($editBookErrs, "<br> Books_Subjects#1 >> " . mysqli_error($conn));
+    //echo "<br> Books_Subjects#1 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $updateSubjQry2)) array_push($editBookErrs, "<br> Books_Subjects#2 >> " . mysqli_error($conn));
+    //echo "<br> Books_Subjects#2 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $updateSubjQry3)) array_push($editBookErrs, "<br> Books_Subjects#3 >> " . mysqli_error($conn));
+    //echo "<br> Books_Subjects#3 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $updateSubjQry4)) array_push($editBookErrs, "<br> Books_Subjects#4 >> " . mysqli_error($conn));
+    //echo "<br> Books_Subjects#4 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $updateSubjQry5)) array_push($editBookErrs, "<br> Books_Subjects#5 >> " . mysqli_error($conn));
+    //echo "<br> Books_Subjects#5 >> " . mysqli_error($conn);
+
+
+    //********** Update Books_Authors **********/
+    if (!mysqli_query($conn, $updateAuthQry1)) array_push($editBookErrs, "<br> Books_Authors#1 >> " . mysqli_error($conn));
+    //echo "<br> Books_Authors#1 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $updateAuthQry2)) array_push($editBookErrs, "<br> Books_Authors#2 >> " . mysqli_error($conn));
+    //echo "<br> Books_Authors#2 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $updateAuthQry3)) array_push($editBookErrs, "<br> Books_Authors#3 >> " . mysqli_error($conn));
+    //echo "<br> Books_Authors#2 >> " . mysqli_error($conn);
+
+    //********** Update a_books **********/
+    if (!mysqli_query($conn, $editBookQry)) array_push($editBookErrs, "<br> a_books >> " . mysqli_error($conn));
+
+
+    if (count($editBookErrs) == 1 and mysqli_affected_rows($conn) > 0) {
         echo "<script>alert('تم تعديل معلومات الكتاب: $book_title بنجاح')</script>";
         echo "<script> window.location.href= 'editBook.php?book_id=$book_id'</script>";
     } else {
         echo "<script>alert('فشلت عملية تعديل معلومات الكتاب')</script>";
-        echo mysqli_error($conn);
+        echo print_r($editBookErrs);
     }
 }
 ?>
@@ -60,14 +164,94 @@ if (isset($_POST['editBook'])) {
                     <input type="text" class="form-control text-center" value="<?php echo $book_id ?>" name="book_id"
                         id="book_id" required>
                 </div>
-            </div>
-            <!-- 2nd row -->
-            <div class="row mt-3">
                 <div class="col-md-9">
                     <label for="book_title" class="form-label">عنوان الكتاب</label>
                     <input type="text" class="form-control" value="<?php echo $book_title ?>" name="book_title"
-                        id="book_title" required>
+                        id="book_title">
                 </div>
+            </div>
+
+            <!-- 2nd row -->
+            <div class="row mt-3">
+                <div class="col-md-9">
+                    <label for="author" class="form-label">المؤلفين</label>
+                    <?php
+                    $a = 1;
+                    while ($row = mysqli_fetch_array($authorsResult)) {
+                    ?>
+                    <input list="authors" class="form-control mb-2" name="auth_name<?php echo $a ?>"
+                        value="<?php echo $row['auth_id'] . ' # ' . $row['auth_name']; ?>" id="author"
+                        placeholder="أدخل مؤلف">
+                    <datalist id="authors">
+                        <?php
+                            for ($i = 0; $i <= $lastAuthKey; $i++) { ?>
+                        <option
+                            value="<?php print_r($rowsAuth[$i]['auth_id']) ?> # <?php print_r($rowsAuth[$i]['auth_name']); ?>">
+                            <?php  } ?>
+                    </datalist>
+                    <?php
+                        $a++;
+                    }
+                    ?>
+                    <!-- add input if nbr of authors under 3  -->
+                    <?php if ($a < 4) {
+                        for ($a; $a < 4; $a++) {
+                    ?>
+                    <input list="authors" class="form-control mb-2" name="auth_name<?php echo $a ?>" id="author"
+                        placeholder="أدخل مؤلف">
+                    <datalist id="authors">
+                        <?php
+                                for ($i = 0; $i <= $lastAuthKey; $i++) { ?>
+                        <option
+                            value="<?php print_r($rowsAuth[$i]['auth_id']) ?> # <?php print_r($rowsAuth[$i]['auth_name']); ?>">
+                            <?php  } ?>
+                    </datalist>
+                    <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+
+            <!-- 3rd row -->
+            <label for="subject_name" class="form-label mt-3">المواضيع</label>
+            <div class="row">
+                <?php
+                $b = 1;
+                while ($row = mysqli_fetch_array($subjectsResult)) {
+                ?>
+                <div class="col-md-auto">
+                    <input list="subjects" class="form-control" name="subj_name<?php echo $b ?>" id="subject"
+                        value="<?php echo  $row['subj_id'] . ' # ' . $row['subj_name']; ?>" placeholder="أدخل موضوع">
+                    <datalist id="subjects">
+                        <?php
+                            for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
+                        <option
+                            value="<?php print_r($rowsSubj[$i]['subj_id']); ?> # <?php print_r($rowsSubj[$i]['subj_name']); ?>">
+                            <?php  } ?>
+                    </datalist>
+                </div>
+                <?php
+                    $b++;
+                }
+                ?>
+                <!-- add input if nbr of subjects under 5  -->
+                <?php if ($b < 6) {
+                    for ($b; $b < 6; $b++) {
+                ?>
+                <div class="col-md-auto">
+                    <input list="subjects" class="form-control" name="subj_name<?php echo $b ?>" id="subject"
+                        placeholder="أدخل موضوع">
+                    <datalist id="subjects">
+                        <?php
+                                for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
+                        <option
+                            value="<?php print_r($rowsSubj[$i]['subj_id']); ?> # <?php print_r($rowsSubj[$i]['subj_name']); ?>">
+                            <?php  } ?>
+                    </datalist>
+                </div>
+                <?php
+                    } // END add input if nbr of subjects under 5
+                } ?>
             </div>
 
             <div class="form-row justify-content-end mt-4">
@@ -89,6 +273,7 @@ if (isset($_POST['editBook'])) {
             </div>
         </form>
     </div>
+    <script src="js/main.js"></script>
 </body>
 
 </html>

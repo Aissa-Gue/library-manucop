@@ -110,8 +110,6 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <th scope="col" class="text-center">رقم الناسخ</th>
                                     <th scope="col">اسم الناسخ</th>
                                     <th scope="col">اللقب</th>
-                                    <th scope="col" class="text-center">المدينة</th>
-                                    <th scope="col" class="text-center">الدولة</th>
                                     <th scope="col" class="text-center">تفاصيل</th>
                                     <th scope="col" class="text-center">تعديل</th>
                                     <th scope="col" class="text-center">حذف</th>
@@ -125,9 +123,6 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <td><?php echo $row['full_name'] ?>
                                     </td>
                                     <td><?php echo $row['last_name'] ?></td>
-                                    <td class="text-center"><?php echo $row['city'] ?></td>
-                                    <td class="text-center"><?php echo $row['country'] ?></td>
-
                                     <td class="text-center">
                                         <a class="btn btn-outline-danger"
                                             href="previewCopier.php?cop_id=<?php echo $row['cop_id'] ?>">
