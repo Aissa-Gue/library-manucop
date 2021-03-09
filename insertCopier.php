@@ -1,6 +1,18 @@
 <?php
 include 'header.php';
 
+//Select all countries
+$selectCountQry = "SELECT count_id, count_name FROM countries";
+$countListResult = mysqli_query($conn, $selectCountQry);
+$rowsCount = mysqli_fetch_all($countListResult, MYSQLI_ASSOC);
+$lastCountKey = key(array_slice($rowsCount, -1, 1, true));
+
+//Select all cities
+$selectCitiesQry = "SELECT city_id, city_name FROM cities";
+$countListResult = mysqli_query($conn, $selectCitiesQry);
+$rowsCities = mysqli_fetch_all($countListResult, MYSQLI_ASSOC);
+$lastCityKey = key(array_slice($rowsCities, -1, 1, true));
+
 // Select last (cop_id)
 $lastCopIdQry = "SELECT max(cop_id) FROM `d_copiers`";
 $lastCopIdResult = mysqli_query($conn, $lastCopIdQry);
@@ -12,6 +24,8 @@ if (isset($_POST['insertCopier'])) {
     $insCopErrs = array("ERRORS >>: <br>");
 
     $cop_id = $_POST['cop_id'];
+
+    //********** Insert into e_manuscripts Queries **********/
     $full_name = $_POST['full_name'];
 
     $descent1 = $_POST['descent1'];
@@ -35,15 +49,33 @@ if (isset($_POST['insertCopier'])) {
     if (isset($_POST['other_name4'])) $other_name4 = $_POST['other_name4'];
     else $other_name4 = "";
 
-    $city = $_POST['city'];
-    $country = $_POST['country'];
     $creation_date = $date;
     $last_edit_date = $date;
 
-    $insertCopierQry = "INSERT INTO d_copiers VALUES ('$cop_id', '$full_name', '$descent1', '$descent2', '$descent3', '$descent4', '$descent5', '$last_name', '$nickname','$other_name1','$other_name2','$other_name3','$other_name4','$city','$country','$creation_date','$last_edit_date')";
+    $insertCopierQry = "INSERT INTO d_copiers VALUES ('$cop_id', '$full_name', '$descent1', '$descent2', '$descent3', '$descent4', '$descent5', '$last_name', '$nickname','$other_name1','$other_name2','$other_name3','$other_name4','$creation_date','$last_edit_date')";
+
+    //********** Insert into k_copiers_cities_countries Queries **********/
+    if (isset($_POST['count_name']) and $_POST['count_name'] !== "") {
+        $count_id_explode = explode(' # ', $_POST['count_name']);
+        $count_id = $count_id_explode[0]; // multi
+        $insertCopCountQry = "INSERT INTO k_copiers_cities_countries(cop_id, count_id) VALUES('$cop_id', '$count_id') ON DUPLICATE KEY UPDATE count_id = '$count_id'";
+    } else $insertCopCountQry = "SELECT 1";
+
+    if (isset($_POST['city_name']) and $_POST['city_name'] !== "") {
+        $city_id_explode = explode(' # ', $_POST['city_name']);
+        $city_id = $city_id_explode[0]; // multi
+        $insertCopCityQry = "INSERT INTO k_copiers_cities_countries(cop_id, city_id) VALUES('$cop_id', '$city_id') ON DUPLICATE KEY UPDATE city_id = '$city_id'";
+    } else $insertCopCityQry = "SELECT 1";
+
 
     //********** Insert into e_manuscripts **********/
     if (!mysqli_query($conn, $insertCopierQry)) array_push($insCopErrs, "<br> e_manuscripts >> " . mysqli_error($conn));
+
+    //********** Insert into k_copiers_cities_countries **********/
+    if (!mysqli_query($conn, $insertCopCountQry)) array_push($insCopErrs, "<br> k_copiers_cities_countries >> " . mysqli_error($conn));
+    //echo "<br> k_copiers_cities_countries >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertCopCityQry)) array_push($insCopErrs, "<br> k_copiers_cities_countries >> " . mysqli_error($conn));
+    //echo "<br> k_copiers_cities_countries >> " . mysqli_error($conn);
 
 
     if (count($insCopErrs) == 1) {
@@ -126,20 +158,30 @@ if (isset($_POST['insertCopier'])) {
                                         <input type="text" class="form-control" name="nickname" id="nickname"
                                             placeholder="أدخل كنية الناسخ">
                                     </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="city">مدينة الناسخ</label>
-                                        <input type="text" class="form-control" name="city" id="city"
+                                    <div class="form-group col-md-3">
+                                        <label for="city_name">مدينة الناسخ</label>
+                                        <input list="cities" class="form-control" name="city_name" id="city_name"
                                             placeholder="أدخل مدينة الناسخ">
+                                        <datalist id="cities">
+                                            <?php
+                                            for ($i = 0; $i <= $lastCityKey; $i++) { ?>
+                                            <option
+                                                value="<?php print_r($rowsCities[$i]['city_id']) ?> # <?php print_r($rowsCities[$i]['city_name']); ?>">
+                                                <?php  } ?>
+                                        </datalist>
                                     </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="country">بلد الناسخ</label>
-                                        <select name="country" id="country" class="form-control">
-                                            <option value="" disabled selected>-اختر بلد-</option>
-                                            <?php for ($i = 0; $i <= 6; $i++) { ?>
-                                            <option value="<?php echo $countries[$i]; ?>"><?php echo $countries[$i]; ?>
-                                            </option>
-                                            <?php } ?>
-                                        </select>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="count_name">بلد الناسخ</label>
+                                        <input list="countries" class="form-control" name="count_name" id="count_name"
+                                            placeholder="أدخل بلد النسخ">
+                                        <datalist id="countries">
+                                            <?php
+                                            for ($i = 0; $i <= $lastCountKey; $i++) { ?>
+                                            <option
+                                                value="<?php print_r($rowsCount[$i]['count_id']) ?> # <?php print_r($rowsCount[$i]['count_name']); ?>">
+                                                <?php  } ?>
+                                        </datalist>
                                     </div>
                                 </div>
 

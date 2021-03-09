@@ -163,7 +163,7 @@ if (isset($_POST['insertForm'])) {
 
     $insertManuQry = "INSERT INTO e_manuscripts values('$manu_id','$book_id','$cop_name','$cop_day','$cop_month','$cop_syear','$cop_eyear', '$cop_place', '$signing','$cabinet_name','$cabinet_nbr','$manu_type','$index_nbr','$font','$font_style','$regular_lines','$lines_notes','$paper_size','$inksList','$motifsList','$manuTypesList','$copied_from','$copied_to','$manu_level','$cop_level','$rost_completion','$notes','$creation_date','$last_edit_date')";
 
-    //********** Insert into i_cop_fm Queries **********/
+    //********** Insert into j_manuscripts_cities_countries Queries **********/
 
     if (isset($_POST['count_name']) and $_POST['count_name'] !== "") {
         $count_id_explode = explode(' # ', $_POST['count_name']);

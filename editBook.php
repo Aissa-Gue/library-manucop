@@ -246,17 +246,6 @@ if (isset($_POST['editBook'])) {
                 <div class="col-md-3">
 
                     <div class="input-group mb-3">
-                        <input list="subjects" class="form-control" name="subj_name<?php echo $b ?>" id="subject"
-                            value="<?php echo  $row['subj_id'] . ' # ' . $row['subj_name']; ?>"
-                            placeholder="أدخل موضوع">
-                        <datalist id="subjects">
-                            <?php
-                                for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
-                            <option
-                                value="<?php print_r($rowsSubj[$i]['subj_id']); ?> # <?php print_r($rowsSubj[$i]['subj_name']); ?>">
-                                <?php  } ?>
-                        </datalist>
-
                         <div class="input-group-prepend">
                             <span>
                                 <a class="btn btn-outline-danger"
@@ -272,6 +261,17 @@ if (isset($_POST['editBook'])) {
                                 </a>
                             </span>
                         </div>
+
+                        <input list="subjects" class="form-control" name="subj_name<?php echo $b ?>" id="subject"
+                            value="<?php echo  $row['subj_id'] . ' # ' . $row['subj_name']; ?>"
+                            placeholder="أدخل موضوع">
+                        <datalist id="subjects">
+                            <?php
+                                for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
+                            <option
+                                value="<?php print_r($rowsSubj[$i]['subj_id']); ?> # <?php print_r($rowsSubj[$i]['subj_name']); ?>">
+                                <?php  } ?>
+                        </datalist>
                     </div>
 
                 </div>
