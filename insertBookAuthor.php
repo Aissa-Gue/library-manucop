@@ -12,6 +12,18 @@ $subjListResult = mysqli_query($conn, $selectsubjQry);
 $rowsSubj = mysqli_fetch_all($subjListResult, MYSQLI_ASSOC);
 $lastSubjKey = key(array_slice($rowsSubj, -1, 1, true));
 
+// Select last (auth_id)
+$lastAuthIdQry = "SELECT max(auth_id) FROM `c_authors`";
+$lastAuthIdResult = mysqli_query($conn, $lastAuthIdQry);
+$rowAuthId = mysqli_fetch_row($lastAuthIdResult);
+$lastAuthId = $rowAuthId[0];
+
+// Select last (book_id)
+$lastBookIdQry = "SELECT max(book_id) FROM `a_books`";
+$lastBookIdResult = mysqli_query($conn, $lastBookIdQry);
+$rowBookId = mysqli_fetch_row($lastBookIdResult);
+$lastBookId = $rowBookId[0];
+
 ////////////////////////////////////////////// Insert Book //////////////////////////////////////////////
 $insBookErrs = array("ERRORS >>: <br>");
 
@@ -161,8 +173,9 @@ if (isset($_POST['insertAuthor'])) {
                                 <div class="form-row">
                                     <div class="form-group col-md-2">
                                         <label for="auth_id">رقم المؤلف</label>
-                                        <input type="number" class="form-control text-center" name="auth_id"
-                                            id="auth_id" placeholder="أدخل رقم المؤلف" required>
+                                        <input type="number" class="form-control text-center"
+                                            value="<?php echo $lastAuthId + 1 ?>" name="auth_id" id="auth_id"
+                                            placeholder="أدخل رقم المؤلف" required>
                                     </div>
                                     <div class="form-group col-md-8">
                                         <label for="auth_name">اسم المؤلف</label>
@@ -186,8 +199,9 @@ if (isset($_POST['insertAuthor'])) {
                                 <div class="form-row">
                                     <div class="form-group col-md-2">
                                         <label for="book_id">رقم الكتاب</label>
-                                        <input type="number" class="form-control text-center" name="book_id"
-                                            id="book_id" placeholder="أدخل رقم الكتاب" required>
+                                        <input type="number" class="form-control text-center"
+                                            value="<?php echo $lastBookId + 1 ?>" name="book_id" id="book_id"
+                                            placeholder="أدخل رقم الكتاب" required>
                                     </div>
                                     <div class="form-group col-md-8">
                                         <label for="book_title">عنوان الكتاب</label>

@@ -25,6 +25,13 @@ $countListResult = mysqli_query($conn, $selectCitiesQry);
 $rowsCities = mysqli_fetch_all($countListResult, MYSQLI_ASSOC);
 $lastCityKey = key(array_slice($rowsCities, -1, 1, true));
 
+// Select last (manu_id)
+$lastManuIdQry = "SELECT max(manu_id) FROM `j_manuscripts_cities_countries`";
+$lastManuIdResult = mysqli_query($conn, $lastManuIdQry);
+$rowManuId = mysqli_fetch_row($lastManuIdResult);
+$lastManuIdKey = $rowManuId[0];
+
+
 //insert form
 if (isset($_POST['insertForm'])) {
     $insManuErrs = array("ERRORS >>: <br>");
@@ -307,7 +314,8 @@ if (isset($_POST['insertForm'])) {
                                 <div class="form-row">
                                     <div class="form-group col-md-auto">
                                         <label for="manu_id">رقم الاستمارة</label>
-                                        <input type="number" class="form-control" name="manu_id" id="manu_id"
+                                        <input type="number" class="form-control text-center" name="manu_id"
+                                            value="<?php echo $lastManuIdKey + 1; ?>" id="manu_id"
                                             placeholder="أدخل رقم الاستمارة" required>
                                     </div>
                                 </div>

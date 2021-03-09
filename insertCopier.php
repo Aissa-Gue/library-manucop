@@ -1,6 +1,12 @@
 <?php
 include 'header.php';
 
+// Select last (cop_id)
+$lastCopIdQry = "SELECT max(cop_id) FROM `d_copiers`";
+$lastCopIdResult = mysqli_query($conn, $lastCopIdQry);
+$rowCopId = mysqli_fetch_row($lastCopIdResult);
+$lastCopIdKey = $rowCopId[0];
+
 // Insert Copier
 if (isset($_POST['insertCopier'])) {
     $insCopErrs = array("ERRORS >>: <br>");
@@ -80,7 +86,8 @@ if (isset($_POST['insertCopier'])) {
                                 <div class="form-row">
                                     <div class="form-group col-md-2">
                                         <label for="cop_id">رقم الناسخ</label>
-                                        <input type="number" class="form-control" name="cop_id" id="cop_id"
+                                        <input type="number" class="form-control text-center" name="cop_id"
+                                            value="<?php echo $lastCopIdKey + 1 ?>" id="cop_id"
                                             placeholder="أدخل رقم الناسخ" required>
                                     </div>
                                     <div class="form-group col-md-7">
