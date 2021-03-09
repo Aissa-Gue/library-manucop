@@ -105,6 +105,10 @@ if (isset($_POST['editBook'])) {
         $updateAuthQry3 = "INSERT INTO g_books_authors(book_id, auth_id) VALUES('$book_id', '$auth_name3') ON DUPLICATE KEY UPDATE auth_id = '$auth_name3'";
     } else $updateAuthQry3 = "SELECT 1";
 
+    //********** Update a_books **********/
+    if (!mysqli_query($conn, $editBookQry)) array_push($editBookErrs, "<br> a_books >> " . mysqli_error($conn));
+
+
     //********** Update Books_Subjects **********/
     if (!mysqli_query($conn, $updateSubjQry1)) array_push($editBookErrs, "<br> Books_Subjects#1 >> " . mysqli_error($conn));
     //echo "<br> Books_Subjects#1 >> " . mysqli_error($conn);
@@ -126,8 +130,7 @@ if (isset($_POST['editBook'])) {
     if (!mysqli_query($conn, $updateAuthQry3)) array_push($editBookErrs, "<br> Books_Authors#3 >> " . mysqli_error($conn));
     //echo "<br> Books_Authors#2 >> " . mysqli_error($conn);
 
-    //********** Update a_books **********/
-    if (!mysqli_query($conn, $editBookQry)) array_push($editBookErrs, "<br> a_books >> " . mysqli_error($conn));
+
 
 
     if (count($editBookErrs) == 1 and mysqli_affected_rows($conn) > 0) {
@@ -139,6 +142,7 @@ if (isset($_POST['editBook'])) {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="ar">
 
@@ -179,16 +183,36 @@ if (isset($_POST['editBook'])) {
                     $a = 1;
                     while ($row = mysqli_fetch_array($authorsResult)) {
                     ?>
-                    <input list="authors" class="form-control mb-2" name="auth_name<?php echo $a ?>"
-                        value="<?php echo $row['auth_id'] . ' # ' . $row['auth_name']; ?>" id="author"
-                        placeholder="أدخل مؤلف">
-                    <datalist id="authors">
-                        <?php
-                            for ($i = 0; $i <= $lastAuthKey; $i++) { ?>
-                        <option
-                            value="<?php print_r($rowsAuth[$i]['auth_id']) ?> # <?php print_r($rowsAuth[$i]['auth_name']); ?>">
-                            <?php  } ?>
-                    </datalist>
+
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <span>
+                                <a class="btn btn-outline-danger"
+                                    href="deleteBookAuth.php?book_id=<?php echo $book_id ?>&auth_id=<?php echo $row['auth_id']  ?>"
+                                    onclick="return confirm('هل أنت متأكد من حذف المؤلف؟')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                        <path fill-rule="evenodd"
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                    </svg>
+                                </a>
+                            </span>
+                        </div>
+
+                        <input list="authors" class="form-control mb-2" name="auth_name<?php echo $a ?>"
+                            value="<?php echo $row['auth_id'] . ' # ' . $row['auth_name']; ?>" id="author"
+                            placeholder="أدخل مؤلف">
+                        <datalist id="authors">
+                            <?php
+                                for ($i = 0; $i <= $lastAuthKey; $i++) { ?>
+                            <option
+                                value="<?php print_r($rowsAuth[$i]['auth_id']) ?> # <?php print_r($rowsAuth[$i]['auth_name']); ?>">
+                                <?php  } ?>
+                        </datalist>
+                    </div>
+
                     <?php
                         $a++;
                     }
@@ -219,16 +243,37 @@ if (isset($_POST['editBook'])) {
                 $b = 1;
                 while ($row = mysqli_fetch_array($subjectsResult)) {
                 ?>
-                <div class="col-md-auto">
-                    <input list="subjects" class="form-control" name="subj_name<?php echo $b ?>" id="subject"
-                        value="<?php echo  $row['subj_id'] . ' # ' . $row['subj_name']; ?>" placeholder="أدخل موضوع">
-                    <datalist id="subjects">
-                        <?php
-                            for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
-                        <option
-                            value="<?php print_r($rowsSubj[$i]['subj_id']); ?> # <?php print_r($rowsSubj[$i]['subj_name']); ?>">
-                            <?php  } ?>
-                    </datalist>
+                <div class="col-md-3">
+
+                    <div class="input-group mb-3">
+                        <input list="subjects" class="form-control" name="subj_name<?php echo $b ?>" id="subject"
+                            value="<?php echo  $row['subj_id'] . ' # ' . $row['subj_name']; ?>"
+                            placeholder="أدخل موضوع">
+                        <datalist id="subjects">
+                            <?php
+                                for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
+                            <option
+                                value="<?php print_r($rowsSubj[$i]['subj_id']); ?> # <?php print_r($rowsSubj[$i]['subj_name']); ?>">
+                                <?php  } ?>
+                        </datalist>
+
+                        <div class="input-group-prepend">
+                            <span>
+                                <a class="btn btn-outline-danger"
+                                    href="deleteBookSubj.php?book_id=<?php echo $book_id ?>&subj_id=<?php echo $row['subj_id']  ?>"
+                                    onclick="return confirm('هل أنت متأكد من حذف الموضوع؟')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                        <path fill-rule="evenodd"
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                    </svg>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
                 <?php
                     $b++;
@@ -238,7 +283,7 @@ if (isset($_POST['editBook'])) {
                 <?php if ($b < 6) {
                     for ($b; $b < 6; $b++) {
                 ?>
-                <div class="col-md-auto">
+                <div class="col-md-3">
                     <input list="subjects" class="form-control" name="subj_name<?php echo $b ?>" id="subject"
                         placeholder="أدخل موضوع">
                     <datalist id="subjects">
