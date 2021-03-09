@@ -104,14 +104,14 @@ if (isset($_POST['editCopier'])) {
                     <input type="text" class="form-control" value="<?php echo $full_name ?>" name="full_name"
                         id="full_name" required>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-auto">
                     <label for="last_name" class="form-label">اللقب (اسم الشهرة)</label>
                     <input type="text" class="form-control" value="<?php echo $last_name ?>" name="last_name"
                         id="last_name">
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-auto">
                     <label for="nickname" class="form-label">الكنية</label>
-                    <input type="text" class="form-control" value="<?php echo $descent1 ?>" name="nickname"
+                    <input type="text" class="form-control" value="<?php echo $nickname ?>" name="nickname"
                         id="nickname">
                 </div>
             </div>

@@ -36,6 +36,31 @@ while ($row = mysqli_fetch_array($searchResult)) {
     $country = $row['country'];
 }
 
+// MIN and MAX cop year
+$minMaxCopYearQry = "SELECT min(cop_syear) as min_cop_year, MAX(cop_eyear) as max_cop_year 
+FROM e_manuscripts
+INNER JOIN h_manuscripts_copiers
+ON e_manuscripts.manu_id = h_manuscripts_copiers.manu_id
+WHERE h_manuscripts_copiers.cop_id = $cop_id";
+
+$minMaxCopYearResult = mysqli_query($conn, $minMaxCopYearQry);
+while ($row = mysqli_fetch_array($minMaxCopYearResult)) {
+    $min_cop_year = $row['min_cop_year'];
+    $max_cop_year = $row['max_cop_year'];
+}
+
+// Copier manuscripts List
+$copierManuListQry = "SELECT e_manuscripts.manu_id, book_title, cop_syear, cop_eyear 
+FROM ((e_manuscripts
+INNER JOIN h_manuscripts_copiers
+ON e_manuscripts.manu_id = h_manuscripts_copiers.manu_id)
+INNER JOIN a_books
+ON e_manuscripts.book_id = a_books.book_id)
+WHERE h_manuscripts_copiers.cop_id = $cop_id;";
+
+$copierManuListResult = mysqli_query($conn, $copierManuListQry);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="ar">
@@ -62,14 +87,24 @@ while ($row = mysqli_fetch_array($searchResult)) {
                     <input type="text" class="form-control text-center" value="<?php echo $cop_id ?>" id="cop_id"
                         readonly>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-auto">
                     <label for="creation_date" class="form-label">تاريخ الإنشاء</label>
                     <input type="text" class="form-control" value="<?php echo $creation_date ?>" id="creation_date"
                         readonly>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-auto">
                     <label for="last_edit_date" class="form-label">تاريخ آخر تعديل</label>
                     <input type="text" class="form-control" value="<?php echo $last_edit_date ?>" id="last_edit_date"
+                        readonly>
+                </div>
+                <div class="col-md-2">
+                    <label for="min_cop_year" class="form-label">أقدم سنة نسخ</label>
+                    <input type="text" class="form-control" value="<?php echo $min_cop_year ?>" id="min_cop_year"
+                        readonly>
+                </div>
+                <div class="col-md-2">
+                    <label for="max_cop_year" class="form-label">أحدث سنة نسخ</label>
+                    <input type="text" class="form-control" value="<?php echo $max_cop_year ?>" id="max_cop_year"
                         readonly>
                 </div>
             </div>
@@ -79,13 +114,13 @@ while ($row = mysqli_fetch_array($searchResult)) {
                     <label for="full_name" class="form-label">الإسم الكامل</label>
                     <input type="text" class="form-control" value="<?php echo $full_name ?>" id="full_name" readonly>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-auto">
                     <label for="last_name" class="form-label">اللقب (اسم الشهرة)</label>
                     <input type="text" class="form-control" value="<?php echo $last_name ?>" id="last_name" readonly>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-auto">
                     <label for="nickname" class="form-label">الكنية</label>
-                    <input type="text" class="form-control" value="<?php echo $descent1 ?>" id="nickname" readonly>
+                    <input type="text" class="form-control" value="<?php echo $nickname ?>" id="nickname" readonly>
                 </div>
             </div>
             <!-- 3rd row -->
@@ -133,21 +168,47 @@ while ($row = mysqli_fetch_array($searchResult)) {
                     <input type="text" class="form-control" value="<?php echo $country ?>" id="country" readonly>
                 </div>
             </div>
+            <button type="submit" name="manuList" class="btn btn-info mt-3 mb-3">عرض قائمة المنسوخات </button>
         </form>
 
-        <div class="form-row justify-content-end">
-            <div class="form-group my_col_btn">
-                <button type="button" class="btn btn-danger btn-block btn-lg rounded-pill"
-                    onclick="window.history.go(-1);">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                        class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                    </svg>
-                    رجوع
-                </button>
-            </div>
+        <!-- manuscript LIST -->
+        <?php if (isset($_POST['manuList'])) { ?>
+        <div class="row">
+            <table class="table table-striped col-md-10">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">رقم الاستمارة</th>
+                        <th scope="col">عنوان الكتاب</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        while ($row = mysqli_fetch_array($copierManuListResult)) {
+                        ?>
+                    <tr>
+                        <th scope="row" class="text-center"><?php echo $row['manu_id'] ?></th>
+
+                        <td>
+                            <a href="booksList.php#booksList"><?php echo $row['book_title'] ?></a>
+                        </td>
+
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
         </div>
+        <?php } ?>
+
+        <button type="button" class="my_fixed_button1 my_col_btn btn btn-danger btn-lg rounded-pill"
+            onclick="window.history.go(-1);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+            </svg>
+            رجوع
+        </button>
+
     </div>
 </body>
 

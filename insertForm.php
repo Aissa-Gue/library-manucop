@@ -13,6 +13,18 @@ $booksListResult = mysqli_query($conn, $selectBooksQry);
 $rowsBooks = mysqli_fetch_all($booksListResult, MYSQLI_ASSOC);
 $lastBookKey = key(array_slice($rowsBooks, -1, 1, true));
 
+//Select all countries
+$selectCountQry = "SELECT count_id, count_name FROM countries";
+$countListResult = mysqli_query($conn, $selectCountQry);
+$rowsCount = mysqli_fetch_all($countListResult, MYSQLI_ASSOC);
+$lastCountKey = key(array_slice($rowsCount, -1, 1, true));
+
+//Select all cities
+$selectCitiesQry = "SELECT city_id, city_name FROM cities";
+$countListResult = mysqli_query($conn, $selectCitiesQry);
+$rowsCities = mysqli_fetch_all($countListResult, MYSQLI_ASSOC);
+$lastCityKey = key(array_slice($rowsCities, -1, 1, true));
+
 //insert form
 if (isset($_POST['insertForm'])) {
     $insManuErrs = array("ERRORS >>: <br>");
@@ -65,12 +77,6 @@ if (isset($_POST['insertForm'])) {
 
     if (isset($_POST['cop_place'])) $cop_place = $_POST['cop_place'];
     else $cop_place = "";
-
-    if (isset($_POST['cop_city'])) $cop_city = $_POST['cop_city'];
-    else $cop_city = "";
-
-    if (isset($_POST['cop_country'])) $cop_country = $_POST['cop_country'];
-    else $cop_country = "";
 
     if (isset($_POST['signing'])) $signing = $_POST['signing'];
     else $signing = "";
@@ -148,7 +154,22 @@ if (isset($_POST['insertForm'])) {
     $creation_date = $date;
     $last_edit_date = $date;
 
-    $insertManuQry = "INSERT INTO e_manuscripts values('$manu_id','$book_id','$cop_name','$cop_day','$cop_month','$cop_syear','$cop_eyear','$cop_place','$cop_city','$cop_country','$signing','$cabinet_name','$cabinet_nbr','$manu_type','$index_nbr','$font','$font_style','$regular_lines','$lines_notes','$paper_size','$inksList','$motifsList','$manuTypesList','$copied_from','$copied_to','$manu_level','$cop_level','$rost_completion','$notes','$creation_date','$last_edit_date')";
+    $insertManuQry = "INSERT INTO e_manuscripts values('$manu_id','$book_id','$cop_name','$cop_day','$cop_month','$cop_syear','$cop_eyear', '$cop_place', '$signing','$cabinet_name','$cabinet_nbr','$manu_type','$index_nbr','$font','$font_style','$regular_lines','$lines_notes','$paper_size','$inksList','$motifsList','$manuTypesList','$copied_from','$copied_to','$manu_level','$cop_level','$rost_completion','$notes','$creation_date','$last_edit_date')";
+
+    //********** Insert into i_cop_fm Queries **********/
+
+    if (isset($_POST['count_name']) and $_POST['count_name'] !== "") {
+        $count_id_explode = explode(' # ', $_POST['count_name']);
+        $count_id = $count_id_explode[0]; // multi
+        $insertManuCountQry = "INSERT INTO j_manuscripts_cities_countries(manu_id, count_id) VALUES('$manu_id', '$count_id') ON DUPLICATE KEY UPDATE count_id = '$count_id'";
+    } else $insertManuCountQry = "SELECT 1";
+
+    if (isset($_POST['city_name']) and $_POST['city_name'] !== "") {
+        $city_id_explode = explode(' # ', $_POST['city_name']);
+        $city_id = $city_id_explode[0]; // multi
+        $insertManuCityQry = "INSERT INTO j_manuscripts_cities_countries(manu_id, city_id) VALUES('$manu_id', '$city_id') ON DUPLICATE KEY UPDATE city_id = '$city_id'";
+    } else $insertManuCityQry = "SELECT 1";
+
 
     //********** Insert into i_cop_fm Queries **********/
     if (isset($_POST['cop_fm1']) and isset($_POST['cop_match1']) and $_POST['cop_fm1'] !== "" and $_POST['cop_match1'] !== "") {
@@ -179,9 +200,15 @@ if (isset($_POST['insertForm'])) {
         $insertCopFMQry4 = "INSERT INTO i_cop_fm VALUES('$cop_match4','$cop_fm4','$manu_id')";
     } else $insertCopFMQry4 = "SELECT 1";
 
-
+    //********** Insert into e_manuscripts **********/
     if (!mysqli_query($conn, $insertManuQry)) array_push($insManuErrs, "<br> e_manuscripts >> " . mysqli_error($conn));
     //echo "<br> e_manuscripts >> " . mysqli_error($conn);
+
+    //********** Insert into j_manuscripts_cities_countries **********/
+    if (!mysqli_query($conn, $insertManuCountQry)) array_push($insManuErrs, "<br> j_manuscripts_cities_countries >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_cities_countries >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertManuCityQry)) array_push($insManuErrs, "<br> j_manuscripts_cities_countries >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_cities_countries >> " . mysqli_error($conn);
 
     //********** Insert into Manuscriptions_Copiers **********/
     if (!mysqli_query($conn, $insertCopQry1)) array_push($insManuErrs, "<br> Manuscriptions_Copiers#1 >> " . mysqli_error($conn));
@@ -278,7 +305,7 @@ if (isset($_POST['insertForm'])) {
                             <fieldset class="scheduler-border">
                                 <legend class="scheduler-border">معلومات النسخة</legend>
                                 <div class="form-row">
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-md-auto">
                                         <label for="manu_id">رقم الاستمارة</label>
                                         <input type="number" class="form-control" name="manu_id" id="manu_id"
                                             placeholder="أدخل رقم الاستمارة" required>
@@ -355,19 +382,30 @@ if (isset($_POST['insertForm'])) {
                                             placeholder="أدخل مكان النسخ">
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label for="cop_city">المدينة</label>
-                                        <input type="text" class="form-control" name="cop_city" id="cop_city"
-                                            placeholder="أدخل المدينة">
+                                        <label for="city_name">المدينة</label>
+                                        <input list="cities" class="form-control" name="city_name" id="city_name"
+                                            placeholder="أدخل مدينة النسخ">
+                                        <datalist id="cities">
+                                            <?php
+                                            for ($i = 0; $i <= $lastCityKey; $i++) { ?>
+                                            <option
+                                                value="<?php print_r($rowsCities[$i]['city_id']) ?> # <?php print_r($rowsCities[$i]['city_name']); ?>">
+                                                <?php  } ?>
+                                        </datalist>
                                     </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="cop_country">البلد حاليا</label>
-                                        <select name="cop_country" id="cop_country" class="form-control">
-                                            <option value="" disabled selected>-اختر بلد-</option>
-                                            <?php for ($i = 0; $i <= 6; $i++) { ?>
-                                            <option value="<?php echo $countries[$i]; ?>"><?php echo $countries[$i]; ?>
-                                            </option>
-                                            <?php } ?>
-                                        </select>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="count_name">البلد حاليا</label>
+
+                                        <input list="countries" class="form-control" name="count_name" id="count_name"
+                                            placeholder="أدخل بلد النسخ">
+                                        <datalist id="countries">
+                                            <?php
+                                            for ($i = 0; $i <= $lastCountKey; $i++) { ?>
+                                            <option
+                                                value="<?php print_r($rowsCount[$i]['count_id']) ?> # <?php print_r($rowsCount[$i]['count_name']); ?>">
+                                                <?php  } ?>
+                                        </datalist>
                                     </div>
                                 </div>
 

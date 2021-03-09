@@ -53,6 +53,12 @@ legend.scheduler-border {
   margin-right: 16.5%;
 }
 
+.my_fixed_button1 {
+  position: fixed;
+  left: 0;
+  bottom: 10px;
+  z-index: 1030;
+}
 /* other */
 .my_col_btn {
   width: 12%;
