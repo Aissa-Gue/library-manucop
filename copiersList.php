@@ -5,28 +5,44 @@ include 'header.php';
 if (isset($_POST['clientSearch'])) {
     $cop_id = $_POST['cop_id'];
     $full_name = $_POST['full_name'];
-    $city = $_POST['city'];
-    $country = $_POST['country'];
+    $city_name = $_POST['city_name'];
+    $count_name = $_POST['count_name'];
 } else {
     $cop_id = "";
     $full_name = "";
-    $city = "";
-    $country = "";
+    $city_name = "";
+    $count_name = "";
 }
 
 // Search query
-$searchQry = "SELECT * 
-FROM d_copiers 
+$searchQry = "SELECT d_copiers.cop_id, full_name, last_name, other_name1, other_name2, other_name3, other_name4, city_name, count_name
+FROM (((d_copiers 
+INNER JOIN k_copiers_cities_countries ON k_copiers_cities_countries.cop_id = d_copiers.cop_id)
+INNER JOIN countries ON countries.count_id = k_copiers_cities_countries.count_id)
+INNER JOIN cities ON cities.city_id = k_copiers_cities_countries.city_id)
 WHERE 
-(cop_id LIKE '%$cop_id%')
+(d_copiers.cop_id LIKE '%$cop_id%')
 AND (full_name LIKE '%$full_name%'
 OR last_name LIKE '%$full_name%'
 OR other_name1 LIKE '%$full_name%'
 OR other_name2 LIKE '%$full_name%'
 OR other_name3 LIKE '%$full_name%'
 OR other_name4 LIKE '%$full_name%')
-AND (city LIKE '%$city%')
-AND (country LIKE '%$country%')";
+AND (city_name LIKE '%$city_name%')
+AND (count_name LIKE '%$count_name%')";
+
+// $searchQry = "SELECT cop_id, full_name, last_name, other_name1, other_name2, other_name3, other_name4, city_name, count_name
+// FROM d_copiers, k_copiers_cities_countries, 
+// WHERE 
+// (cop_id LIKE '%$cop_id%')
+// AND (full_name LIKE '%$full_name%'
+// OR last_name LIKE '%$full_name%'
+// OR other_name1 LIKE '%$full_name%'
+// OR other_name2 LIKE '%$full_name%'
+// OR other_name3 LIKE '%$full_name%'
+// OR other_name4 LIKE '%$full_name%')
+// AND (city LIKE '%$city%')
+// AND (country LIKE '%$country%')";
 
 $searchResult = mysqli_query($conn, $searchQry);
 
@@ -83,13 +99,13 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">المديـنـــــة</span>
                                     </div>
-                                    <input type="text" name="city" class="form-control col-md-3"
+                                    <input type="text" name="city_name" class="form-control col-md-3"
                                         placeholder="أدخل مدينة الناسخ">
 
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">بلد النــاسخ</span>
                                     </div>
-                                    <input type="text" name="country" class="form-control"
+                                    <input type="text" name="count_name" class="form-control"
                                         placeholder="أدخل بلد الناسخ">
 
                                     <div class="input-group-append">
