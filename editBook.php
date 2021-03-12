@@ -133,12 +133,13 @@ if (isset($_POST['editBook'])) {
 
 
 
-    if (count($editBookErrs) == 1 and mysqli_affected_rows($conn) > 0) {
+    if (count($editBookErrs) == 1) {
         echo "<script>alert('تم تعديل معلومات الكتاب: $book_title بنجاح')</script>";
         echo "<script> window.location.href= 'editBook.php?book_id=$book_id'</script>";
     } else {
         echo "<script>alert('فشلت عملية تعديل معلومات الكتاب')</script>";
         echo print_r($editBookErrs);
+        echo mysqli_errno($conn);
     }
 }
 ?>

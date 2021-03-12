@@ -26,7 +26,7 @@ $rowsCities = mysqli_fetch_all($countListResult, MYSQLI_ASSOC);
 $lastCityKey = key(array_slice($rowsCities, -1, 1, true));
 
 // Select last (manu_id)
-$lastManuIdQry = "SELECT max(manu_id) FROM `j_manuscripts_cities_countries`";
+$lastManuIdQry = "SELECT max(manu_id) FROM `e_manuscripts`";
 $lastManuIdResult = mysqli_query($conn, $lastManuIdQry);
 $rowManuId = mysqli_fetch_row($lastManuIdResult);
 $lastManuIdKey = $rowManuId[0];
@@ -76,29 +76,31 @@ if (isset($_POST['insertForm'])) {
     if (isset($_POST['cop_month'])) $cop_month = $_POST['cop_month'];
     else $cop_month = "";
 
-    if (isset($_POST['cop_syear'])) $cop_syear = $_POST['cop_syear'];
-    else $cop_syear = "";
+    if (isset($_POST['cop_syear']) and $_POST['cop_syear'] != "") {
+        $cop_syear = $_POST['cop_syear'];
+        $cop_eyear = $cop_syear;
+    } else $cop_syear = "NULL";
 
-    if (isset($_POST['cop_eyear'])) $cop_eyear = $_POST['cop_eyear'];
-    else $cop_eyear = $cop_syear;
+    if (isset($_POST['cop_eyear']) and $_POST['cop_eyear'] != "") $cop_eyear = $_POST['cop_eyear'];
+    else $cop_eyear = "NULL";
 
     if (isset($_POST['cop_place'])) $cop_place = $_POST['cop_place'];
     else $cop_place = "";
 
-    if (isset($_POST['signing'])) $signing = $_POST['signing'];
-    else $signing = "";
+    if (isset($_POST['signing']) and $_POST['signing'] != "") $signing = $_POST['signing'];
+    else $signing = "NULL";
 
     if (isset($_POST['cabinet_name'])) $cabinet_name = $_POST['cabinet_name'];
     else $cabinet_name = "";
 
-    if (isset($_POST['cabinet_nbr'])) $cabinet_nbr = $_POST['cabinet_nbr'];
-    else $cabinet_nbr = "";
+    if (isset($_POST['cabinet_nbr']) and $_POST['cabinet_nbr'] != "") $cabinet_nbr = $_POST['cabinet_nbr'];
+    else $cabinet_nbr = "NULL";
 
     if (isset($_POST['manu_type'])) $manu_type = $_POST['manu_type'];
     else $manu_type = "";
 
-    if (isset($_POST['index_nbr'])) $index_nbr = $_POST['index_nbr'];
-    else $index_nbr = "";
+    if (isset($_POST['index_nbr']) and $_POST['index_nbr'] != "") $index_nbr = $_POST['index_nbr'];
+    else $index_nbr = "NULL";
 
     if (isset($_POST['font'])) $font = $_POST['font'];
     else $font = "";
@@ -106,14 +108,14 @@ if (isset($_POST['insertForm'])) {
     if (isset($_POST['font_style'])) $font_style = $_POST['font_style'];
     else $font_style = "";
 
-    if (isset($_POST['regular_lines'])) $regular_lines = $_POST['regular_lines'];
-    else $regular_lines = "";
+    if (isset($_POST['regular_lines']) and $_POST['regular_lines'] != "") $regular_lines = $_POST['regular_lines'];
+    else $regular_lines = "NULL";
 
     if (isset($_POST['lines_notes'])) $lines_notes = $_POST['lines_notes'];
     else $lines_notes = "";
 
-    if (isset($_POST['paper_size'])) $paper_size = $_POST['paper_size'];
-    else $paper_size = "";
+    if (isset($_POST['paper_size']) and $_POST['paper_size'] != "") $paper_size = $_POST['paper_size'];
+    else $paper_size = "NULL";
 
     if (isset($_POST['motifs'])) {
         $motifs = $_POST['motifs']; /// array
@@ -154,29 +156,24 @@ if (isset($_POST['insertForm'])) {
     if (isset($_POST['cop_level'])) $cop_level = $_POST['cop_level']; //multi
     else $cop_level = "";
 
-    if (isset($_POST['rost_completion'])) $rost_completion = $_POST['rost_completion']; //multi
-    else $rost_completion = "";
+    if (isset($_POST['rost_completion']) and $_POST['rost_completion'] != "") $rost_completion = $_POST['rost_completion']; //multi
+    else $rost_completion = "NULL";
+
+    if (isset($_POST['count_name']) and $_POST['count_name'] != "") {
+        $count_id_explode = explode(' # ', $_POST['count_name']);
+        $count_id = $count_id_explode[0]; // multi
+    } else $count_id = "NULL";
+
+    if (isset($_POST['city_name']) and $_POST['city_name'] != "") {
+        $city_id_explode = explode(' # ', $_POST['city_name']);
+        $city_id = $city_id_explode[0]; // multi
+    } else $city_id = "NULL";
 
     $notes = $_POST['notes'];
     $creation_date = $date;
     $last_edit_date = $date;
 
-    $insertManuQry = "INSERT INTO e_manuscripts values('$manu_id','$book_id','$cop_name','$cop_day','$cop_month','$cop_syear','$cop_eyear', '$cop_place', '$signing','$cabinet_name','$cabinet_nbr','$manu_type','$index_nbr','$font','$font_style','$regular_lines','$lines_notes','$paper_size','$inksList','$motifsList','$manuTypesList','$copied_from','$copied_to','$manu_level','$cop_level','$rost_completion','$notes','$creation_date','$last_edit_date')";
-
-    //********** Insert into j_manuscripts_cities_countries Queries **********/
-
-    if (isset($_POST['count_name']) and $_POST['count_name'] !== "") {
-        $count_id_explode = explode(' # ', $_POST['count_name']);
-        $count_id = $count_id_explode[0]; // multi
-        $insertManuCountQry = "INSERT INTO j_manuscripts_cities_countries(manu_id, count_id) VALUES('$manu_id', '$count_id') ON DUPLICATE KEY UPDATE count_id = '$count_id'";
-    } else $insertManuCountQry = "SELECT 1";
-
-    if (isset($_POST['city_name']) and $_POST['city_name'] !== "") {
-        $city_id_explode = explode(' # ', $_POST['city_name']);
-        $city_id = $city_id_explode[0]; // multi
-        $insertManuCityQry = "INSERT INTO j_manuscripts_cities_countries(manu_id, city_id) VALUES('$manu_id', '$city_id') ON DUPLICATE KEY UPDATE city_id = '$city_id'";
-    } else $insertManuCityQry = "SELECT 1";
-
+    $insertManuQry = "INSERT INTO e_manuscripts values('$manu_id', '$book_id', '$cop_name', '$cop_day', '$cop_month', $cop_syear, $cop_eyear, '$cop_place', $signing, '$cabinet_name', $cabinet_nbr,'$manu_type', $index_nbr, '$font', '$font_style', $regular_lines, '$lines_notes', $paper_size, '$inksList', '$motifsList', '$manuTypesList', '$copied_from', '$copied_to', '$manu_level', '$cop_level', $rost_completion, $count_id, $city_id, '$notes','$creation_date','$last_edit_date')";
 
     //********** Insert into i_cop_fm Queries **********/
     if (isset($_POST['cop_fm1']) and isset($_POST['cop_match1']) and $_POST['cop_fm1'] !== "" and $_POST['cop_match1'] !== "") {
@@ -210,12 +207,6 @@ if (isset($_POST['insertForm'])) {
     //********** Insert into e_manuscripts **********/
     if (!mysqli_query($conn, $insertManuQry)) array_push($insManuErrs, "<br> e_manuscripts >> " . mysqli_error($conn));
     //echo "<br> e_manuscripts >> " . mysqli_error($conn);
-
-    //********** Insert into j_manuscripts_cities_countries **********/
-    if (!mysqli_query($conn, $insertManuCountQry)) array_push($insManuErrs, "<br> j_manuscripts_cities_countries >> " . mysqli_error($conn));
-    //echo "<br> j_manuscripts_cities_countries >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertManuCityQry)) array_push($insManuErrs, "<br> j_manuscripts_cities_countries >> " . mysqli_error($conn));
-    //echo "<br> j_manuscripts_cities_countries >> " . mysqli_error($conn);
 
     //********** Insert into Manuscriptions_Copiers **********/
     if (!mysqli_query($conn, $insertCopQry1)) array_push($insManuErrs, "<br> Manuscriptions_Copiers#1 >> " . mysqli_error($conn));
@@ -542,8 +533,9 @@ if (isset($_POST['insertForm'])) {
                                     </div>
                                 </div>
 
-                                <h5 class="my_line"><span>عمل الناسخ عدا نقل المحتوى</span></h5>
+                                <h5 class="my_line"><span>محتوى النسخة</span></h5>
 
+                                <label for="" class="mb-4">عمل الناسخ عدا نقل المحتوى</label><br>
                                 <div class="form-row">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="manu_types[]"
@@ -567,7 +559,8 @@ if (isset($_POST['insertForm'])) {
                                     </div>
                                 </div>
 
-                                <h5 class="my_line"><span>مستوى النسخة من حيث الجودة والضبط</span></h5>
+                                <!-- <h5 class="my_line"><span>مستوى النسخة من حيث الجودة والضبط</span></h5> -->
+                                <label for="" class="mb-4 mt-5">مستوى النسخة من حيث الجودة والضبط</label><br>
 
                                 <div class="form-row">
                                     <div class="form-check form-check-inline">

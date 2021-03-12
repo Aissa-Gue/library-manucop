@@ -1,17 +1,6 @@
 <?php
 include 'header.php';
-
-//Select all countries
-$selectCountQry = "SELECT count_id, count_name FROM countries";
-$countListResult = mysqli_query($conn, $selectCountQry);
-$rowsCount = mysqli_fetch_all($countListResult, MYSQLI_ASSOC);
-$lastCountKey = key(array_slice($rowsCount, -1, 1, true));
-
-//Select all cities
-$selectCitiesQry = "SELECT city_id, city_name FROM cities";
-$countListResult = mysqli_query($conn, $selectCitiesQry);
-$rowsCities = mysqli_fetch_all($countListResult, MYSQLI_ASSOC);
-$lastCityKey = key(array_slice($rowsCities, -1, 1, true));
+include 'lists.php';
 
 // Select last (cop_id)
 $lastCopIdQry = "SELECT max(cop_id) FROM `d_copiers`";
@@ -49,33 +38,26 @@ if (isset($_POST['insertCopier'])) {
     if (isset($_POST['other_name4'])) $other_name4 = $_POST['other_name4'];
     else $other_name4 = "";
 
-    $creation_date = $date;
-    $last_edit_date = $date;
-
-    $insertCopierQry = "INSERT INTO d_copiers VALUES ('$cop_id', '$full_name', '$descent1', '$descent2', '$descent3', '$descent4', '$descent5', '$last_name', '$nickname','$other_name1','$other_name2','$other_name3','$other_name4','$creation_date','$last_edit_date')";
-
-    //********** Insert into k_copiers_cities_countries Queries **********/
     if (isset($_POST['count_name']) and $_POST['count_name'] !== "") {
         $count_id_explode = explode(' # ', $_POST['count_name']);
         $count_id = $count_id_explode[0]; // multi
-        $insertCopCountQry = "INSERT INTO k_copiers_cities_countries(cop_id, count_id) VALUES('$cop_id', '$count_id') ON DUPLICATE KEY UPDATE count_id = '$count_id'";
-    } else $insertCopCountQry = "SELECT 1";
+    } else $count_id = "NULL";
 
     if (isset($_POST['city_name']) and $_POST['city_name'] !== "") {
         $city_id_explode = explode(' # ', $_POST['city_name']);
         $city_id = $city_id_explode[0]; // multi
-        $insertCopCityQry = "INSERT INTO k_copiers_cities_countries(cop_id, city_id) VALUES('$cop_id', '$city_id') ON DUPLICATE KEY UPDATE city_id = '$city_id'";
-    } else $insertCopCityQry = "SELECT 1";
+    } else $city_id = "NULL";
+
+    $creation_date = $date;
+    $last_edit_date = $date;
+
+    $insertCopierQry = "INSERT INTO d_copiers VALUES ('$cop_id', '$full_name', '$descent1', '$descent2', '$descent3', '$descent4', '$descent5', '$last_name', '$nickname','$other_name1','$other_name2','$other_name3','$other_name4', $count_id, $city_id, '$creation_date','$last_edit_date')";
+
+
 
 
     //********** Insert into e_manuscripts **********/
     if (!mysqli_query($conn, $insertCopierQry)) array_push($insCopErrs, "<br> e_manuscripts >> " . mysqli_error($conn));
-
-    //********** Insert into k_copiers_cities_countries **********/
-    if (!mysqli_query($conn, $insertCopCountQry)) array_push($insCopErrs, "<br> k_copiers_cities_countries >> " . mysqli_error($conn));
-    //echo "<br> k_copiers_cities_countries >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertCopCityQry)) array_push($insCopErrs, "<br> k_copiers_cities_countries >> " . mysqli_error($conn));
-    //echo "<br> k_copiers_cities_countries >> " . mysqli_error($conn);
 
 
     if (count($insCopErrs) == 1) {

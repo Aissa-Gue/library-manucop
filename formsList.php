@@ -45,7 +45,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                     <div class="tab-pane fade mt-3" id="formsList">
 
                         <div class="alert alert-primary text-center" role="alert">
-                            <h4>قائمة الاستمارة</h4>
+                            <h4>قائمة الاستمارات</h4>
                         </div>
 
                         <form action="" method="post">

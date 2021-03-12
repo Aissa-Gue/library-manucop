@@ -15,35 +15,31 @@ if (isset($_POST['clientSearch'])) {
 }
 
 // Search query
-$searchQry = "SELECT d_copiers.cop_id, full_name, last_name, other_name1, other_name2, other_name3, other_name4, city_name, count_name
-FROM (((d_copiers 
-INNER JOIN k_copiers_cities_countries ON k_copiers_cities_countries.cop_id = d_copiers.cop_id)
-INNER JOIN countries ON countries.count_id = k_copiers_cities_countries.count_id)
-INNER JOIN cities ON cities.city_id = k_copiers_cities_countries.city_id)
+$searchQry = "SELECT cop_id, full_name, last_name, other_name1, other_name2, other_name3, other_name4, city_name, count_name
+FROM d_copiers 
+LEFT JOIN countries ON countries.count_id = d_copiers.count_id
+LEFT JOIN cities ON cities.city_id = d_copiers.city_id
 WHERE 
-(d_copiers.cop_id LIKE '%$cop_id%')
+(cop_id LIKE '%$cop_id%')
 AND (full_name LIKE '%$full_name%'
 OR last_name LIKE '%$full_name%'
 OR other_name1 LIKE '%$full_name%'
 OR other_name2 LIKE '%$full_name%'
 OR other_name3 LIKE '%$full_name%'
-OR other_name4 LIKE '%$full_name%')
-AND (city_name LIKE '%$city_name%')
-AND (count_name LIKE '%$count_name%')";
+OR other_name4 LIKE '%$full_name%')";
+if ($city_name !== "") {
+    $searchSubQry1 = "AND (city_name LIKE '%$city_name%')";
+} else {
+    $searchSubQry1 = "";
+}
 
-// $searchQry = "SELECT cop_id, full_name, last_name, other_name1, other_name2, other_name3, other_name4, city_name, count_name
-// FROM d_copiers, k_copiers_cities_countries, 
-// WHERE 
-// (cop_id LIKE '%$cop_id%')
-// AND (full_name LIKE '%$full_name%'
-// OR last_name LIKE '%$full_name%'
-// OR other_name1 LIKE '%$full_name%'
-// OR other_name2 LIKE '%$full_name%'
-// OR other_name3 LIKE '%$full_name%'
-// OR other_name4 LIKE '%$full_name%')
-// AND (city LIKE '%$city%')
-// AND (country LIKE '%$country%')";
+if ($count_name !== "") {
+    $searchSubQry2 = "AND (count_name LIKE '%$count_name%')";
+} else {
+    $searchSubQry2 = "";
+}
 
+$searchQry = $searchQry . $searchSubQry1 . $searchSubQry2;
 $searchResult = mysqli_query($conn, $searchQry);
 
 // search num rows

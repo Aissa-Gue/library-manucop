@@ -3,12 +3,14 @@ include 'check.php';
 include 'header.php';
 
 // GET values from clientsList.php
-$cop_id = $_GET['cop_id'];
+$cop_id_get = $_GET['cop_id'];
 
 // Search query
-$searchQry = "SELECT * 
-FROM d_copiers 
-WHERE cop_id = '$cop_id'";
+$searchQry = "SELECT *
+FROM d_copiers
+LEFT JOIN countries ON countries.count_id = d_copiers.count_id
+LEFT JOIN cities ON cities.city_id = d_copiers.city_id 
+WHERE cop_id = '$cop_id_get'";
 
 $searchResult = mysqli_query($conn, $searchQry);
 while ($row = mysqli_fetch_array($searchResult)) {
@@ -32,8 +34,8 @@ while ($row = mysqli_fetch_array($searchResult)) {
     $other_name3 = $row['other_name3'];
     $other_name4 = $row['other_name4'];
 
-    $city = $row['city'];
-    $country = $row['country'];
+    $city = $row['city_name'];
+    $country = $row['count_name'];
 }
 
 // MIN and MAX cop year
@@ -41,7 +43,7 @@ $minMaxCopYearQry = "SELECT min(cop_syear) as min_cop_year, MAX(cop_eyear) as ma
 FROM e_manuscripts
 INNER JOIN h_manuscripts_copiers
 ON e_manuscripts.manu_id = h_manuscripts_copiers.manu_id
-WHERE h_manuscripts_copiers.cop_id = $cop_id";
+WHERE h_manuscripts_copiers.cop_id = '$cop_id_get'";
 
 $minMaxCopYearResult = mysqli_query($conn, $minMaxCopYearQry);
 while ($row = mysqli_fetch_array($minMaxCopYearResult)) {
@@ -50,13 +52,13 @@ while ($row = mysqli_fetch_array($minMaxCopYearResult)) {
 }
 
 // Copier manuscripts List
-$copierManuListQry = "SELECT e_manuscripts.manu_id, book_title, cop_syear, cop_eyear 
+$copierManuListQry = "SELECT e_manuscripts.manu_id, book_title
 FROM ((e_manuscripts
 INNER JOIN h_manuscripts_copiers
 ON e_manuscripts.manu_id = h_manuscripts_copiers.manu_id)
 INNER JOIN a_books
 ON e_manuscripts.book_id = a_books.book_id)
-WHERE h_manuscripts_copiers.cop_id = $cop_id;";
+WHERE h_manuscripts_copiers.cop_id = $cop_id_get";
 
 $copierManuListResult = mysqli_query($conn, $copierManuListQry);
 
@@ -163,8 +165,9 @@ $copierManuListResult = mysqli_query($conn, $copierManuListQry);
                 <div class="col-md-3 mt-4">
                     <label for="city" class="form-label">المدينة</label>
                     <input type="text" class="form-control" value="<?php echo $city ?>" id="city" readonly>
+
                     <div class="mt-3"></div>
-                    <label for="country" class="form-label">الدولة</label>
+                    <label for="country" class="form-label">البلد</label>
                     <input type="text" class="form-control" value="<?php echo $country ?>" id="country" readonly>
                 </div>
             </div>
