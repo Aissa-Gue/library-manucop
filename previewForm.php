@@ -18,6 +18,7 @@ LEFT JOIN cities ON cities.city_id = e_manuscripts.city_id
 WHERE e_manuscripts.manu_id = '$manu_id_get'";
 
 $manuSubQry1Result = mysqli_query($conn, $manuSubQry1);
+
 while ($row = mysqli_fetch_array($manuSubQry1Result)) {
     $manu_id = $row['manu_id'];
 
@@ -87,7 +88,6 @@ INNER JOIN h_manuscripts_copiers ON h_manuscripts_copiers.cop_id = d_copiers.cop
 WHERE h_manuscripts_copiers.manu_id = '$manu_id_get'";
 
 $manuSubQry2Result = mysqli_query($conn, $manuSubQry2);
-
 
 // select all book authors
 $manuSubQry3 = "SELECT c_authors.auth_id, auth_name
@@ -209,6 +209,7 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                         </div>
 
                         <div class="form-row" id="cop_date">
+                            <?php if ($cop_syear == $cop_eyear) { ?>
                             <div class="form-group col-md-2">
                                 <label for="cop_day">تاريخ النسخ</label>
                                 <input type="text" class="form-control" id="cop_day" value="<?php echo $cop_day ?>"
@@ -224,6 +225,13 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                 <input type="number" class="form-control" id="cop_syear"
                                     value="<?php echo $cop_syear ?>" readonly>
                             </div>
+                            <?php } else { ?>
+                            <div class="form-group col-md-2">
+                                <label for="cop_day">فترة النسخ ( بالتقدير )</label>
+                                <input type="text" class="form-control" id="cop_day"
+                                    value="<?php echo $cop_syear . ' - ' . $cop_eyear ?>" readonly>
+                            </div>
+                            <?php } ?>
                         </div>
 
                         <div class="form-row">
@@ -367,31 +375,37 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                     readonly>
                             </div>
                         </div>
+                        <?php
 
+                        if (mysqli_num_rows($manuSubQry5Result) > 0) {
+                        ?>
                         <div class="form-row">
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-auto">
                                 <label for="cop_match">رقم الناسخ (من الاستمارة أعلاه)</label>
                                 <?php
-                                while ($row = mysqli_fetch_array($manuSubQry2Result)) {
-                                    $cop_id = $row['cop_id'];
-                                    $full_name = $row['full_name'];
-                                ?>
-                                <input type="text" class="form-control mb-2"
-                                    value="<?php echo $cop_id . ' # ' . $full_name ?>" id="cop_match" readonly>
+                                    // redefine
+                                    $manuSubQry2Result = mysqli_query($conn, $manuSubQry2);
+                                    while ($row = mysqli_fetch_array($manuSubQry2Result)) {
+                                        $cop_id = $row['cop_id'];
+                                        $full_name = $row['full_name'];
+                                    ?>
+                                <input type="text" class="form-control text-center mb-2" value="<?php echo $cop_id ?>"
+                                    id="cop_match" readonly>
                                 <?php } ?>
                             </div>
 
                             <div class="form-group col-md-7">
                                 <label for="cop_fm">تشابه خط الناسخ بغيره من الناسخين</label>
                                 <?php
-                                while ($rowFm = mysqli_fetch_array($manuSubQry5Result)) {
-                                    $full_nameFm = $rowFm['full_name'];
-                                ?>
-                                <input type="text" class="form-control" id="cop_fm" value="<?php echo $full_nameFm ?>"
-                                    readonly>
+                                    while ($rowFm = mysqli_fetch_array($manuSubQry5Result)) {
+                                        $full_nameFm = $rowFm['full_name'];
+                                    ?>
+                                <input type="text" class="form-control mb-2" id="cop_fm"
+                                    value="<?php echo $full_nameFm ?>" readonly>
                                 <?php } ?>
                             </div>
                         </div>
+                        <?php } ?>
 
                         <div class="form-row">
                             <div class="form-group col-md-3">
@@ -414,12 +428,6 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                             </div>
                         </div>
                     </fieldset>
-                    <div class="form-row justify-content-end">
-                        <div class="form-group col-md-2">
-                            <button type="submit" name="insertForm"
-                                class="btn btn-success btn-block btn-lg rounded-pill">إضافة</button>
-                        </div>
-                    </div>
                 </form>
             </div>
         </div>
