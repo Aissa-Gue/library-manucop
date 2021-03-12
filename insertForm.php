@@ -337,7 +337,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-2">
                                         <label for="cop_day">تاريخ النسخ</label>
                                         <select name="cop_day" id="cop_day" class="form-control">
-                                            <option value="" disabled selected>-أدخل اليوم-</option>
+                                            <option value="" selected>-أدخل اليوم-</option>
                                             <?php for ($i = 0; $i <= 6; $i++) { ?>
                                             <option value="<?php echo $days[$i]; ?>"><?php echo $days[$i]; ?>
                                             </option>
@@ -347,7 +347,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-2">
                                         <label for="cop_month">&nbsp;</label>
                                         <select name="cop_month" id="cop_month" class="form-control">
-                                            <option value="" disabled selected>-أدخل الشهر-</option>
+                                            <option value="" selected>-أدخل الشهر-</option>
                                             <?php for ($i = 0; $i <= 11; $i++) { ?>
                                             <option value="<?php echo $months[$i]; ?>"><?php echo $months[$i]; ?>
                                             </option>
@@ -412,7 +412,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-3">
                                         <label for="signing">موقعة أو بالمقارنة</label>
                                         <select name="signing" id="signing" class="form-control">
-                                            <option value="" disabled selected>-اختر نوع النسخة-</option>
+                                            <option value="" selected>-اختر نوع النسخة-</option>
                                             <option value="1">موقعة</option>
                                             <option value="0">بالمقارنة</option>
                                         </select>
@@ -423,7 +423,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-4">
                                         <label for="cabinet_name">اسم الخزانة</label>
                                         <select name="cabinet_name" id="cabinet_name" class="form-control">
-                                            <option value="" disabled selected>-أدخل اسم الخزانة-</option>
+                                            <option value="" selected>-أدخل اسم الخزانة-</option>
                                             <?php for ($i = 0; $i <= 3; $i++) { ?>
                                             <option value="<?php echo $cabinet_names[$i]; ?>">
                                                 <?php echo $cabinet_names[$i]; ?>
@@ -439,7 +439,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-auto">
                                         <label for="manu_type">نوع النسخة</label>
                                         <select name="manu_type" id="manu_type" class="form-control">
-                                            <option value="" disabled selected>-أدخل نوع النسخة-</option>
+                                            <option value="" selected>-أدخل نوع النسخة-</option>
                                             <option value="">مجلد</option>
                                             <option value="مص">مصحف</option>
                                             <option value="دغ">دون غلاف</option>
@@ -460,7 +460,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-2">
                                         <label for="font">الخط</label>
                                         <select name="font" id="font" class="form-control">
-                                            <option value="" disabled selected>- اختر خط -</option>
+                                            <option value="" selected>- اختر خط -</option>
                                             <option value="مغربي">مغربي</option>
                                             <option value="مشرقي">مشرقي</option>
                                         </select>
@@ -468,7 +468,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-3">
                                         <label for="font_style">نوع الخط</label>
                                         <select name="font_style" id="font_style" class="form-control">
-                                            <option value="" disabled selected>- اختر نوع الخط -</option>
+                                            <option value="" selected>- اختر نوع الخط -</option>
                                             <?php for ($i = 0; $i <= 5; $i++) { ?>
                                             <option value="<?php echo $w_font_styles[$i]; ?>">
                                                 <?php echo $w_font_styles[$i]; ?>
@@ -479,7 +479,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-2">
                                         <label for="regular_lines">نوع المسطرة</label>
                                         <select name="regular_lines" id="regular_lines" class="form-control">
-                                            <option value="" disabled selected>- اختر نوع المسطرة -</option>
+                                            <option value="" selected>- اختر نوع المسطرة -</option>
                                             <option value="1">منتظمة</option>
                                             <option value="0">غير منتظمة</option>
                                         </select>
@@ -495,7 +495,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-3">
                                         <label for="paper_size">مقاس الورق</label>
                                         <select name="paper_size" id="paper_size" class="form-control">
-                                            <option value="" disabled selected required>- اختر مقاس الورق -</option>
+                                            <option value="" selected required>- اختر مقاس الورق -</option>
                                             <option value="1">القطع الكبير</option>
                                             <option value="2">القطع المتوسط</option>
                                             <option value="3">القطع الصغير</option>
@@ -560,10 +560,20 @@ if (isset($_POST['insertForm'])) {
                                 </div>
 
                                 <!-- <h5 class="my_line"><span>مستوى النسخة من حيث الجودة والضبط</span></h5> -->
-                                <label for="" class="mb-4 mt-5">مستوى النسخة من حيث الجودة والضبط</label><br>
 
-                                <div class="form-row">
-                                    <div class="form-check form-check-inline">
+                                <div class="form-row mt-4">
+                                    <div class="form-group col-md-auto">
+                                        <label for="manu_level">مستوى النسخة من حيث الجودة والضبط</label>
+                                        <select name="manu_level" id="manu_level" class="form-control mt-2">
+                                            <option selected value="">- اختر مستوى -</option>
+                                            <option value="جيد">جيد</option>
+                                            <option value="حسن">حسن</option>
+                                            <option value="متوسط">متوسط</option>
+                                            <option value="رديء">رديء</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="manu_level" id="excelent"
                                             value="جيد">
                                         <label class="form-check-label" for="excelent">جيد</label>
@@ -582,7 +592,7 @@ if (isset($_POST['insertForm'])) {
                                         <input class="form-check-input" type="radio" name="manu_level" id="bad"
                                             value="رديء">
                                         <label class="form-check-label" for="bad">رديء (مبتدئ)</label>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <h5 class="my_line"><span>الملاحظات</span></h5>
@@ -639,17 +649,17 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-3">
                                         <label for="cop_level">مستوى ضبط الناسخ</label>
                                         <select name="cop_level" id="cop_level" class="form-control">
-                                            <option disabled selected value="">- اختر مستوى -</option>
+                                            <option selected value="">- اختر مستوى -</option>
                                             <option value="جيد">جيد</option>
-                                            <option value="جيد">حسن</option>
-                                            <option value="جيد">متوسط</option>
-                                            <option value="جيد">رديء</option>
+                                            <option value="حسن">حسن</option>
+                                            <option value="متوسط">متوسط</option>
+                                            <option value="رديء">رديء</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-2">
                                         <label for="rost_completion">ترميم وإتمام</label>
                                         <select name="rost_completion" id="rost_completion" class="form-control">
-                                            <option value="" disabled selected>- اختر خيار -</option>
+                                            <option value="" selected>- اختر خيار -</option>
                                             <option value="1">نعم</option>
                                             <option value="0">لا</option>
                                         </select>
