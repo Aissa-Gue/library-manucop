@@ -535,33 +535,25 @@ if (isset($_POST['insertForm'])) {
 
                                 <h5 class="my_line"><span>محتوى النسخة</span></h5>
 
-                                <label for="" class="mb-4">عمل الناسخ عدا نقل المحتوى</label><br>
                                 <div class="form-row">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" name="manu_types[]"
-                                            id="correction1" value="تصحيح">
-                                        <label class="form-check-label" for="correction1">تصحيح</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" name="manu_types[]"
-                                            id="correction2" value="تصويب">
-                                        <label class="form-check-label" for="correction2">تصويب</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" name="manu_types[]"
-                                            id="matching" value="مقابلة">
-                                        <label class="form-check-label" for="matching">مقابلة</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" name="manu_types[]" id="comment"
-                                            value="تعليق">
-                                        <label class="form-check-label" for="comment">تعليق</label>
+                                    <div class="form-group col-md-auto">
+                                        <label for="ink_colors">عمل الناسخ عدا نقل المحتوى</label><br>
+                                        <?php for ($i = 0; $i <= 3; $i++) { ?>
+                                        <div class="form-check form-check-inline mt-2">
+                                            <input class="form-check-input" type="checkbox" name="manu_types[]"
+                                                id="<?php echo $manu_types[$i] ?>"
+                                                value="<?php echo $manu_types[$i] ?>">
+                                            <label class="form-check-label"
+                                                for="<?php echo $manu_types[$i] ?>"><?php echo $manu_types[$i] ?></label>
+                                            <?php ?>
+                                        </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
 
                                 <!-- <h5 class="my_line"><span>مستوى النسخة من حيث الجودة والضبط</span></h5> -->
 
-                                <div class="form-row mt-4">
+                                <div class="form-row mt-3">
                                     <div class="form-group col-md-auto">
                                         <label for="manu_level">مستوى النسخة من حيث الجودة والضبط</label>
                                         <select name="manu_level" id="manu_level" class="form-control mt-2">

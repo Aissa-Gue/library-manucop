@@ -44,7 +44,11 @@ $e_font_styles = array("النسخ", "الثلث", "الكوفي", "التعلي
 //motifs List
 $motifs = array("دائرة منقطة", "فواصل", "وريدات", "مراوح", "براعم", "فصوص");
 
+//ink colors List
 $ink_colors = array("البني", "الأسود", "الأحمر", "الآجوري", "البنفسجي", "الوردي", "البرتقالي", "الأصفر", "الأخضر", "الأزرق", "المذهب",);
+
+//manu types List
+$manu_types = array("تصحيح", "تصويب", "مقابلة", "تعليق");
 
 //arabic lang chars
 mysqli_set_charset($conn, 'utf8');
