@@ -1,5 +1,6 @@
 <?php
 include 'header.php';
+include 'lists.php';
 
 
 ?>
@@ -10,7 +11,7 @@ include 'header.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preview Form</title>
+    <title>Edit Form</title>
 </head>
 
 <body class="my_bg">
@@ -24,7 +25,7 @@ include 'header.php';
             <div class="col-10 my_mr_sidebar pt-3">
 
                 <div class="alert alert-primary text-center" role="alert">
-                    <h4>معلومات الاستمارة</h4>
+                    <h4>تعديل الاستمارة</h4>
                 </div>
                 <form action="" method="post">
                     <fieldset class="scheduler-border">

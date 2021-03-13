@@ -29,7 +29,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manu List</title>
+    <title>Forms List</title>
 </head>
 
 <body class="my_bg">

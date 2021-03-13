@@ -1,16 +1,6 @@
 <?php
 include 'header.php';
-//select all authors
-$selectAuthQry = "SELECT auth_id, auth_name FROM c_authors";
-$authListResult = mysqli_query($conn, $selectAuthQry);
-$rowsAuth = mysqli_fetch_all($authListResult, MYSQLI_ASSOC);
-$lastAuthKey = key(array_slice($rowsAuth, -1, 1, true));
-
-//select all subjects
-$selectsubjQry = "SELECT subj_id, subj_name FROM b_subjects";
-$subjListResult = mysqli_query($conn, $selectsubjQry);
-$rowsSubj = mysqli_fetch_all($subjListResult, MYSQLI_ASSOC);
-$lastSubjKey = key(array_slice($rowsSubj, -1, 1, true));
+include 'lists.php';
 
 // Select last (auth_id)
 $lastAuthIdQry = "SELECT max(auth_id) FROM `c_authors`";

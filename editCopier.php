@@ -2,7 +2,6 @@
 include 'header.php';
 include 'lists.php';
 
-
 // GET values from clientsList.php
 if (isset($_GET['cop_id'])) {
     $cop_id = $_GET['cop_id'];
