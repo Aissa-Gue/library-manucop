@@ -104,9 +104,9 @@ include 'check.php';
                     <!-- START Invoices section -->
                     <li class="my_navList">التقارير</li>
 
-                    <a id="ordersList-tab" data-toggle="pill" href="#ordersList" role="tab" aria-selected="false">
+                    <a id="ordersList-tab" data-toggle="pill" href="#statistics" role="tab" aria-selected="false">
 
-                        <a class="nav-link" href="ordersList.php#ordersList">
+                        <a class="nav-link" href="statistics.php#statistics">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-list-check" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"

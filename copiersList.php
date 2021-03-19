@@ -15,18 +15,21 @@ if (isset($_POST['clientSearch'])) {
 }
 
 // Search query
-$searchQry = "SELECT cop_id, full_name, last_name, other_name1, other_name2, other_name3, other_name4, city_name, count_name
+$searchQry = "SELECT count(manu_id) as manu_nbr, d_copiers.cop_id, full_name, last_name, other_name1, other_name2, other_name3, other_name4, city_name, count_name
 FROM d_copiers 
 LEFT JOIN countries ON countries.count_id = d_copiers.count_id
 LEFT JOIN cities ON cities.city_id = d_copiers.city_id
+INNER JOIN h_manuscripts_copiers ON h_manuscripts_copiers.cop_id =  d_copiers.cop_id
 WHERE 
-(cop_id LIKE '%$cop_id%')
+(d_copiers.cop_id LIKE '%$cop_id%')
 AND (full_name LIKE '%$full_name%'
 OR last_name LIKE '%$full_name%'
 OR other_name1 LIKE '%$full_name%'
 OR other_name2 LIKE '%$full_name%'
 OR other_name3 LIKE '%$full_name%'
-OR other_name4 LIKE '%$full_name%')";
+OR other_name4 LIKE '%$full_name%')
+GROUP BY h_manuscripts_copiers.cop_id";
+
 if ($city_name !== "") {
     $searchSubQry1 = "AND (city_name LIKE '%$city_name%')";
 } else {
@@ -122,6 +125,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <th scope="col" class="text-center">رقم الناسخ</th>
                                     <th scope="col">اسم الناسخ</th>
                                     <th scope="col">اللقب</th>
+                                    <th scope="col" class="text-center">عدد المنسوخات</th>
                                     <th scope="col" class="text-center">تفاصيل</th>
                                     <th scope="col" class="text-center">تعديل</th>
                                     <th scope="col" class="text-center">حذف</th>
@@ -135,6 +139,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <td><?php echo $row['full_name'] ?>
                                     </td>
                                     <td><?php echo $row['last_name'] ?></td>
+                                    <td class="text-center"><?php echo $row['manu_nbr'] ?></td>
                                     <td class="text-center">
                                         <a class="btn btn-outline-danger"
                                             href="previewCopier.php?cop_id=<?php echo $row['cop_id'] ?>">

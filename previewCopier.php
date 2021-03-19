@@ -192,9 +192,9 @@ $copierManuListResult = mysqli_query($conn, $copierManuListQry);
                         <th scope="row" class="text-center"><?php echo $row['manu_id'] ?></th>
 
                         <td>
-                            <a href="booksList.php#booksList"><?php echo $row['book_title'] ?></a>
+                            <a
+                                href="previewForm.php?manu_id=<?php echo $row['manu_id'] ?>"><?php echo $row['book_title'] ?></a>
                         </td>
-
                     </tr>
                     <?php } ?>
                 </tbody>
