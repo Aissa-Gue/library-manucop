@@ -137,7 +137,7 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
             <div class="col-10 my_mr_sidebar pt-3">
 
                 <div class="alert alert-primary text-center" role="alert">
-                    <h4>معلومات الاستمارة</h4>
+                    <h4>تعديل الاستمارة</h4>
                 </div>
                 <form action="" method="post">
                     <fieldset class="scheduler-border">
@@ -513,9 +513,6 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                             </div>
                         </div>
 
-                        <?php
-                        if (mysqli_num_rows($manuSubQry5Result) > 0) {
-                        ?>
                         <div class="form-row">
                             <div class="form-group col-md-auto">
                                 <label for="cop_match">رقم الناسخ (من الاستمارة أعلاه)</label>
@@ -526,43 +523,114 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                             </div>
                         </div>
 
+
+                        <?php
+                        $c = 1;
+                        while ($row = mysqli_fetch_array($manuSubQry5Result)) {
+                            $cop_id = $row['cop_id'];
+                            $cop_fm = $row['cop_fm'];
+                            $fm_full_name = $row['full_name'];
+                        ?>
                         <div class="form-row">
-                            <?php
-                                while ($row = mysqli_fetch_array($manuSubQry5Result)) {
-                                    $cop_id = $row['cop_id'];
-                                    $cop_fm = $row['cop_fm'];
-                                    $fm_full_name = $row['full_name'];
-                                ?>
                             <div class="form-group col-md-auto">
-                                <input type="text" class="form-control text-center" value="<?php echo $cop_id ?>"
-                                    id="cop_match">
+                                <input type="text" class="form-control text-center" name="cop_match<?php echo $c ?>"
+                                    value="<?php echo $cop_id ?>" id="cop_match" placeholder="أدخل رقم الناسخ">
                             </div>
                             =>
                             <div class="form-group col-md-9">
-                                <input type="text" class="form-control" id="cop_fm"
-                                    value="<?php echo $cop_fm . ' # ' . $fm_full_name ?>">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span>
+                                            <a class="btn btn-outline-danger"
+                                                href="deleteManuFmCop.php?manu_id=<?php echo $manu_id ?>&cop_id=<?php echo $cop_id  ?>&cop_fm=<?php echo $cop_fm  ?>"
+                                                onclick="return confirm('هل أنت متأكد من حذف الناسخ المشابه من النسخة؟')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                                </svg>
+                                            </a>
+                                        </span>
+                                    </div>
+
+                                    <input list="copiers" class="form-control" name="cop_fm<?php echo $c ?>"
+                                        value="<?php echo $cop_fm . ' # ' . $fm_full_name ?>" id="cop_fm"
+                                        placeholder="أدخل الناسخ المشابه">
+                                    <datalist id="copiers">
+                                        <?php
+                                            for ($i = 0; $i <= $lastKey; $i++) { ?>
+                                        <option
+                                            value="<?php print_r($rows[$i]['cop_id']) ?> # <?php print_r($rows[$i]['full_name']); ?>">
+                                            <?php  } ?>
+                                    </datalist>
+                                </div>
                             </div>
-                            <?php } ?>
                         </div>
-                        <?php } ?>
+                        <?php
+                            $c++;
+                        } ?>
+
+
+                        <!-- add input if nbr of copiers under 4  -->
+                        <?php if ($c < 6) {
+                            for ($c; $c < 6; $c++) {
+                        ?>
+                        <div class="form-row">
+                            <div class="form-group col-md-auto">
+                                <input type="text" class="form-control text-center" name="cop_match<?php echo $c ?>"
+                                    id="cop_match" placeholder="أدخل رقم الناسخ">
+                            </div>
+                            =>
+                            <div class="form-group col-md-9">
+                                <div class="input-group">
+                                    <input list="copiers" class="form-control" name="cop_fm<?php echo $c ?>" id="cop_fm"
+                                        placeholder="أدخل الناسخ المشابه">
+                                    <datalist id="copiers">
+                                        <?php
+                                                for ($i = 0; $i <= $lastKey; $i++) { ?>
+                                        <option
+                                            value="<?php print_r($rows[$i]['cop_id']) ?> # <?php print_r($rows[$i]['full_name']); ?>">
+                                            <?php  } ?>
+                                    </datalist>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                            }
+                        } ?>
 
                         <div class="form-row">
                             <div class="form-group col-md-3">
                                 <label for="cop_level">مستوى ضبط الناسخ</label>
-                                <input type="text" class="form-control" id="cop_level" value="<?php echo $cop_level ?>">
+                                <select name="cop_level" id="cop_level" class="form-control">
+                                    <option value="">- اختر مستوى -</option>
+                                    <option selected value="<?php echo $cop_level ?>"><?php echo $cop_level ?></option>
+                                    <option value="جيد">جيد</option>
+                                    <option value="حسن">حسن</option>
+                                    <option value="متوسط">متوسط</option>
+                                    <option value="رديء">رديء</option>
+                                </select>
                             </div>
+
                             <div class="form-group col-md-2">
                                 <label for="rost_completion">ترميم وإتمام</label>
-                                <input type="text" class="form-control" id="rost_completion"
-                                    value="<?php echo $rost_completion ?>">
+                                <select name="rost_completion" id="rost_completion" class="form-control">
+                                    <option value="">- اختر خيار -</option>
+                                    <option value="<?php echo $rost_completion ?>" selected>
+                                        <?php echo $rost_completion ?></option>
+                                    <option value="1">نعم</option>
+                                    <option value="0">لا</option>
+                                </select>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-7">
                                 <label for="notes">ملاحظات أخرى</label>
-                                <textarea class="form-control" name="notes" id="notes"
-                                    rows="3"><?php echo $notes ?></textarea>
+                                <textarea class="form-control" name="notes" id="notes" rows="3"
+                                    placeholder="أدخل ملاحظات أخرى"><?php echo $notes ?></textarea>
                             </div>
                         </div>
                     </fieldset>
@@ -572,7 +640,7 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
     </div>
 </body>
 
-<script src="js/main.js?<?php echo time() ?>"></script>
+<script src="js/main.js"></script>
 <script>
 scrollTop();
 storeSelectedTab();
