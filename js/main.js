@@ -55,8 +55,8 @@ $("#addSubject").click(function () {
 // Replace cop Date with range
 $("#replaceCopDate").click(function () {
     var html = '';
-    html += '<div class="form-row" id="cop_date"> <div class="form-group col-md-2"> <label for="cop_date">تاريخ النسخ [أدخل نطاق]</label> <input type="text" class="form-control" name="cop_sdate" id="cop_date" placeholder="من السنة"></div>';
-    html += '<div class="form-group col-md-2"> <label for="cop_date">&nbsp;</label> <input type="text" class="form-control" name="cop_edate" id="cop_date" placeholder="إلى السنة"> </div>';
+    html += '<div class="form-row" id="cop_date"> <div class="form-group col-md-2"> <label for="cop_date">تاريخ النسخ [أدخل نطاق]</label> <input type="text" class="form-control" name="cop_syear" id="cop_date" placeholder="من السنة"></div>';
+    html += '<div class="form-group col-md-2"> <label for="cop_date">&nbsp;</label> <input type="text" class="form-control" name="cop_eyear" id="cop_date" placeholder="إلى السنة"> </div>';
     html += '</div>';
     $("#cop_date").replaceWith(html);
 });

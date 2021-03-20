@@ -472,7 +472,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-3">
                                         <label for="paper_size">مقاس الورق</label>
                                         <select name="paper_size" id="paper_size" class="form-control">
-                                            <option value="" selected required>- اختر مقاس الورق -</option>
+                                            <option value="" selected>- اختر مقاس الورق -</option>
                                             <option value="1">القطع الكبير</option>
                                             <option value="2">القطع المتوسط</option>
                                             <option value="3">القطع الصغير</option>
