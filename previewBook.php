@@ -46,82 +46,85 @@ if (isset($_GET['book_id'])) {
 </head>
 
 <body class="my_bg">
-    <?php include "sideBar.php" ?>
+    <div class="container-fluid mt-5">
 
-    <div class="col-10 my_mr_sidebar pt-3">
-        <div class="alert alert-warning text-center h4" role="alert">
-            معلومات الكتاب
-        </div>
+        <?php include "sideBar.php" ?>
 
-        <form action="" method="post" enctype="multipart/form-data">
-            <!-- 1st row -->
-            <div class="row mt-3">
-                <div class="col-md-2">
-                    <label for="book_id" class="form-label">رقم الكتاب</label>
-                    <input type="text" class="form-control text-center" value="<?php echo $book_id ?>" name="book_id"
-                        id="book_id" readonly>
-                </div>
-                <div class="col-md-9">
-                    <label for="book_title" class="form-label">عنوان الكتاب</label>
-                    <input type="text" class="form-control" value="<?php echo $book_title ?>" name="book_title"
-                        id="book_title" readonly>
-                </div>
+        <div class="col-10 my_mr_sidebar pt-3">
+            <div class="alert alert-warning text-center h4" role="alert">
+                معلومات الكتاب
             </div>
 
-            <!-- 2nd row -->
-            <div class="row mt-3">
-                <div class="col-md-9">
-                    <label for="author" class="form-label">المؤلفين</label>
+            <form action="" method="post" enctype="multipart/form-data">
+                <!-- 1st row -->
+                <div class="row mt-3">
+                    <div class="col-md-2">
+                        <label for="book_id" class="form-label">رقم الكتاب</label>
+                        <input type="text" class="form-control text-center" value="<?php echo $book_id ?>"
+                            name="book_id" id="book_id" readonly>
+                    </div>
+                    <div class="col-md-9">
+                        <label for="book_title" class="form-label">عنوان الكتاب</label>
+                        <input type="text" class="form-control" value="<?php echo $book_title ?>" name="book_title"
+                            id="book_title" readonly>
+                    </div>
+                </div>
+
+                <!-- 2nd row -->
+                <div class="row mt-3">
+                    <div class="col-md-9">
+                        <label for="author" class="form-label">المؤلفين</label>
+                        <?php
+                        while ($row = mysqli_fetch_array($authorsResult)) {
+                        ?>
+                        <input type="text" class="form-control mb-2" value="<?php echo $row['auth_name']; ?>"
+                            name="auth_name" id="author" readonly>
+                        <?php } ?>
+                    </div>
+                </div>
+
+                <!-- 3rd row -->
+                <label for="subject_name" class="form-label mt-3">المواضيع</label>
+                <div class="row">
                     <?php
-                    while ($row = mysqli_fetch_array($authorsResult)) {
+                    while ($row = mysqli_fetch_array($subjectsResult)) {
                     ?>
-                    <input type="text" class="form-control mb-2" value="<?php echo $row['auth_name']; ?>"
-                        name="auth_name" id="author" readonly>
+                    <div class="col-md-auto">
+                        <input type="text" class="form-control" value="<?php echo  $row['subj_name']; ?>"
+                            name="subj_name" id="subject_name" readonly>
+                    </div>
                     <?php } ?>
                 </div>
-            </div>
 
-            <!-- 3rd row -->
-            <label for="subject_name" class="form-label mt-3">المواضيع</label>
-            <div class="row">
-                <?php
-                while ($row = mysqli_fetch_array($subjectsResult)) {
-                ?>
-                <div class="col-md-auto">
-                    <input type="text" class="form-control" value="<?php echo  $row['subj_name']; ?>" name="subj_name"
-                        id="subject_name" readonly>
+                <!-- 4th row -->
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <label for="creation_date" class="form-label">تاريخ الإضافة</label>
+                        <input type="text" class="form-control" value="<?php echo $creation_date ?>" id="creation_date"
+                            readonly>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="last_edit_date" class="form-label">تاريخ آخر تعديل</label>
+                        <input type="text" class="form-control" value="<?php echo $last_edit_date ?>"
+                            id="last_edit_date" readonly>
+                    </div>
                 </div>
-                <?php } ?>
-            </div>
 
-            <!-- 4th row -->
-            <div class="row mt-3">
-                <div class="col-md-3">
-                    <label for="creation_date" class="form-label">تاريخ الإضافة</label>
-                    <input type="text" class="form-control" value="<?php echo $creation_date ?>" id="creation_date"
-                        readonly>
+                <div class="form-row justify-content-end">
+                    <div class="form-group my_col_btn">
+                        <button type="button" class="btn btn-danger btn-block btn-lg rounded-pill"
+                            onclick="window.history.go(-1);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+                            </svg>
+                            رجوع
+                        </button>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <label for="last_edit_date" class="form-label">تاريخ آخر تعديل</label>
-                    <input type="text" class="form-control" value="<?php echo $last_edit_date ?>" id="last_edit_date"
-                        readonly>
-                </div>
-            </div>
-
-            <div class="form-row justify-content-end">
-                <div class="form-group my_col_btn">
-                    <button type="button" class="btn btn-danger btn-block btn-lg rounded-pill"
-                        onclick="window.history.go(-1);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                            class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                        </svg>
-                        رجوع
-                    </button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </body>
 

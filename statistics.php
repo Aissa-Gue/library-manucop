@@ -118,7 +118,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
 
 <body class="my_bg">
     <!-- START row -->
-    <div class="container-fluid">
+    <div class="container-fluid mt-5">
         <div class="row">
 
             <?php include "sideBar.php" ?>

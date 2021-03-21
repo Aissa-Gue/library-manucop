@@ -3,7 +3,7 @@ include 'check.php';
 ?>
 
 <!-- START Right column -->
-<div class="col-2 my_fixed_sidebar">
+<div class="col-2 my_fixed_sidebar mt-2">
     <div class="nav flex-column nav-pills" id="myTab" role="tablist" aria-orientation="vertical">
         <!-- START Books section -->
         <li class="my_navList">الاستمارات</li>

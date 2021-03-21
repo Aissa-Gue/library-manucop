@@ -205,36 +205,6 @@ if (isset($_POST['editForm'])) {
     if (isset($_POST['paper_size']) and $_POST['paper_size'] != "") $paper_size = $_POST['paper_size'];
     else $paper_size = "NULL";
 
-    if (isset($_POST['motifs'])) {
-        $motifs = $_POST['motifs']; /// array
-        $motifsList = "";
-        foreach ($motifs as $motif) {
-            $motifsList .= $motif . ",";
-        }
-    } else {
-        $motifsList = "";
-    }
-
-    if (isset($_POST['ink_colors'])) {
-        $ink_colors = $_POST['ink_colors']; // array
-        $inksList = "";
-        foreach ($ink_colors as $ink) {
-            $inksList .= $ink . ",";
-        }
-    } else {
-        $inksList = "";
-    }
-
-    if (isset($_POST['manu_types'])) {
-        $manu_types = $_POST['manu_types']; // array
-        $manuTypesList = "";
-        foreach ($manu_types as $manu) {
-            $manuTypesList .= $manu . ",";
-        }
-    } else {
-        $manuTypesList = "";
-    }
-
     if (isset($_POST['manu_level'])) $manu_level = $_POST['manu_level'];
     else $manu_level = "";
 
@@ -261,35 +231,113 @@ if (isset($_POST['editForm'])) {
     $creation_date = $date;
     $last_edit_date = $date;
 
-    $editManuQry = "UPDATE e_manuscripts SET manu_id= '$manu_id', book_id= '$book_id', cop_name= '$cop_name', cop_day= '$cop_day', cop_month= '$cop_month', cop_syear= $cop_syear, cop_eyear= $cop_eyear, cop_place= '$cop_place', signing=  $signing, cabinet_name= '$cabinet_name', cabinet_nbr= $cabinet_nbr, manu_type= '$manu_type', index_nbr= $index_nbr, font= '$font', font_style= '$font_style', regular_lines= $regular_lines, lines_notes= '$lines_notes', paper_size= $paper_size, ink_colors= '$inksList', motifs= '$motifsList', manu_types= '$manuTypesList', copied_from= '$copied_from', copied_to= '$copied_to', manu_level= '$manu_level', cop_level= '$cop_level', rost_completion= $rost_completion, count_id= $count_id, city_id= $city_id, notes= '$notes', last_edit_date= '$last_edit_date' WHERE manu_id= '$prev_manu_id'";
+    $editManuQry = "UPDATE e_manuscripts SET manu_id= '$manu_id', book_id= '$book_id', cop_name= '$cop_name', cop_day= '$cop_day', cop_month= '$cop_month', cop_syear= $cop_syear, cop_eyear= $cop_eyear, cop_place= '$cop_place', signing=  $signing, cabinet_name= '$cabinet_name', cabinet_nbr= $cabinet_nbr, manu_type= '$manu_type', index_nbr= $index_nbr, font= '$font', font_style= '$font_style', regular_lines= $regular_lines, lines_notes= '$lines_notes', paper_size= $paper_size, copied_from= '$copied_from', copied_to= '$copied_to', manu_level= '$manu_level', cop_level= '$cop_level', rost_completion= $rost_completion, count_id= $count_id, city_id= $city_id, notes= '$notes', last_edit_date= '$last_edit_date' WHERE manu_id= '$prev_manu_id'";
+
+
+    //********** Insert into j_manuscripts_motifs **********/
+    if (isset($_POST['motif1']) and $_POST['motif1'] !== "") {
+        $motif_id1_explode = explode(' # ', $_POST['motif1']);
+        $motif_id1 = $motif_id1_explode[0]; // multi
+        $insertMotifQry1 = "INSERT INTO j_manuscripts_motifs VALUES($manu_id, $motif_id1) ON DUPLICATE KEY UPDATE manu_id = '$manu_id', motif_id= '$motif_id1'";
+    } else $insertMotifQry1 = "SELECT 1";
+
+    if (isset($_POST['motif2']) and $_POST['motif2'] !== "") {
+        $motif_id2_explode = explode(' # ', $_POST['motif2']);
+        $motif_id2 = $motif_id2_explode[0]; // multi
+        $insertMotifQry2 = "INSERT INTO j_manuscripts_motifs VALUES($manu_id, $motif_id2) ON DUPLICATE KEY UPDATE manu_id = '$manu_id', motif_id= '$motif_id2'";
+    } else $insertMotifQry2 = "SELECT 1";
+
+    if (isset($_POST['motif3']) and $_POST['motif3'] !== "") {
+        $motif_id3_explode = explode(' # ', $_POST['motif3']);
+        $motif_id3 = $motif_id3_explode[0]; // multi
+        $insertMotifQry3 = "INSERT INTO j_manuscripts_motifs VALUES($manu_id, $motif_id3) ON DUPLICATE KEY UPDATE manu_id = '$manu_id', motif_id= '$motif_id3'";
+    } else $insertMotifQry3 = "SELECT 1";
+
+    if (isset($_POST['motif4']) and $_POST['motif4'] !== "") {
+        $motif_id4_explode = explode(' # ', $_POST['motif4']);
+        $motif_id4 = $motif_id4_explode[0]; // multi
+        $insertMotifQry4 = "INSERT INTO j_manuscripts_motifs VALUES($manu_id, $motif_id4) ON DUPLICATE KEY UPDATE manu_id = '$manu_id', motif_id= '$motif_id4'";
+    } else $insertMotifQry4 = "SELECT 1";
+
+
+    //********** Insert into j_manuscripts_colors **********/
+    if (isset($_POST['inkColor1']) and $_POST['inkColor1'] !== "") {
+        $color_id1_explode = explode(' # ', $_POST['inkColor1']);
+        $color_id1 = $color_id1_explode[0]; // multi
+        $insertInkColorQry1 = "INSERT INTO j_manuscripts_colors VALUES($manu_id, $color_id1) ON DUPLICATE KEY UPDATE manu_id = '$manu_id', color_id= '$color_id1'";
+    } else $insertInkColorQry1 = "SELECT 1";
+
+    if (isset($_POST['inkColor2']) and $_POST['inkColor2'] !== "") {
+        $color_id2_explode = explode(' # ', $_POST['inkColor2']);
+        $color_id2 = $color_id2_explode[0]; // multi
+        $insertInkColorQry2 = "INSERT INTO j_manuscripts_colors VALUES($manu_id, $color_id2) ON DUPLICATE KEY UPDATE manu_id = '$manu_id', color_id= '$color_id2'";
+    } else $insertInkColorQry2 = "SELECT 1";
+
+    if (isset($_POST['inkColor3']) and $_POST['inkColor3'] !== "") {
+        $color_id3_explode = explode(' # ', $_POST['inkColor3']);
+        $color_id3 = $color_id3_explode[0]; // multi
+        $insertInkColorQry3 = "INSERT INTO j_manuscripts_colors VALUES($manu_id, $color_id3) ON DUPLICATE KEY UPDATE manu_id = '$manu_id', color_id= '$color_id3'";
+    } else $insertInkColorQry3 = "SELECT 1";
+
+    if (isset($_POST['inkColor4']) and $_POST['inkColor4'] !== "") {
+        $color_id4_explode = explode(' # ', $_POST['inkColor4']);
+        $color_id4 = $color_id4_explode[0]; // multi
+        $insertInkColorQry4 = "INSERT INTO j_manuscripts_colors VALUES($manu_id, $color_id4) ON DUPLICATE KEY UPDATE manu_id = '$manu_id', color_id= '$color_id4'";
+    } else $insertInkColorQry4 = "SELECT 1";
+
+
+    //********** Insert into j_manuscripts_manuTypes **********/
+    if (isset($_POST['manu_types1']) and $_POST['manu_types1'] !== "") {
+        $type_id1_explode = explode(' # ', $_POST['manu_types1']);
+        $type_id1 = $type_id1_explode[0]; // multi
+        $insertManuTypeQry1 = "INSERT INTO j_manuscripts_manuTypes VALUES($manu_id, $type_id1) ON DUPLICATE KEY UPDATE manu_id = '$manu_id', type_id= '$type_id1'";
+    } else $insertManuTypeQry1 = "SELECT 1";
+
+    if (isset($_POST['manu_types2']) and $_POST['manu_types2'] !== "") {
+        $type_id2_explode = explode(' # ', $_POST['manu_types2']);
+        $type_id2 = $type_id2_explode[0]; // multi
+        $insertManuTypeQry2 = "INSERT INTO j_manuscripts_manuTypes VALUES($manu_id, $type_id2) ON DUPLICATE KEY UPDATE manu_id = '$manu_id', type_id= '$type_id2'";
+    } else $insertManuTypeQry2 = "SELECT 1";
+
+    if (isset($_POST['manu_types3']) and $_POST['manu_types3'] !== "") {
+        $type_id3_explode = explode(' # ', $_POST['manu_types3']);
+        $type_id3 = $type_id3_explode[0]; // multi
+        $insertManuTypeQry3 = "INSERT INTO j_manuscripts_manuTypes VALUES($manu_id, $type_id3) ON DUPLICATE KEY UPDATE manu_id = '$manu_id', type_id= '$type_id3'";
+    } else $insertManuTypeQry3 = "SELECT 1";
+
+    if (isset($_POST['manu_types4']) and $_POST['manu_types4'] !== "") {
+        $type_id4_explode = explode(' # ', $_POST['manu_types4']);
+        $type_id4 = $type_id4_explode[0]; // multi
+        $insertManuTypeQry4 = "INSERT INTO j_manuscripts_manuTypes VALUES($manu_id, $type_id4) ON DUPLICATE KEY UPDATE manu_id = '$manu_id', type_id= '$type_id4'";
+    } else $insertManuTypeQry4 = "SELECT 1";
 
     //********** Insert into i_cop_fm Queries **********/
     if (isset($_POST['cop_fm1']) and isset($_POST['cop_match1']) and $_POST['cop_fm1'] !== "" and $_POST['cop_match1'] !== "") {
         $cop_match1 = $_POST['cop_match1'];
         $cop_fm1_explode = explode(' # ', $_POST['cop_fm1']);
         $cop_fm1 = $cop_fm1_explode[0]; // multi
-        $editCopFMQry1 = "INSERT INTO i_cop_fm VALUES('$cop_match1','$cop_fm1','$manu_id')";
+        $editCopFMQry1 = "INSERT INTO i_cop_fm VALUES('$cop_match1','$cop_fm1','$manu_id') ON DUPLICATE KEY UPDATE cop_id = '$cop_match1', cop_fm= '$cop_fm1', manu_id= '$manu_id'";
     } else $editCopFMQry1 = "SELECT 1";
 
     if (isset($_POST['cop_fm2']) and isset($_POST['cop_match2']) and $_POST['cop_fm2'] !== "" and $_POST['cop_match2'] !== "") {
         $cop_match2 = $_POST['cop_match2'];
         $cop_fm2_explode = explode(' # ', $_POST['cop_fm2']);
         $cop_fm2 = $cop_fm2_explode[0]; // multi
-        $editCopFMQry2 = "INSERT INTO i_cop_fm VALUES('$cop_match2','$cop_fm2','$manu_id')";
+        $editCopFMQry2 = "INSERT INTO i_cop_fm VALUES('$cop_match2','$cop_fm2','$manu_id') ON DUPLICATE KEY UPDATE cop_id = '$cop_match2', cop_fm= '$cop_fm2', manu_id= '$manu_id'";
     } else $editCopFMQry2 = "SELECT 1";
 
     if (isset($_POST['cop_fm3']) and isset($_POST['cop_match3']) and $_POST['cop_fm3'] !== "" and $_POST['cop_match3'] !== "") {
         $cop_match3 = $_POST['cop_match3'];
         $cop_fm3_explode = explode(' # ', $_POST['cop_fm3']);
         $cop_fm3 = $cop_fm3_explode[0]; // multi
-        $editCopFMQry3 = "INSERT INTO i_cop_fm VALUES('$cop_match3','$cop_fm3','$manu_id')";
+        $editCopFMQry3 = "INSERT INTO i_cop_fm VALUES('$cop_match3','$cop_fm3','$manu_id') ON DUPLICATE KEY UPDATE cop_id = '$cop_match3', cop_fm= '$cop_fm3', manu_id= '$manu_id'";
     } else $editCopFMQry3 = "SELECT 1";
 
     if (isset($_POST['cop_fm4']) and isset($_POST['cop_match4']) and $_POST['cop_fm4'] !== "" and $_POST['cop_match4'] !== "") {
         $cop_match4 = $_POST['cop_match4'];
         $cop_fm4_explode = explode(' # ', $_POST['cop_fm4']);
         $cop_fm4 = $cop_fm4_explode[0]; // multi
-        $editCopFMQry4 = "INSERT INTO i_cop_fm VALUES('$cop_match4','$cop_fm4','$manu_id')";
+        $editCopFMQry4 = "INSERT INTO i_cop_fm VALUES('$cop_match4','$cop_fm4','$manu_id') ON DUPLICATE KEY UPDATE cop_id = '$cop_match4', cop_fm= '$cop_fm4', manu_id= '$manu_id'";
     } else $editCopFMQry4 = "SELECT 1";
 
     //********** Insert into e_manuscripts **********/
@@ -305,6 +353,36 @@ if (isset($_POST['editForm'])) {
     //echo "<br> Manuscriptions_Copiers#3 >> " . mysqli_error($conn);
     if (!mysqli_query($conn, $editCopQry4)) array_push($editManuErrs, "<br> Manuscriptions_Copiers#4 >> " . mysqli_error($conn));
     //echo "<br> Manuscriptions_Copiers#4 >> " . mysqli_error($conn);
+
+    //********** Insert into j_manuscripts_motifs **********/
+    if (!mysqli_query($conn, $insertMotifQry1)) array_push($insManuErrs, "<br> j_manuscripts_motifs#1 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_motifs#1 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertMotifQry2)) array_push($insManuErrs, "<br> j_manuscripts_motifs#2 >> " . mysqli_error($conn));
+    // echo "<br> j_manuscripts_motifs#2 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertMotifQry3)) array_push($insManuErrs, "<br> j_manuscripts_motifs#3 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_motifs#3 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertMotifQry4)) array_push($insManuErrs, "<br> j_manuscripts_motifs#4 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_motifs#4 >> " . mysqli_error($conn);
+
+    //********** Insert into j_manuscripts_colors **********/
+    if (!mysqli_query($conn, $insertInkColorQry1)) array_push($insManuErrs, "<br> j_manuscripts_colors#1 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_colors#1 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertInkColorQry2)) array_push($insManuErrs, "<br> j_manuscripts_colors#2 >> " . mysqli_error($conn));
+    // echo "<br> j_manuscripts_colors#2 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertInkColorQry3)) array_push($insManuErrs, "<br> j_manuscripts_colors#3 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_colors#3 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertInkColorQry4)) array_push($insManuErrs, "<br> j_manuscripts_colors#4 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_colors#4 >> " . mysqli_error($conn);
+
+    //********** Insert into j_manuscripts_manuTypes **********/
+    if (!mysqli_query($conn, $insertManuTypeQry1)) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#1 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_manuTypes#1 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertManuTypeQry2)) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#2 >> " . mysqli_error($conn));
+    // echo "<br> j_manuscripts_manuTypes#2 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertManuTypeQry3)) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#3 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_manuTypes#3 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertManuTypeQry4)) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#4 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_manuTypes#4 >> " . mysqli_error($conn);
 
     //********** Insert into i_cop_fm **********/
     if (!mysqli_query($conn, $editCopFMQry1)) array_push($editManuErrs, "<br> i_cop_fm#1 >> " . mysqli_error($conn));
@@ -338,7 +416,7 @@ if (isset($_POST['editForm'])) {
 <body class="my_bg">
 
     <!-- START row -->
-    <div class="container-fluid">
+    <div class="container-fluid mt-5">
         <div class="row">
 
             <?php include "sideBar.php" ?>
@@ -514,7 +592,8 @@ if (isset($_POST['editForm'])) {
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="cop_place">مكان النسخ</label>
-                                <input type="text" class="form-control" id="cop_place" value="<?php echo $cop_place ?>">
+                                <input type="text" class="form-control" name="cop_place" id="cop_place"
+                                    value="<?php echo $cop_place ?>">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="city_name">المدينة</label>
