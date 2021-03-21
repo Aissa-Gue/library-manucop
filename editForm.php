@@ -9,8 +9,8 @@ $manu_id_get = $_GET['manu_id'];
 $manuSubQry1 = "SELECT e_manuscripts.manu_id, e_manuscripts.book_id, book_title, cop_name, 
 cop_day, cop_month, cop_syear, cop_eyear, cop_place,
 signing, cabinet_name, cabinet_nbr, manu_type, index_nbr,
-font, font_style, regular_lines, lines_notes, paper_size, ink_colors, motifs, 
-manu_types, copied_from, copied_to, manu_level, cop_level, rost_completion, e_manuscripts.city_id, city_name , e_manuscripts.count_id, count_name,
+font, font_style, regular_lines, lines_notes, paper_size, 
+copied_from, copied_to, manu_level, cop_level, rost_completion, e_manuscripts.city_id, city_name , e_manuscripts.count_id, count_name,
 notes, e_manuscripts.creation_date, e_manuscripts.last_edit_date
 FROM e_manuscripts
 INNER JOIN a_books ON a_books.book_id = e_manuscripts.book_id
@@ -47,16 +47,6 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
     $lines_notes = $row['lines_notes'];
 
     $paper_size = $row['paper_size'];
-
-    $ink_colors = $row['ink_colors'];
-    $inkColors_explode = explode(',', $ink_colors);
-
-
-    $motifs = $row['motifs'];
-    $motifs_explode = explode(',', $motifs);
-
-    $manu_types = $row['manu_types'];
-    $manuTypes_explode = explode(',', $manu_types);
 
     $copied_from = $row['copied_from'];
     $copied_to = $row['copied_to'];
@@ -106,6 +96,31 @@ INNER JOIN d_copiers ON i_cop_fm.cop_fm = d_copiers.cop_id
 WHERE manu_id = $manu_id_get";
 
 $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
+
+// select manu motifs
+$manuSubQry6 = "SELECT j_manuscripts_motifs.motif_id, motif_name
+FROM e_manuscripts
+INNER JOIN j_manuscripts_motifs ON e_manuscripts.manu_id = j_manuscripts_motifs.manu_id
+INNER JOIN d_motifs ON j_manuscripts_motifs.motif_id = d_motifs.motif_id
+WHERE e_manuscripts.manu_id = '$manu_id_get'";
+$manuSubQry6Result = mysqli_query($conn, $manuSubQry6);
+
+// select manu colors
+$manuSubQry7 = "SELECT j_manuscripts_colors.color_id, color_name
+FROM e_manuscripts
+INNER JOIN j_manuscripts_colors ON e_manuscripts.manu_id = j_manuscripts_colors.manu_id
+INNER JOIN d_colors ON j_manuscripts_colors.color_id = d_colors.color_id
+WHERE e_manuscripts.manu_id = '$manu_id_get'";
+$manuSubQry7Result = mysqli_query($conn, $manuSubQry7);
+
+
+// select manu Types
+$manuSubQry8 = "SELECT j_manuscripts_manuTypes.type_id, type_name
+FROM e_manuscripts
+INNER JOIN j_manuscripts_manuTypes ON e_manuscripts.manu_id = j_manuscripts_manuTypes.manu_id
+INNER JOIN d_manuTypes ON j_manuscripts_manuTypes.type_id = d_manuTypes.type_id
+WHERE e_manuscripts.manu_id = '$manu_id_get'";
+$manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
 
 
 // Edit form
@@ -635,44 +650,124 @@ if (isset($_POST['editForm'])) {
                             </div>
                         </div>
 
+                        <label for="motifs">الزخارف</label><br>
                         <div class="form-row">
+                            <?php
+                            $b = 1;
+                            while ($row = mysqli_fetch_array($manuSubQry6Result)) {  ?>
                             <div class="form-group col-md-auto">
-                                <label for="motifs">الزخارف</label><br>
-                                <?php for ($i = 0; $i <= 5; $i++) {
-                                    if ($i < sizeof($motifs_explode)) $j = $i;
-                                    //motifs List
-                                    $motifs = array("دائرة منقطة", "فواصل", "وريدات", "مراوح", "براعم", "فصوص"); ?>
-                                <div class="form-check form-check-inline mt-2">
-                                    <input class="form-check-input" type="checkbox" name="motifs[]"
-                                        id="<?php echo $motifs[$i] ?>" value="<?php echo $motifs[$i] ?>"
-                                        <?php if ($motifs[$i] == $motifs_explode[$j]) echo 'checked'; ?>>
-                                    <label class="form-check-label"
-                                        for="<?php echo $motifs[$i] ?>"><?php echo $motifs[$i] ?></label>
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span>
+                                            <a class="btn btn-outline-danger"
+                                                href="deleteMotif.php?manu_id=<?php echo $manu_id ?>&motif_id=<?php echo $row['motif_id']  ?>"
+                                                onclick="return confirm('هل أنت متأكد من حذف الزخرفة؟')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                                </svg>
+                                            </a>
+                                        </span>
+                                    </div>
+
+                                    <input list="motifs" class="form-control" name="motif<?php echo $b ?>"
+                                        value="<?php echo  $row['motif_id'] . ' # ' . $row['motif_name']; ?>" id="motif"
+                                        placeholder="أدخل زخرفة">
+                                    <datalist id="motifs">
+                                        <?php
+                                            for ($i = 0; $i <= $lastMotifKey; $i++) { ?>
+                                        <option
+                                            value="<?php print_r($rowsMotif[$i]['motif_id']); ?> # <?php print_r($rowsMotif[$i]['motif_name']); ?>">
+                                            <?php  } ?>
+                                    </datalist>
                                 </div>
-                                <?php } ?>
                             </div>
+                            <?php
+                                $b++;
+                            } ?>
+
+                            <!-- add input if nbr of motifs under 4  -->
+                            <?php if ($b < 5) {
+                                for ($b; $b < 5; $b++) {
+                            ?>
+                            <div class="col-md-3">
+                                <input list="motifs" class="form-control" name="motif<?php echo $b ?>" id="motif"
+                                    placeholder="أدخل زخرفة">
+                                <datalist id="motifs">
+                                    <?php
+                                            for ($i = 0; $i <= $lastMotifKey; $i++) { ?>
+                                    <option
+                                        value="<?php print_r($rowsMotif[$i]['motif_id']); ?> # <?php print_r($rowsMotif[$i]['motif_name']); ?>">
+                                        <?php  } ?>
+                                </datalist>
+                            </div>
+                            <?php
+                                } // END add input if nbr of motifs under 4
+                            } ?>
                         </div>
 
+                        <label for="ink_colors">ألوان الحبر</label><br>
                         <div class="form-row">
-                            <div class="form-group col-md-auto">
-                                <label for="ink_colors">ألوان الحبر</label><br>
-                                <?php for ($i = 0; $i <= 10; $i++) {
-                                    $checked = "";
-                                    for ($j = 0; $j < sizeof($inkColors_explode); $j++) {
-                                        if ($ink_colors[$i] == $inkColors_explode[$j]) $checked = 'checked';
-                                    }
-                                    //ink colors List
-                                    $ink_colors = array("البني", "الأسود", "الأحمر", "الآجوري", "البنفسجي", "الوردي", "البرتقالي", "الأصفر", "الأخضر", "الأزرق", "المذهب"); ?>
-                                <div class="form-check form-check-inline mt-2">
-                                    <input class="form-check-input" type="checkbox" name="ink_colors[]"
-                                        id="<?php echo $ink_colors[$i] ?>" value="<?php echo $ink_colors[$i] ?>"
-                                        <?php echo $checked ?>>
-                                    <label class="form-check-label"
-                                        for="<?php echo $ink_colors[$i] ?>"><?php echo $ink_colors[$i]; ?></label>
+                            <?php
+                            $d = 1;
+                            while ($row = mysqli_fetch_array($manuSubQry7Result)) {
+                            ?>
+                            <div class="form-group col-md-2">
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span>
+                                            <a class="btn btn-outline-danger"
+                                                href="deleteInkColor.php?manu_id=<?php echo $manu_id ?>&color_id=<?php echo $row['color_id']  ?>"
+                                                onclick="return confirm('هل أنت متأكد من حذف اللون؟')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                                </svg>
+                                            </a>
+                                        </span>
+                                    </div>
+
+                                    <input list="inkColors" class="form-control" name="inkColor<?php echo $d ?>"
+                                        value="<?php echo  $row['color_id'] . ' # ' . $row['color_name']; ?>"
+                                        id="inkColor" placeholder="أدخل لون">
+                                    <datalist id="inkColors">
+                                        <?php
+                                            for ($i = 0; $i <= $lastColorKey; $i++) { ?>
+                                        <option
+                                            value="<?php print_r($rowsColor[$i]['color_id']); ?> # <?php print_r($rowsColor[$i]['color_name']); ?>">
+                                            <?php  } ?>
+                                    </datalist>
                                 </div>
-                                <?php
-                                } ?>
                             </div>
+                            <?php $d++;
+                            } ?>
+
+                            <!-- add input if nbr of colors under 4  -->
+                            <?php if ($d < 5) {
+                                for ($d; $d < 5; $d++) {
+                            ?>
+                            <div class="col-md-3">
+                                <input list="inkColors" class="form-control" name="inkColor<?php echo $d ?>"
+                                    id="inkColor" placeholder="أدخل لون">
+                                <datalist id="inkColors">
+                                    <?php
+                                            for ($i = 0; $i <= $lastColorKey; $i++) { ?>
+                                    <option
+                                        value="<?php print_r($rowsColor[$i]['color_id']); ?> # <?php print_r($rowsColor[$i]['color_name']); ?>">
+                                        <?php  } ?>
+                                </datalist>
+                            </div>
+                            <?php
+                                } // END add input if nbr of colors under 4
+                            } ?>
                         </div>
 
 
@@ -681,13 +776,60 @@ if (isset($_POST['editForm'])) {
                         <label for="manu_types">عمل الناسخ عدا نقل المحتوى</label><br>
                         <div class="form-row">
                             <?php
-                            for ($i = 0; $i < sizeof($manuTypes_explode) - 1; $i++) {
+                            $e = 1;
+                            while ($row = mysqli_fetch_array($manuSubQry8Result)) {
                             ?>
                             <div class="form-group col-md-2">
-                                <input type="text" class="form-control" id="manu_types"
-                                    value="<?php echo $manuTypes_explode[$i]; ?>">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span>
+                                            <a class="btn btn-outline-danger"
+                                                href="deleteManuTypes.php?manu_id=<?php echo $manu_id ?>&type_id=<?php echo $row['type_id']  ?>"
+                                                onclick="return confirm('هل أنت متأكد من حذف العنصر')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                                </svg>
+                                            </a>
+                                        </span>
+                                    </div>
+
+                                    <input list="manu_types" class="form-control" name="manu_types<?php echo $e ?>"
+                                        value="<?php echo  $row['type_id'] . ' # ' . $row['type_name']; ?>"
+                                        id="manu_type" placeholder="أدخل عنصر">
+                                    <datalist id="manu_types">
+                                        <?php
+                                            for ($i = 0; $i <= $lastManuTypeKey; $i++) { ?>
+                                        <option
+                                            value="<?php print_r($rowsManuType[$i]['type_id']); ?> # <?php print_r($rowsManuType[$i]['type_name']); ?>">
+                                            <?php  } ?>
+                                    </datalist>
+                                </div>
                             </div>
-                            <?php } ?>
+                            <?php $e++;
+                            } ?>
+
+                            <!-- add input if nbr of ManuTypes under 4  -->
+                            <?php if ($e < 5) {
+                                for ($e; $e < 5; $e++) {
+                            ?>
+                            <div class="col-md-3">
+                                <input list="manu_types" class="form-control" name="manu_types<?php echo $e ?>"
+                                    id="manu_type" placeholder="أدخل عنصر">
+                                <datalist id="manu_types">
+                                    <?php
+                                            for ($i = 0; $i <= $lastManuTypeKey; $i++) { ?>
+                                    <option
+                                        value="<?php print_r($rowsManuType[$i]['type_id']); ?> # <?php print_r($rowsManuType[$i]['type_name']); ?>">
+                                        <?php  } ?>
+                                </datalist>
+                            </div>
+                            <?php
+                                } // END add input if nbr of ManuTypes under 4
+                            } ?>
                         </div>
 
                         <div class="form-row mt-4">

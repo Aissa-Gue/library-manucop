@@ -54,13 +54,13 @@ if (isset($_POST['insertForm'])) {
     if (isset($_POST['cop_month'])) $cop_month = $_POST['cop_month'];
     else $cop_month = "";
 
+    if (isset($_POST['cop_eyear']) and $_POST['cop_eyear'] != "") $cop_eyear = $_POST['cop_eyear'];
+    else $cop_eyear = "NULL";
+
     if (isset($_POST['cop_syear']) and $_POST['cop_syear'] != "") {
         $cop_syear = $_POST['cop_syear'];
         $cop_eyear = $cop_syear;
     } else $cop_syear = "NULL";
-
-    if (isset($_POST['cop_eyear']) and $_POST['cop_eyear'] != "") $cop_eyear = $_POST['cop_eyear'];
-    else $cop_eyear = "NULL";
 
     if (isset($_POST['cop_place'])) $cop_place = $_POST['cop_place'];
     else $cop_place = "";
@@ -244,6 +244,37 @@ if (isset($_POST['insertForm'])) {
     //echo "<br> Manuscriptions_Copiers#3 >> " . mysqli_error($conn);
     if (!mysqli_query($conn, $insertCopQry4)) array_push($insManuErrs, "<br> Manuscriptions_Copiers#4 >> " . mysqli_error($conn));
     //echo "<br> Manuscriptions_Copiers#4 >> " . mysqli_error($conn);
+
+    //********** Insert into j_manuscripts_motifs **********/
+    if (!mysqli_query($conn, $insertMotifQry1)) array_push($insManuErrs, "<br> j_manuscripts_motifs#1 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_motifs#1 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertMotifQry2)) array_push($insManuErrs, "<br> j_manuscripts_motifs#2 >> " . mysqli_error($conn));
+    // echo "<br> j_manuscripts_motifs#2 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertMotifQry3)) array_push($insManuErrs, "<br> j_manuscripts_motifs#3 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_motifs#3 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertMotifQry4)) array_push($insManuErrs, "<br> j_manuscripts_motifs#4 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_motifs#4 >> " . mysqli_error($conn);
+
+    //********** Insert into j_manuscripts_colors **********/
+    if (!mysqli_query($conn, $insertInkColorQry1)) array_push($insManuErrs, "<br> j_manuscripts_colors#1 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_colors#1 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertInkColorQry2)) array_push($insManuErrs, "<br> j_manuscripts_colors#2 >> " . mysqli_error($conn));
+    // echo "<br> j_manuscripts_colors#2 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertInkColorQry3)) array_push($insManuErrs, "<br> j_manuscripts_colors#3 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_colors#3 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertInkColorQry4)) array_push($insManuErrs, "<br> j_manuscripts_colors#4 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_colors#4 >> " . mysqli_error($conn);
+
+    //********** Insert into j_manuscripts_manuTypes **********/
+    if (!mysqli_query($conn, $insertManuTypeQry1)) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#1 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_manuTypes#1 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertManuTypeQry2)) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#2 >> " . mysqli_error($conn));
+    // echo "<br> j_manuscripts_manuTypes#2 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertManuTypeQry3)) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#3 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_manuTypes#3 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $insertManuTypeQry4)) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#4 >> " . mysqli_error($conn));
+    //echo "<br> j_manuscripts_manuTypes#4 >> " . mysqli_error($conn);
+
 
     //********** Insert into i_cop_fm **********/
     if (!mysqli_query($conn, $insertCopFMQry1)) array_push($insManuErrs, "<br> i_cop_fm#1 >> " . mysqli_error($conn));
