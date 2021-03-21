@@ -8,8 +8,8 @@ $manu_id_get = $_GET['manu_id'];
 $manuSubQry1 = "SELECT e_manuscripts.manu_id, e_manuscripts.book_id, book_title, cop_name, 
 cop_day, cop_month, cop_syear, cop_eyear, cop_place,
 signing, cabinet_name, cabinet_nbr, manu_type, index_nbr,
-font, font_style, regular_lines, lines_notes, paper_size, ink_colors, motifs, 
-manu_types, copied_from, copied_to, manu_level, cop_level, rost_completion, city_name , count_name,
+font, font_style, regular_lines, lines_notes, paper_size,
+copied_from, copied_to, manu_level, cop_level, rost_completion, city_name , count_name,
 notes, e_manuscripts.creation_date, e_manuscripts.last_edit_date
 FROM e_manuscripts
 INNER JOIN a_books ON a_books.book_id = e_manuscripts.book_id
@@ -54,15 +54,8 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
     elseif ($paper_size == 2) $paper_size = "القطع المتوسط";
     else $paper_size = "القطع الصغير";
 
-    $ink_colors = $row['ink_colors'];
-    $inkColors_explode = explode(',', $ink_colors);
-
-
-    $motifs = $row['motifs'];
-    $motifs_explode = explode(',', $motifs);
-
-    $manu_types = $row['manu_types'];
-    $manuTypes_explode = explode(',', $manu_types);
+    // $ink_colors = $row['ink_colors'];
+    // $inkColors_explode = explode(',', $ink_colors);
 
     $copied_from = $row['copied_from'];
     $copied_to = $row['copied_to'];
@@ -81,7 +74,7 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
     $last_edit_date = $row['last_edit_date'];
 }
 
-// select all manu copiers
+// select manu copiers
 $manuSubQry2 = "SELECT d_copiers.cop_id, full_name
 FROM d_copiers
 INNER JOIN h_manuscripts_copiers ON h_manuscripts_copiers.cop_id = d_copiers.cop_id
@@ -89,7 +82,7 @@ WHERE h_manuscripts_copiers.manu_id = '$manu_id_get'";
 
 $manuSubQry2Result = mysqli_query($conn, $manuSubQry2);
 
-// select all book authors
+// select book authors
 $manuSubQry3 = "SELECT c_authors.auth_id, auth_name
 FROM c_authors
 LEFT JOIN g_books_authors ON g_books_authors.auth_id = c_authors.auth_id
@@ -97,7 +90,7 @@ WHERE book_id = '$book_id'";
 
 $manuSubQry3Result = mysqli_query($conn, $manuSubQry3);
 
-// select all book subjects
+// select book subjects
 $manuSubQry4 = "SELECT b_subjects.subj_id, subj_name
 FROM b_subjects
 LEFT JOIN f_books_subjects ON f_books_subjects.subj_id = b_subjects.subj_id
@@ -105,13 +98,38 @@ WHERE book_id = '$book_id'";
 
 $manuSubQry4Result = mysqli_query($conn, $manuSubQry4);
 
-// select all copiers fm
+// select copiers fm
 $manuSubQry5 = "SELECT i_cop_fm.cop_id, cop_fm, full_name
 FROM i_cop_fm
 INNER JOIN d_copiers ON i_cop_fm.cop_fm = d_copiers.cop_id
 WHERE manu_id = $manu_id_get";
 
 $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
+
+// select manu motifs
+$manuSubQry6 = "SELECT motif_name
+FROM e_manuscripts
+INNER JOIN j_manuscripts_motifs ON e_manuscripts.manu_id = j_manuscripts_motifs.manu_id
+INNER JOIN d_motifs ON j_manuscripts_motifs.motif_id = d_motifs.motif_id
+WHERE e_manuscripts.manu_id = '$manu_id_get'";
+$manuSubQry6Result = mysqli_query($conn, $manuSubQry6);
+
+// select manu colors
+$manuSubQry7 = "SELECT color_name
+FROM e_manuscripts
+INNER JOIN j_manuscripts_colors ON e_manuscripts.manu_id = j_manuscripts_colors.manu_id
+INNER JOIN d_colors ON j_manuscripts_colors.color_id = d_colors.color_id
+WHERE e_manuscripts.manu_id = '$manu_id_get'";
+$manuSubQry7Result = mysqli_query($conn, $manuSubQry7);
+
+
+// select manu Types
+$manuSubQry8 = "SELECT type_name
+FROM e_manuscripts
+INNER JOIN j_manuscripts_manuTypes ON e_manuscripts.manu_id = j_manuscripts_manuTypes.manu_id
+INNER JOIN d_manuTypes ON j_manuscripts_manuTypes.type_id = d_manuTypes.type_id
+WHERE e_manuscripts.manu_id = '$manu_id_get'";
+$manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
 
 
 ?>
@@ -315,11 +333,10 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                         <label for="motifs">الزخارف</label><br>
                         <div class="form-row">
                             <?php
-                            for ($i = 0; $i < sizeof($motifs_explode) - 1; $i++) {
-                            ?>
+                            while ($row = mysqli_fetch_array($manuSubQry6Result)) {                            ?>
                             <div class="form-group col-md-auto">
                                 <input type="text" class="form-control" id="motifs"
-                                    value="<?php echo $motifs_explode[$i]; ?>" readonly>
+                                    value="<?php echo $row['motif_name']; ?>" readonly>
                             </div>
                             <?php } ?>
                         </div>
@@ -327,11 +344,11 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                         <label for="ink_colors">ألوان الحبر</label><br>
                         <div class="form-row">
                             <?php
-                            for ($i = 0; $i < sizeof($inkColors_explode) - 1; $i++) {
+                            while ($row = mysqli_fetch_array($manuSubQry7Result)) {
                             ?>
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" id="ink_colors"
-                                    value="<?php echo $inkColors_explode[$i]; ?>" readonly>
+                                    value="<?php echo $row['color_name']; ?>" readonly>
                             </div>
                             <?php } ?>
                         </div>
@@ -341,11 +358,11 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                         <label for="manu_types">عمل الناسخ عدا نقل المحتوى</label><br>
                         <div class="form-row">
                             <?php
-                            for ($i = 0; $i < sizeof($manuTypes_explode) - 1; $i++) {
+                            while ($row = mysqli_fetch_array($manuSubQry8Result)) {
                             ?>
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" id="manu_types"
-                                    value="<?php echo $manuTypes_explode[$i]; ?>" readonly>
+                                    value="<?php echo $row['type_name']; ?>" readonly>
                             </div>
                             <?php } ?>
                         </div>

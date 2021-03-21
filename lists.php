@@ -32,10 +32,28 @@ $rowsBooks = mysqli_fetch_all($booksListResult, MYSQLI_ASSOC);
 $lastBookKey = key(array_slice($rowsBooks, -1, 1, true));
 
 //select all subjects
-$selectsubjQry = "SELECT subj_id, subj_name FROM b_subjects";
-$subjListResult = mysqli_query($conn, $selectsubjQry);
+$selectSubjQry = "SELECT subj_id, subj_name FROM b_subjects";
+$subjListResult = mysqli_query($conn, $selectSubjQry);
 $rowsSubj = mysqli_fetch_all($subjListResult, MYSQLI_ASSOC);
 $lastSubjKey = key(array_slice($rowsSubj, -1, 1, true));
+
+//select all motifs
+$selectMotifsQry = "SELECT motif_id, motif_name FROM d_motifs";
+$motifsListResult = mysqli_query($conn, $selectMotifsQry);
+$rowsMotif = mysqli_fetch_all($motifsListResult, MYSQLI_ASSOC);
+$lastMotifKey = key(array_slice($rowsMotif, -1, 1, true));
+
+//select all colors
+$selectColorsQry = "SELECT color_id, color_name FROM d_colors";
+$colorsListResult = mysqli_query($conn, $selectColorsQry);
+$rowsColor = mysqli_fetch_all($colorsListResult, MYSQLI_ASSOC);
+$lastColorKey = key(array_slice($rowsColor, -1, 1, true));
+
+//select all manuTypes
+$selectManuTypesQry = "SELECT type_id, type_name FROM d_manuTypes";
+$manuTypesListResult = mysqli_query($conn, $selectManuTypesQry);
+$rowsManuType = mysqli_fetch_all($manuTypesListResult, MYSQLI_ASSOC);
+$lastManuTypeKey = key(array_slice($rowsManuType, -1, 1, true));
 
 // days List
 $days = array("السبت", "الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة");
@@ -49,12 +67,3 @@ $cabinet_names = array("العامة", "أبو بكر الوارجلاني", "م
 //font styles List
 $w_font_styles = array("المبسوط", "المجوهر", "المسند (الزمامي)", "المدمج", "الثلث المغربي", "الكوفي المغربي",);
 $e_font_styles = array("النسخ", "الثلث", "الكوفي", "التعليق", "الديواني", "الرقعة");
-
-//motifs List
-$motifs = array("دائرة منقطة", "فواصل", "وريدات", "مراوح", "براعم", "فصوص");
-
-//ink colors List
-$ink_colors = array("البني", "الأسود", "الأحمر", "الآجوري", "البنفسجي", "الوردي", "البرتقالي", "الأصفر", "الأخضر", "الأزرق", "المذهب",);
-
-//manu types List
-$manu_types = array("تصحيح", "تصويب", "مقابلة", "تعليق");

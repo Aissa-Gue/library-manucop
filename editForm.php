@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'header.php';
 include 'lists.php';
 
@@ -635,41 +635,17 @@ if (isset($_POST['editForm'])) {
                             </div>
                         </div>
 
-                        <label for="motifs">الزخارف</label><br>
-                        <div class="form-row">
-                            <?php
-                            for ($i = 0; $i < sizeof($motifs_explode) - 1; $i++) {
-                            ?>
-                            <div class="form-group col-md-auto">
-                                <input type="text" class="form-control" id="motifs"
-                                    value="<?php echo $motifs_explode[$i]; ?>">
-                            </div>
-                            <?php } ?>
-                        </div>
-
                         <div class="form-row">
                             <div class="form-group col-md-auto">
                                 <label for="motifs">الزخارف</label><br>
-                                <?php
-                                for ($i = 0; $i < sizeof($motifs_explode) - 1; $i++) { ?>
+                                <?php for ($i = 0; $i <= 5; $i++) {
+                                    if ($i < sizeof($motifs_explode)) $j = $i;
+                                    //motifs List
+                                    $motifs = array("دائرة منقطة", "فواصل", "وريدات", "مراوح", "براعم", "فصوص"); ?>
                                 <div class="form-check form-check-inline mt-2">
                                     <input class="form-check-input" type="checkbox" name="motifs[]"
-                                        id="<?php echo $motifs_explode[$i] ?>"
-                                        value="<?php echo $motifs_explode[$i] ?>">
-                                    <label class="form-check-label"
-                                        for="<?php echo $motifs_explode[$i] ?>"><?php echo $motifs_explode[$i] ?></label>
-                                </div>
-                                <?php } ?>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-auto">
-                                <label for="motifs">الزخارف</label><br>
-                                <?php for ($i = 0; $i <= 5; $i++) { ?>
-                                <div class="form-check form-check-inline mt-2">
-                                    <input class="form-check-input" type="checkbox" name="motifs[]"
-                                        id="<?php echo $motifs[$i] ?>" value="<?php echo $motifs[$i] ?>">
+                                        id="<?php echo $motifs[$i] ?>" value="<?php echo $motifs[$i] ?>"
+                                        <?php if ($motifs[$i] == $motifs_explode[$j]) echo 'checked'; ?>>
                                     <label class="form-check-label"
                                         for="<?php echo $motifs[$i] ?>"><?php echo $motifs[$i] ?></label>
                                 </div>
@@ -677,17 +653,28 @@ if (isset($_POST['editForm'])) {
                             </div>
                         </div>
 
-                        <label for="ink_colors">ألوان الحبر</label><br>
                         <div class="form-row">
-                            <?php
-                            for ($i = 0; $i < sizeof($inkColors_explode) - 1; $i++) {
-                            ?>
-                            <div class="form-group col-md-2">
-                                <input type="text" class="form-control" id="ink_colors"
-                                    value="<?php echo $inkColors_explode[$i]; ?>">
+                            <div class="form-group col-md-auto">
+                                <label for="ink_colors">ألوان الحبر</label><br>
+                                <?php for ($i = 0; $i <= 10; $i++) {
+                                    $checked = "";
+                                    for ($j = 0; $j < sizeof($inkColors_explode); $j++) {
+                                        if ($ink_colors[$i] == $inkColors_explode[$j]) $checked = 'checked';
+                                    }
+                                    //ink colors List
+                                    $ink_colors = array("البني", "الأسود", "الأحمر", "الآجوري", "البنفسجي", "الوردي", "البرتقالي", "الأصفر", "الأخضر", "الأزرق", "المذهب"); ?>
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="checkbox" name="ink_colors[]"
+                                        id="<?php echo $ink_colors[$i] ?>" value="<?php echo $ink_colors[$i] ?>"
+                                        <?php echo $checked ?>>
+                                    <label class="form-check-label"
+                                        for="<?php echo $ink_colors[$i] ?>"><?php echo $ink_colors[$i]; ?></label>
+                                </div>
+                                <?php
+                                } ?>
                             </div>
-                            <?php } ?>
                         </div>
+
 
                         <h5 class="my_line"><span>محتوى النسخة</span></h5>
 

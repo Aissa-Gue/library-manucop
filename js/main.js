@@ -42,7 +42,7 @@ $("#addSubject").click(function () {
             '<input list="subjects" class="form-control" name="subj_name'+c+'" id="subject" placeholder="أدخل الموضوع '+c+'">';
         html += '<datalist id="subjects">';
         html += '<?php for ($i = 0; $i <= $lastSubjKey; $i++) { ?>';
-        html += '<option value="<?php print_r($rowsSubj[$i][subj_name]); ?> # <?php print_r($rowsSubj[$i][subj_id]); ?>">';
+        html += '<option value="<?php print_r($rowsSubj[$i][subj_id]); ?> # <?php print_r($rowsSubj[$i][subj_name]); ?>">';
         html += '<?php  } ?>';
         html += '</datalist>';
         html += '</div>';
@@ -130,6 +130,68 @@ $("#addCopier").click(function () {
     }
 });
 
+// add Motif
+var g = 2;
+$("#addMotif").click(function () {
+    if (g <= 4) {
+        var html = '';
+        html += '<div class="form-group col-md-auto">';
+        html += '<label for="motif">&nbsp;</label>';
+        html +=
+            '<input list="motifs" class="form-control" name="motif'+g+'" id="motif" placeholder="أدخل الزخرفة '+g+'">';
+        html += '<datalist id="motifs">';
+        html += '<?php for ($i = 0; $i <= $lastMotifKey; $i++) { ?>';
+        html += '<option value="<?php print_r($rowsMotif[$i][motif_id]); ?> # <?php print_r($rowsMotif[$i][motif_name]); ?>">';
+        html += '<?php  } ?>';
+        html += '</datalist>';
+        html += '</div>';
+        $(html).insertBefore("#addMotif");
+        if (g == 4) $("#addMotif").remove();
+        g++;
+    }
+});
+
+// add inkColor
+var h = 2;
+$("#addInkColor").click(function () {
+    if (h <= 4) {
+        var html = '';
+        html += '<div class="form-group col-md-auto">';
+        html += '<label for="inkColor">&nbsp;</label>';
+        html +=
+            '<input list="inkColors" class="form-control" name="inkColor'+h+'" id="inkColor" placeholder="أدخل اللون '+h+'">';
+        html += '<datalist id="inkColors">';
+        html += '<?php for ($i = 0; $i <= $lastColorKey; $i++) { ?>';
+        html += '<option value="<?php print_r($rowsColor[$i][color_id]); ?> # <?php print_r($rowsColor[$i][color_name]); ?>">';
+        html += '<?php  } ?>';
+        html += '</datalist>';
+        html += '</div>';
+        $(html).insertBefore("#addInkColor");
+        if (h == 4) $("#addInkColor").remove();
+        h++;
+    }
+});
+
+// add ManuTypes
+var i = 2;
+$("#addManuTypes").click(function () {
+    if (i <= 4) {
+        var html = '';
+        html += '<div class="form-group col-md-auto">';
+        html += '<label for="manu_type">&nbsp;</label>';
+        html +=
+            '<input list="manu_types" class="form-control" name="manu_types'+i+'" id="manu_type" placeholder="أدخل العنصر '+i+'">';
+        html += '<datalist id="manu_types">';
+        html += '<?php for ($i = 0; $i <= $lastManuTypeKey; $i++) { ?>';
+        html += '<option value="<?php print_r($rowsManuType[$i][type_id]); ?> # <?php print_r($rowsManuType[$i][type_name]); ?>">';
+        html += '<?php  } ?>';
+        html += '</datalist>';
+        html += '</div>';
+        $(html).insertBefore("#addManuTypes");
+        if (i == 4) $("#addManuTypes").remove();
+        i++;
+    }
+});
 
 //*** add active class (works with links in one page) ***//
 // $(".my_fixed_sidebar a").click(function() {
