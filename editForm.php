@@ -10,7 +10,7 @@ $manuSubQry1 = "SELECT e_manuscripts.manu_id, e_manuscripts.book_id, book_title,
 cop_day, cop_month, cop_syear, cop_eyear, cop_place,
 signing, cabinet_name, cabinet_nbr, manu_type, index_nbr,
 font, font_style, regular_lines, lines_notes, paper_size, ink_colors, motifs, 
-manu_types, copied_from, copied_to, manu_level, cop_level, rost_completion, city_name , count_name,
+manu_types, copied_from, copied_to, manu_level, cop_level, rost_completion, e_manuscripts.city_id, city_name , e_manuscripts.count_id, count_name,
 notes, e_manuscripts.creation_date, e_manuscripts.last_edit_date
 FROM e_manuscripts
 INNER JOIN a_books ON a_books.book_id = e_manuscripts.book_id
@@ -34,8 +34,6 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
     $cop_place = $row['cop_place'];
 
     $signing = $row['signing'];
-    if ($signing == 1) $signing = "موقعة";
-    else $signing = "بالمقارنة";
 
     $cabinet_name = $row['cabinet_name'];
     $cabinet_nbr = $row['cabinet_nbr'];
@@ -45,15 +43,10 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
     $font_style = $row['font_style'];
 
     $regular_lines = $row['regular_lines'];
-    if ($regular_lines == 1) $regular_lines = "منتظمة";
-    else $regular_lines = "غير منتظمة";
 
     $lines_notes = $row['lines_notes'];
 
     $paper_size = $row['paper_size'];
-    if ($paper_size == 1) $paper_size = "القطع الكبير";
-    elseif ($paper_size == 2) $paper_size = "القطع المتوسط";
-    else $paper_size = "القطع الصغير";
 
     $ink_colors = $row['ink_colors'];
     $inkColors_explode = explode(',', $ink_colors);
@@ -71,10 +64,10 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
     $cop_level = $row['cop_level'];
 
     $rost_completion = $row['rost_completion'];
-    if ($rost_completion == 1) $rost_completion = "نعم";
-    else $rost_completion = "لا";
 
+    $city_id = $row['city_id'];
     $city_name = $row['city_name'];
+    $count_id = $row['count_id'];
     $count_name = $row['count_name'];
     $notes = $row['notes'];
 
@@ -114,6 +107,207 @@ WHERE manu_id = $manu_id_get";
 
 $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
 
+
+// Edit form
+if (isset($_POST['editForm'])) {
+    $editManuErrs = array("ERRORS >>: <br>");
+    $manu_id = $_POST['manu_id'];
+    $prev_manu_id = $manu_id_get;
+
+    $book_explode = explode(' # ', $_POST['book_title']);
+    $book_id = $book_explode[0]; // multi
+
+
+    //********** Insert into Manuscriptions_Copiers Queries **********/
+    $cop_id1_explode = explode(' # ', $_POST['full_name1']);
+    $cop_id1 = $cop_id1_explode[0]; // multi
+    $editCopQry1 = "INSERT INTO h_manuscripts_copiers(manu_id, cop_id) VALUES('$manu_id', '$cop_id1') ON DUPLICATE KEY UPDATE cop_id = '$cop_id1'";
+
+    if (isset($_POST['full_name2']) and $_POST['full_name2'] !== "") {
+        $cop_id2_explode = explode(' # ', $_POST['full_name2']);
+        $cop_id2 = $cop_id2_explode[0]; // multi
+        $editCopQry2 = "INSERT INTO h_manuscripts_copiers(manu_id, cop_id) VALUES('$manu_id', '$cop_id2') ON DUPLICATE KEY UPDATE cop_id = '$cop_id2'";
+    } else $editCopQry2 = "SELECT 1";
+
+    if (isset($_POST['full_name3']) and $_POST['full_name3'] !== "") {
+        $cop_id3_explode = explode(' # ', $_POST['full_name3']);
+        $cop_id3 = $cop_id3_explode[0]; // multi
+        $editCopQry3 = "INSERT INTO h_manuscripts_copiers(manu_id, cop_id) VALUES('$manu_id', '$cop_id3') ON DUPLICATE KEY UPDATE cop_id = '$cop_id3'";
+    } else $editCopQry3 = "SELECT 1";
+
+    if (isset($_POST['full_name4']) and $_POST['full_name4'] !== "") {
+        $cop_id4_explode = explode(' # ', $_POST['full_name4']);
+        $cop_id4 = $cop_id4_explode[0]; // multi
+        $editCopQry4 = "INSERT INTO h_manuscripts_copiers(manu_id, cop_id) VALUES('$manu_id', '$cop_id4') ON DUPLICATE KEY UPDATE cop_id = '$cop_id4'";
+    } else $editCopQry4 = "SELECT 1";
+
+    //********** Insert into Manuscriptions **********/
+    $cop_name = $_POST['cop_name'];
+    if (isset($_POST['cop_day'])) $cop_day = $_POST['cop_day'];
+    else $cop_day = "";
+
+    if (isset($_POST['cop_month'])) $cop_month = $_POST['cop_month'];
+    else $cop_month = "";
+
+    if (isset($_POST['cop_syear']) and $_POST['cop_syear'] != "") {
+        $cop_syear = $_POST['cop_syear'];
+        $cop_eyear = $cop_syear;
+    } else $cop_syear = "NULL";
+
+    if (isset($_POST['cop_eyear']) and $_POST['cop_eyear'] != "") $cop_eyear = $_POST['cop_eyear'];
+    else $cop_eyear = "NULL";
+
+    if (isset($_POST['cop_place'])) $cop_place = $_POST['cop_place'];
+    else $cop_place = "";
+
+    if (isset($_POST['signing']) and $_POST['signing'] != "") $signing = $_POST['signing'];
+    else $signing = "NULL";
+
+    if (isset($_POST['cabinet_name'])) $cabinet_name = $_POST['cabinet_name'];
+    else $cabinet_name = "";
+
+    if (isset($_POST['cabinet_nbr']) and $_POST['cabinet_nbr'] != "") $cabinet_nbr = $_POST['cabinet_nbr'];
+    else $cabinet_nbr = "NULL";
+
+    if (isset($_POST['manu_type'])) $manu_type = $_POST['manu_type'];
+    else $manu_type = "";
+
+    if (isset($_POST['index_nbr']) and $_POST['index_nbr'] != "") $index_nbr = $_POST['index_nbr'];
+    else $index_nbr = "NULL";
+
+    if (isset($_POST['font'])) $font = $_POST['font'];
+    else $font = "";
+
+    if (isset($_POST['font_style'])) $font_style = $_POST['font_style'];
+    else $font_style = "";
+
+    if (isset($_POST['regular_lines']) and $_POST['regular_lines'] != "") $regular_lines = $_POST['regular_lines'];
+    else $regular_lines = "NULL";
+
+    if (isset($_POST['lines_notes'])) $lines_notes = $_POST['lines_notes'];
+    else $lines_notes = "";
+
+    if (isset($_POST['paper_size']) and $_POST['paper_size'] != "") $paper_size = $_POST['paper_size'];
+    else $paper_size = "NULL";
+
+    if (isset($_POST['motifs'])) {
+        $motifs = $_POST['motifs']; /// array
+        $motifsList = "";
+        foreach ($motifs as $motif) {
+            $motifsList .= $motif . ",";
+        }
+    } else {
+        $motifsList = "";
+    }
+
+    if (isset($_POST['ink_colors'])) {
+        $ink_colors = $_POST['ink_colors']; // array
+        $inksList = "";
+        foreach ($ink_colors as $ink) {
+            $inksList .= $ink . ",";
+        }
+    } else {
+        $inksList = "";
+    }
+
+    if (isset($_POST['manu_types'])) {
+        $manu_types = $_POST['manu_types']; // array
+        $manuTypesList = "";
+        foreach ($manu_types as $manu) {
+            $manuTypesList .= $manu . ",";
+        }
+    } else {
+        $manuTypesList = "";
+    }
+
+    if (isset($_POST['manu_level'])) $manu_level = $_POST['manu_level'];
+    else $manu_level = "";
+
+    $copied_from = $_POST['copied_from'];
+    $copied_to = $_POST['copied_to'];
+
+    if (isset($_POST['cop_level'])) $cop_level = $_POST['cop_level']; //multi
+    else $cop_level = "";
+
+    if (isset($_POST['rost_completion']) and $_POST['rost_completion'] != "") $rost_completion = $_POST['rost_completion']; //multi
+    else $rost_completion = "NULL";
+
+    if (isset($_POST['count_name']) and $_POST['count_name'] != "") {
+        $count_id_explode = explode(' # ', $_POST['count_name']);
+        $count_id = $count_id_explode[0]; // multi
+    } else $count_id = "NULL";
+
+    if (isset($_POST['city_name']) and $_POST['city_name'] != "") {
+        $city_id_explode = explode(' # ', $_POST['city_name']);
+        $city_id = $city_id_explode[0]; // multi
+    } else $city_id = "NULL";
+
+    $notes = $_POST['notes'];
+    $creation_date = $date;
+    $last_edit_date = $date;
+
+    $editManuQry = "UPDATE e_manuscripts SET manu_id= '$manu_id', book_id= '$book_id', cop_name= '$cop_name', cop_day= '$cop_day', cop_month= '$cop_month', cop_syear= $cop_syear, cop_eyear= $cop_eyear, cop_place= '$cop_place', signing=  $signing, cabinet_name= '$cabinet_name', cabinet_nbr= $cabinet_nbr, manu_type= '$manu_type', index_nbr= $index_nbr, font= '$font', font_style= '$font_style', regular_lines= $regular_lines, lines_notes= '$lines_notes', paper_size= $paper_size, ink_colors= '$inksList', motifs= '$motifsList', manu_types= '$manuTypesList', copied_from= '$copied_from', copied_to= '$copied_to', manu_level= '$manu_level', cop_level= '$cop_level', rost_completion= $rost_completion, count_id= $count_id, city_id= $city_id, notes= '$notes', last_edit_date= '$last_edit_date' WHERE manu_id= '$prev_manu_id'";
+
+    //********** Insert into i_cop_fm Queries **********/
+    if (isset($_POST['cop_fm1']) and isset($_POST['cop_match1']) and $_POST['cop_fm1'] !== "" and $_POST['cop_match1'] !== "") {
+        $cop_match1 = $_POST['cop_match1'];
+        $cop_fm1_explode = explode(' # ', $_POST['cop_fm1']);
+        $cop_fm1 = $cop_fm1_explode[0]; // multi
+        $editCopFMQry1 = "INSERT INTO i_cop_fm VALUES('$cop_match1','$cop_fm1','$manu_id')";
+    } else $editCopFMQry1 = "SELECT 1";
+
+    if (isset($_POST['cop_fm2']) and isset($_POST['cop_match2']) and $_POST['cop_fm2'] !== "" and $_POST['cop_match2'] !== "") {
+        $cop_match2 = $_POST['cop_match2'];
+        $cop_fm2_explode = explode(' # ', $_POST['cop_fm2']);
+        $cop_fm2 = $cop_fm2_explode[0]; // multi
+        $editCopFMQry2 = "INSERT INTO i_cop_fm VALUES('$cop_match2','$cop_fm2','$manu_id')";
+    } else $editCopFMQry2 = "SELECT 1";
+
+    if (isset($_POST['cop_fm3']) and isset($_POST['cop_match3']) and $_POST['cop_fm3'] !== "" and $_POST['cop_match3'] !== "") {
+        $cop_match3 = $_POST['cop_match3'];
+        $cop_fm3_explode = explode(' # ', $_POST['cop_fm3']);
+        $cop_fm3 = $cop_fm3_explode[0]; // multi
+        $editCopFMQry3 = "INSERT INTO i_cop_fm VALUES('$cop_match3','$cop_fm3','$manu_id')";
+    } else $editCopFMQry3 = "SELECT 1";
+
+    if (isset($_POST['cop_fm4']) and isset($_POST['cop_match4']) and $_POST['cop_fm4'] !== "" and $_POST['cop_match4'] !== "") {
+        $cop_match4 = $_POST['cop_match4'];
+        $cop_fm4_explode = explode(' # ', $_POST['cop_fm4']);
+        $cop_fm4 = $cop_fm4_explode[0]; // multi
+        $editCopFMQry4 = "INSERT INTO i_cop_fm VALUES('$cop_match4','$cop_fm4','$manu_id')";
+    } else $editCopFMQry4 = "SELECT 1";
+
+    //********** Insert into e_manuscripts **********/
+    if (!mysqli_query($conn, $editManuQry)) array_push($editManuErrs, "<br> e_manuscripts >> " . mysqli_error($conn));
+    //echo "<br> e_manuscripts >> " . mysqli_error($conn);
+
+    //********** Insert into Manuscriptions_Copiers **********/
+    if (!mysqli_query($conn, $editCopQry1)) array_push($editManuErrs, "<br> Manuscriptions_Copiers#1 >> " . mysqli_error($conn));
+    //echo "<br> Manuscriptions_Copiers#1 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $editCopQry2)) array_push($editManuErrs, "<br> Manuscriptions_Copiers#2 >> " . mysqli_error($conn));
+    // echo "<br> Manuscriptions_Copiers#2 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $editCopQry3)) array_push($editManuErrs, "<br> Manuscriptions_Copiers#3 >> " . mysqli_error($conn));
+    //echo "<br> Manuscriptions_Copiers#3 >> " . mysqli_error($conn);
+    if (!mysqli_query($conn, $editCopQry4)) array_push($editManuErrs, "<br> Manuscriptions_Copiers#4 >> " . mysqli_error($conn));
+    //echo "<br> Manuscriptions_Copiers#4 >> " . mysqli_error($conn);
+
+    //********** Insert into i_cop_fm **********/
+    if (!mysqli_query($conn, $editCopFMQry1)) array_push($editManuErrs, "<br> i_cop_fm#1 >> " . mysqli_error($conn));
+    if (!mysqli_query($conn, $editCopFMQry2)) array_push($editManuErrs, "<br> i_cop_fm#2 >> " . mysqli_error($conn));
+    if (!mysqli_query($conn, $editCopFMQry3)) array_push($editManuErrs, "<br> i_cop_fm#3 >> " . mysqli_error($conn));
+    if (!mysqli_query($conn, $editCopFMQry4)) array_push($editManuErrs, "<br> i_cop_fm#4 >> " . mysqli_error($conn));
+
+
+
+    if (count($editManuErrs) == 1) {
+        echo "<script>alert('تم تعديل الاستمارة رقم: $manu_id بنجاح')</script>";
+        echo '<script>window.location.href = "editForm.php?manu_id=' . $manu_id . '"</script>';
+    } else {
+        echo "<script>alert('فشلت عملية تعديل الاستمارة')</script>";
+        echo print_r($editManuErrs);
+        echo '<script>window.location.href = "editForm.php?manu_id=' . $manu_id . '"</script>';
+    }
+}
 
 ?>
 
@@ -247,9 +441,11 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                 <label for="cop_day">تاريخ النسخ</label>
                                 <select name="cop_day" id="cop_day" class="form-control">
                                     <option value="">-أدخل اليوم-</option>
-                                    <option value="<?php echo $cop_day ?>" selected><?php echo $cop_day ?></option>
-                                    <?php for ($i = 0; $i <= 6; $i++) { ?>
-                                    <option value="<?php echo $days[$i]; ?>"><?php echo $days[$i]; ?>
+                                    <?php
+                                        for ($i = 0; $i <= 6; $i++) { ?>
+                                    <option value="<?php echo $days[$i]; ?>"
+                                        <?php if ($cop_day == $days[$i]) echo "selected"; ?>>
+                                        <?php echo $days[$i]; ?>
                                     </option>
                                     <?php } ?>
                                 </select>
@@ -258,9 +454,10 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                 <label for="cop_month">&nbsp;</label>
                                 <select name="cop_month" id="cop_month" class="form-control">
                                     <option value="">-أدخل الشهر-</option>
-                                    <option value="<?php echo $cop_month ?>" selected><?php echo $cop_month ?></option>
                                     <?php for ($i = 0; $i <= 11; $i++) { ?>
-                                    <option value="<?php echo $months[$i]; ?>"><?php echo $months[$i]; ?>
+                                    <option value="<?php echo $months[$i]; ?>"
+                                        <?php if ($cop_month == $months[$i]) echo "selected"; ?>>
+                                        <?php echo $months[$i]; ?>
                                     </option>
                                     <?php } ?>
                                 </select>
@@ -337,10 +534,11 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                             <div class="form-group col-md-3">
                                 <label for="signing">موقعة أو بالمقارنة</label>
                                 <select name="signing" id="signing" class="form-control">
-                                    <option value="">-اختر نوع النسخة-</option>
-                                    <option value="<?php echo $signing ?>" selected><?php echo $signing ?></option>
-                                    <option value="1">موقعة</option>
-                                    <option value="0">بالمقارنة</option>
+                                    <option value="" <?php if ($signing == NULL) echo "selected" ?>>
+                                        - اختر نوع النسخة -
+                                    </option>
+                                    <option value="1" <?php if ($signing == 1) echo "selected" ?>>موقعة</option>
+                                    <option value="0" <?php if ($signing == 0) echo "selected" ?>>بالمقارنة</option>
                                 </select>
                             </div>
                         </div>
@@ -350,11 +548,9 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                 <label for="cabinet_name">اسم الخزانة</label>
                                 <select name="cabinet_name" id="cabinet_name" class="form-control">
                                     <option value="">-أدخل اسم الخزانة-</option>
-                                    <option value="<?php echo $cabinet_name ?>" selected>
-                                        <?php echo $cabinet_name ?>
-                                    </option>
                                     <?php for ($i = 0; $i <= 3; $i++) { ?>
-                                    <option value="<?php echo $cabinet_names[$i]; ?>">
+                                    <option value="<?php echo $cabinet_names[$i]; ?>"
+                                        <?php if ($cabinet_name == $cabinet_names[$i]) echo "selected"; ?>>
                                         <?php echo $cabinet_names[$i]; ?>
                                     </option>
                                     <?php } ?>
@@ -368,11 +564,11 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                             <div class="form-group col-md-auto">
                                 <label for="manu_type">نوع النسخة</label>
                                 <select name="manu_type" id="manu_type" class="form-control">
-                                    <option value="">-أدخل نوع النسخة-</option>
-                                    <option value="<?php echo $manu_type ?>" selected><?php echo $manu_type ?></option>
-                                    <option value="">مجلد</option>
-                                    <option value="مص">مصحف</option>
-                                    <option value="دغ">دون غلاف</option>
+                                    <option value="NULL">-أدخل نوع النسخة-</option>
+                                    <option value="" <?php if ($manu_type == '') echo "selected"; ?>>مجلد</option>
+                                    <option value="مص" <?php if ($manu_type == 'مص') echo "selected"; ?>>مصحف</option>
+                                    <option value="دغ" <?php if ($manu_type == 'دغ') echo "selected"; ?>>دون غلاف
+                                    </option>
                                 </select>
                             </div>
                             <div class="form-group col-md-2">
@@ -389,20 +585,17 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                 <label for="font">الخط</label>
                                 <select name="font" id="font" class="form-control">
                                     <option value="">- اختر خط -</option>
-                                    <option value="<?php echo $font ?>" selected><?php echo $font ?></option>
-                                    <option value="مغربي">مغربي</option>
-                                    <option value="مشرقي">مشرقي</option>
+                                    <option value="مغربي" <?php if ($font == 'مغربي') echo "selected"; ?>>مغربي</option>
+                                    <option value="مشرقي" <?php if ($font == 'مشرقي') echo "selected"; ?>>مشرقي</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="font_style">نوع الخط</label>
                                 <select name="font_style" id="font_style" class="form-control">
                                     <option value="">- اختر نوع الخط -</option>
-                                    <option value="<?php echo $font_style ?>" selected>
-                                        <?php echo $font_style ?>
-                                    </option>
                                     <?php for ($i = 0; $i <= 5; $i++) { ?>
-                                    <option value="<?php echo $w_font_styles[$i]; ?>">
+                                    <option value="<?php echo $w_font_styles[$i]; ?>"
+                                        <?php if ($font_style == $w_font_styles[$i]) echo "selected"; ?>>
                                         <?php echo $w_font_styles[$i]; ?>
                                     </option>
                                     <?php } ?>
@@ -412,11 +605,12 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                 <label for="regular_lines">نوع المسطرة</label>
                                 <select name="regular_lines" id="regular_lines" class="form-control">
                                     <option value="">- اختر نوع المسطرة -</option>
-                                    <option value="<?php echo $regular_lines ?>" selected>
-                                        <?php echo $regular_lines ?>
+                                    <option value="1" <?php if ($regular_lines == 1) echo "selected"; ?>>
+                                        منتظمة
                                     </option>
-                                    <option value="1">منتظمة</option>
-                                    <option value="0">غير منتظمة</option>
+                                    <option value="0" <?php if ($regular_lines == 0) echo "selected"; ?>>
+                                        غير منتظمة
+                                    </option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
@@ -431,12 +625,12 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                 <label for="paper_size">مقاس الورق</label>
                                 <select name="paper_size" id="paper_size" class="form-control">
                                     <option value="">- اختر مقاس الورق -</option>
-                                    <option value="<?php echo $paper_size ?>" selected>
-                                        <?php echo $paper_size ?>
+                                    <option value="1" <?php if ($paper_size == 1) echo "selected"; ?>>القطع الكبير
                                     </option>
-                                    <option value="1">القطع الكبير</option>
-                                    <option value="2">القطع المتوسط</option>
-                                    <option value="3">القطع الصغير</option>
+                                    <option value="2" <?php if ($paper_size == 2) echo "selected"; ?>>القطع المتوسط
+                                    </option>
+                                    <option value="3" <?php if ($paper_size == 3) echo "selected"; ?>>القطع الصغير
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -451,6 +645,36 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                     value="<?php echo $motifs_explode[$i]; ?>">
                             </div>
                             <?php } ?>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-auto">
+                                <label for="motifs">الزخارف</label><br>
+                                <?php
+                                for ($i = 0; $i < sizeof($motifs_explode) - 1; $i++) { ?>
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="checkbox" name="motifs[]"
+                                        id="<?php echo $motifs_explode[$i] ?>"
+                                        value="<?php echo $motifs_explode[$i] ?>">
+                                    <label class="form-check-label"
+                                        for="<?php echo $motifs_explode[$i] ?>"><?php echo $motifs_explode[$i] ?></label>
+                                </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-auto">
+                                <label for="motifs">الزخارف</label><br>
+                                <?php for ($i = 0; $i <= 5; $i++) { ?>
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="checkbox" name="motifs[]"
+                                        id="<?php echo $motifs[$i] ?>" value="<?php echo $motifs[$i] ?>">
+                                    <label class="form-check-label"
+                                        for="<?php echo $motifs[$i] ?>"><?php echo $motifs[$i] ?></label>
+                                </div>
+                                <?php } ?>
+                            </div>
                         </div>
 
                         <label for="ink_colors">ألوان الحبر</label><br>
@@ -484,13 +708,12 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                 <label for="manu_level">مستوى النسخة من حيث الجودة والضبط</label>
                                 <select name="manu_level" id="manu_level" class="form-control mt-2">
                                     <option value="">- اختر مستوى -</option>
-                                    <option selected value="<?php echo $manu_level ?>">
-                                        <?php echo $manu_level ?>
+                                    <option value="جيد" <?php if ($manu_level == 'جيد') echo "selected"; ?>>جيد</option>
+                                    <option value="حسن" <?php if ($manu_level == 'حسن') echo "selected"; ?>>حسن</option>
+                                    <option value="متوسط" <?php if ($manu_level == 'متوسط') echo "selected"; ?>>متوسط
                                     </option>
-                                    <option value="جيد">جيد</option>
-                                    <option value="حسن">حسن</option>
-                                    <option value="متوسط">متوسط</option>
-                                    <option value="رديء">رديء</option>
+                                    <option value="رديء" <?php if ($manu_level == 'رديء') echo "selected"; ?>>رديء
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -606,11 +829,12 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                 <label for="cop_level">مستوى ضبط الناسخ</label>
                                 <select name="cop_level" id="cop_level" class="form-control">
                                     <option value="">- اختر مستوى -</option>
-                                    <option selected value="<?php echo $cop_level ?>"><?php echo $cop_level ?></option>
-                                    <option value="جيد">جيد</option>
-                                    <option value="حسن">حسن</option>
-                                    <option value="متوسط">متوسط</option>
-                                    <option value="رديء">رديء</option>
+                                    <option value="جيد" <?php if ($cop_level == 'جيد') echo "selected"; ?>>جيد</option>
+                                    <option value="حسن" <?php if ($cop_level == 'حسن') echo "selected"; ?>>حسن</option>
+                                    <option value="متوسط" <?php if ($cop_level == 'متوسط') echo "selected"; ?>>متوسط
+                                    </option>
+                                    <option value="رديء" <?php if ($cop_level == 'رديء') echo "selected"; ?>>رديء
+                                    </option>
                                 </select>
                             </div>
 
@@ -618,10 +842,10 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                 <label for="rost_completion">ترميم وإتمام</label>
                                 <select name="rost_completion" id="rost_completion" class="form-control">
                                     <option value="">- اختر خيار -</option>
-                                    <option value="<?php echo $rost_completion ?>" selected>
-                                        <?php echo $rost_completion ?></option>
-                                    <option value="1">نعم</option>
-                                    <option value="0">لا</option>
+                                    <option value="1" <?php if ($rost_completion == 1) echo "selected"; ?>>نعم
+                                    </option>
+                                    <option value="0" <?php if ($rost_completion == 0) echo "selected"; ?>>لا
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -631,6 +855,13 @@ $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
                                 <label for="notes">ملاحظات أخرى</label>
                                 <textarea class="form-control" name="notes" id="notes" rows="3"
                                     placeholder="أدخل ملاحظات أخرى"><?php echo $notes ?></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-row justify-content-end">
+                            <div class="form-group col-md-2">
+                                <button type="submit" name="editForm"
+                                    class="btn btn-success btn-block btn-lg rounded-pill">تعديل</button>
                             </div>
                         </div>
                     </fieldset>

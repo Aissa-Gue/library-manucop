@@ -654,10 +654,9 @@ if (isset($_POST['insertForm'])) {
             </div>
         </div>
     </div>
-    </div>
 </body>
 
-<script src="js/main.js?<?php echo time() ?>"></script>
+<script src="js/main.js"></script>
 <script>
 scrollTop();
 storeSelectedTab();
