@@ -2,11 +2,18 @@
 include 'header.php';
 
 // input values
+$from_yearQry = "";
+$to_yearQry = "";
+$date_typeQry = "";
+
 if (isset($_POST['clientSearch'])) {
     $cop_id = $_POST['cop_id'];
     $full_name = $_POST['full_name'];
     $city_name = $_POST['city_name'];
     $count_name = $_POST['count_name'];
+    if ($_POST['from_year'] != '') $from_yearQry = 'AND e_manuscripts.cop_syear >=' . $_POST['from_year'];
+    if ($_POST['to_year'] != '') $to_yearQry = 'AND e_manuscripts.cop_eyear <=' . $_POST['to_year'];
+    if ($_POST['date_type'] != '') $date_typeQry = 'AND date_type = ' . $_POST['date_type'];
 } else {
     $cop_id = "";
     $full_name = "";
@@ -15,11 +22,12 @@ if (isset($_POST['clientSearch'])) {
 }
 
 // Search query
-$searchQry = "SELECT count(manu_id) as manu_nbr, d_copiers.cop_id, full_name, last_name, other_name1, other_name2, other_name3, other_name4, city_name, count_name
+$searchQry = "SELECT count(e_manuscripts.manu_id) as manu_nbr, d_copiers.cop_id, full_name, last_name, other_name1, other_name2, other_name3, other_name4, city_name, count_name
 FROM d_copiers 
 LEFT JOIN countries ON countries.count_id = d_copiers.count_id
 LEFT JOIN cities ON cities.city_id = d_copiers.city_id
 LEFT JOIN h_manuscripts_copiers ON h_manuscripts_copiers.cop_id =  d_copiers.cop_id
+LEFT JOIN e_manuscripts ON e_manuscripts.manu_id =  h_manuscripts_copiers.manu_id
 WHERE 
 (d_copiers.cop_id LIKE '%$cop_id%')
 AND (full_name LIKE '%$full_name%'
@@ -28,6 +36,9 @@ OR other_name1 LIKE '%$full_name%'
 OR other_name2 LIKE '%$full_name%'
 OR other_name3 LIKE '%$full_name%'
 OR other_name4 LIKE '%$full_name%')
+$from_yearQry
+$to_yearQry
+$date_typeQry
 GROUP BY h_manuscripts_copiers.cop_id
 ORDER BY d_copiers.last_edit_date DESC";
 
@@ -76,7 +87,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                         </div>
 
                         <form action="" method="post">
-                            <div class="form-row justify-content-md-center">
+                            <div class="form-row justify-content-md-center mb-1">
                                 <div class="input-group col-md-9">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">رقم الناسخ</span>
@@ -94,7 +105,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                 </div>
                             </div>
 
-                            <div class="form-row justify-content-md-center mb-4">
+                            <div class="form-row justify-content-md-center mb-1">
                                 <div class="input-group col-md-9">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">المديـنـــــة</span>
@@ -107,6 +118,24 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     </div>
                                     <input type="text" name="count_name" class="form-control"
                                         placeholder="أدخل بلد الناسخ">
+                                </div>
+                            </div>
+                            <div class="form-row justify-content-md-center mb-4">
+                                <div class="input-group col-md-9">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">فترة النسخ</span>
+                                    </div>
+                                    <input type="number" name="from_year" class="form-control" placeholder="من سنة">
+                                    <input type="number" name="to_year" class="form-control" placeholder="إلى سنة">
+
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="date_type">نوع التقويم</label>
+                                    </div>
+                                    <select class="custom-select" name="date_type" id="date_type">
+                                        <option value="" selected>- اختر نوع التقويم -</option>
+                                        <option value="1">ميلادي</option>
+                                        <option value="0">هجري</option>
+                                    </select>
 
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" name="clientSearch" type="submit">بحث</button>

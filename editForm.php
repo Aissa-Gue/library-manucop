@@ -545,7 +545,7 @@ if (isset($_POST['editForm'])) {
                             <?php if ($cop_syear == $cop_eyear) { ?>
                             <div class="form-group col-md-2">
                                 <label for="cop_day">تاريخ النسخ</label>
-                                <select name="cop_day" id="cop_day" class="form-control">
+                                <select name="cop_day" id="cop_day" class="custom-select">
                                     <option value="">-أدخل اليوم-</option>
                                     <?php
                                         for ($i = 0; $i <= 6; $i++) { ?>
@@ -558,7 +558,7 @@ if (isset($_POST['editForm'])) {
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="cop_month">&nbsp;</label>
-                                <select name="cop_month" id="cop_month" class="form-control">
+                                <select name="cop_month" id="cop_month" class="custom-select">
                                     <option value="">-أدخل الشهر-</option>
                                     <?php for ($i = 0; $i <= 11; $i++) { ?>
                                     <option value="<?php echo $months[$i]; ?>"
@@ -575,7 +575,7 @@ if (isset($_POST['editForm'])) {
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="date_type">نوع التقويم</label>
-                                <select name="date_type" id="date_type" class="form-control">
+                                <select name="date_type" id="date_type" class="custom-select">
                                     <option value="1" <?php if ($date_type == 1) echo "selected" ?>>ميلادي
                                     </option>
                                     <option value="0" <?php if ($date_type == 0) echo "selected" ?>>هجري</option>
@@ -609,9 +609,10 @@ if (isset($_POST['editForm'])) {
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="date_type">نوع التقويم</label>
-                                <select name="date_type" id="date_type" class="form-control">
-                                    <option value="1">ميلادي</option>
-                                    <option value="0" selected>هجري</option>
+                                <select name="date_type" id="date_type" class="custom-select">
+                                    <option value="1" <?php if ($date_type == 1) echo "selected" ?>>ميلادي
+                                    </option>
+                                    <option value="0" <?php if ($date_type == 0) echo "selected" ?>>هجري</option>
                                 </select>
                             </div>
                             <?php } ?>
@@ -655,7 +656,7 @@ if (isset($_POST['editForm'])) {
                         <div class="form-row">
                             <div class="form-group col-md-3">
                                 <label for="signing">موقعة أو بالمقارنة</label>
-                                <select name="signing" id="signing" class="form-control">
+                                <select name="signing" id="signing" class="custom-select">
                                     <option value="" <?php if ($signing == NULL) echo "selected" ?>>
                                         - اختر نوع النسخة -
                                     </option>
@@ -687,7 +688,7 @@ if (isset($_POST['editForm'])) {
                             </div>
                             <div class="form-group col-md-auto">
                                 <label for="manu_type">نوع النسخة</label>
-                                <select name="manu_type" id="manu_type" class="form-control">
+                                <select name="manu_type" id="manu_type" class="custom-select">
                                     <option value="">-أدخل نوع النسخة-</option>
                                     <option value="مج" <?php if ($manu_type == '') echo "selected"; ?>>مجلد</option>
                                     <option value="مص" <?php if ($manu_type == 'مص') echo "selected"; ?>>مصحف</option>
@@ -707,7 +708,7 @@ if (isset($_POST['editForm'])) {
                         <div class="form-row">
                             <div class="form-group col-md-2">
                                 <label for="font">الخط</label>
-                                <select name="font" id="font" class="form-control">
+                                <select name="font" id="font" class="custom-select">
                                     <option value="">- اختر خط -</option>
                                     <option value="مغربي" <?php if ($font == 'مغربي') echo "selected"; ?>>مغربي</option>
                                     <option value="مشرقي" <?php if ($font == 'مشرقي') echo "selected"; ?>>مشرقي</option>
@@ -715,7 +716,7 @@ if (isset($_POST['editForm'])) {
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="font_style">نوع الخط</label>
-                                <select name="font_style" id="font_style" class="form-control">
+                                <select name="font_style" id="font_style" class="custom-select">
                                     <option value="">- اختر نوع الخط -</option>
                                     <?php for ($i = 0; $i <= 5; $i++) { ?>
                                     <option value="<?php echo $w_font_styles[$i]; ?>"
@@ -727,7 +728,7 @@ if (isset($_POST['editForm'])) {
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="regular_lines">نوع المسطرة</label>
-                                <select name="regular_lines" id="regular_lines" class="form-control">
+                                <select name="regular_lines" id="regular_lines" class="custom-select">
                                     <option value="">- اختر نوع المسطرة -</option>
                                     <option value="1" <?php if ($regular_lines == 1) echo "selected"; ?>>
                                         منتظمة
@@ -747,7 +748,7 @@ if (isset($_POST['editForm'])) {
                         <div class="form-row">
                             <div class="form-group col-md-3">
                                 <label for="paper_size">مقاس الورق</label>
-                                <select name="paper_size" id="paper_size" class="form-control">
+                                <select name="paper_size" id="paper_size" class="custom-select">
                                     <option value="">- اختر مقاس الورق -</option>
                                     <option value="1" <?php if ($paper_size == 1) echo "selected"; ?>>القطع الكبير
                                     </option>
@@ -944,7 +945,7 @@ if (isset($_POST['editForm'])) {
                         <div class="form-row mt-4">
                             <div class="form-group col-md-auto">
                                 <label for="manu_level">مستوى النسخة من حيث الجودة والضبط</label>
-                                <select name="manu_level" id="manu_level" class="form-control mt-2">
+                                <select name="manu_level" id="manu_level" class="custom-select mt-2">
                                     <option value="">- اختر مستوى -</option>
                                     <option value="جيد" <?php if ($manu_level == 'جيد') echo "selected"; ?>>جيد</option>
                                     <option value="حسن" <?php if ($manu_level == 'حسن') echo "selected"; ?>>حسن</option>
@@ -1065,7 +1066,7 @@ if (isset($_POST['editForm'])) {
                         <div class="form-row">
                             <div class="form-group col-md-3">
                                 <label for="cop_level">مستوى ضبط الناسخ</label>
-                                <select name="cop_level" id="cop_level" class="form-control">
+                                <select name="cop_level" id="cop_level" class="custom-select">
                                     <option value="">- اختر مستوى -</option>
                                     <option value="جيد" <?php if ($cop_level == 'جيد') echo "selected"; ?>>جيد</option>
                                     <option value="حسن" <?php if ($cop_level == 'حسن') echo "selected"; ?>>حسن</option>
@@ -1078,7 +1079,7 @@ if (isset($_POST['editForm'])) {
 
                             <div class="form-group col-md-2">
                                 <label for="rost_completion">ترميم وإتمام</label>
-                                <select name="rost_completion" id="rost_completion" class="form-control">
+                                <select name="rost_completion" id="rost_completion" class="custom-select">
                                     <option value="">- اختر خيار -</option>
                                     <option value="1" <?php if ($rost_completion == 1) echo "selected"; ?>>نعم
                                     </option>

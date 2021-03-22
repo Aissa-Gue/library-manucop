@@ -41,8 +41,7 @@ while ($row = mysqli_fetch_array($searchResult)) {
 // MIN and MAX cop year
 $minMaxCopYearQry = "SELECT min(cop_syear) as min_cop_year, MAX(cop_eyear) as max_cop_year 
 FROM e_manuscripts
-INNER JOIN h_manuscripts_copiers
-ON e_manuscripts.manu_id = h_manuscripts_copiers.manu_id
+INNER JOIN h_manuscripts_copiers ON e_manuscripts.manu_id = h_manuscripts_copiers.manu_id
 WHERE h_manuscripts_copiers.cop_id = '$cop_id_get'";
 
 $minMaxCopYearResult = mysqli_query($conn, $minMaxCopYearQry);
