@@ -155,7 +155,7 @@ $copierManuListResult = mysqli_query($conn, $copierManuListQry);
                 <!-- 4th row -->
                 <div class="row mt-3">
                     <div class="col-md-7">
-                        <label for="other_name1" class="form-label">الأسماء الأخرى للناسخ</label>
+                        <label for="other_name1" class="form-label">الصيغ الأخرى لاسم الناسخ</label>
                         <input type="text" class="form-control" value="<?php echo $other_name1 ?>" id="other_name1"
                             readonly>
                         <input type="text" class="form-control mt-1" value="<?php echo $other_name2 ?>" id="other_name2"

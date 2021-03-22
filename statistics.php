@@ -39,6 +39,7 @@ $bySigningResult = mysqli_query($conn, $bySigningQry);
 // By Cabinet
 $byCabinetQry = "SELECT COUNT(manu_id) as manu_nbr, cabinet_name
 FROM `e_manuscripts`
+LEFT JOIN `cabinets` ON e_manuscripts.cabinet_id = cabinets.cabinet_id
 GROUP BY cabinet_name
 ORDER BY cabinet_name DESC";
 
@@ -235,7 +236,9 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                         <th scope="row">
                                                             <?php
                                                                 if ($manuTypeRows['manu_type'] == NULL) echo '(غير مصنف)';
-                                                                else echo $manuTypeRows['manu_type']; ?>
+                                                                elseif ($manuTypeRows['manu_type'] == "مص") echo 'مصحف';
+                                                                elseif ($manuTypeRows['manu_type'] == "مج") echo 'مجلد';
+                                                                elseif ($manuTypeRows['manu_type'] == "دغ") echo 'دون غلاف'; ?>
                                                         </th>
                                                         <td class="text-center"><?php echo $manuTypeRows['manu_nbr'] ?>
                                                         </td>

@@ -55,9 +55,18 @@ $("#addSubject").click(function () {
 // Replace cop Date with range
 $("#replaceCopDate").click(function () {
     var html = '';
-    html += '<div class="form-row" id="cop_date"> <div class="form-group col-md-2"> <label for="cop_date">تاريخ النسخ [أدخل نطاق]</label> <input type="text" class="form-control" name="cop_syear" id="cop_date" placeholder="من السنة"></div>';
-    html += '<div class="form-group col-md-2"> <label for="cop_date">&nbsp;</label> <input type="text" class="form-control" name="cop_eyear" id="cop_date" placeholder="إلى السنة"> </div>';
+    html += '<div class="form-row" id="cop_date"> <div class="form-group col-md-2"> <label for="cop_date">تاريخ النسخ [أدخل نطاق]</label> <input type="number" class="form-control" name="cop_syear" id="cop_date" placeholder="من السنة"></div>';
+    html += '<div class="form-group col-md-2"> <label for="cop_date">&nbsp;</label> <input type="number" class="form-control" name="cop_eyear" id="cop_date" placeholder="إلى السنة"> </div>';
+    
+    html += '<div class="form-group col-md-2">';
+    html += '<label for="date_type">نوع التقويم</label>';
+    html += '<select name="date_type" id="date_type" class="form-control">';
+    html += '<option value="1">ميلادي</option>';
+    html += '<option value="0" selected>هجري</option>';
+    html += '</select>';
     html += '</div>';
+    html += '</div>' //end form-row;
+
     $("#cop_date").replaceWith(html);
 });
 

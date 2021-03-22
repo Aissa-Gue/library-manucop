@@ -99,7 +99,7 @@ if (isset($_POST['editCopier'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Copier Preview</title>
+    <title>edit Copier</title>
 </head>
 
 <body class="my_bg">
@@ -117,7 +117,7 @@ if (isset($_POST['editCopier'])) {
                     <div class="col-md-2">
                         <label for="cop_id" class="form-label">رقم الناسخ</label>
                         <input type="text" class="form-control text-center" value="<?php echo $cop_id ?>" name="cop_id"
-                            id="cop_id" required>
+                            id="cop_id" placeholder="أدخل رقم الناسخ" required>
                     </div>
                 </div>
                 <!-- 2nd row -->
@@ -125,17 +125,17 @@ if (isset($_POST['editCopier'])) {
                     <div class="col-md-6">
                         <label for="full_name" class="form-label">الإسم الكامل</label>
                         <input type="text" class="form-control" value="<?php echo $full_name ?>" name="full_name"
-                            id="full_name" required>
+                            id="full_name" placeholder="أدخل اسم الناسخ" required>
                     </div>
                     <div class="col-md-auto">
                         <label for="last_name" class="form-label">اللقب (اسم الشهرة)</label>
                         <input type="text" class="form-control" value="<?php echo $last_name ?>" name="last_name"
-                            id="last_name">
+                            id="last_name" placeholder="أدخل لقب الناسخ">
                     </div>
                     <div class="col-md-auto">
                         <label for="nickname" class="form-label">الكنية</label>
                         <input type="text" class="form-control" value="<?php echo $nickname ?>" name="nickname"
-                            id="nickname">
+                            id="nickname" placeholder="أدخل كنية الناسخ">
                     </div>
                 </div>
                 <!-- 3rd row -->
@@ -170,15 +170,15 @@ if (isset($_POST['editCopier'])) {
                 <!-- 4th row -->
                 <div class="row mt-3">
                     <div class="col-md-7">
-                        <label for="other_name1" class="form-label">الأسماء الأخرى للناسخ</label>
+                        <label for="other_name1" class="form-label">صيغ أخرى لاسم الناسخ</label>
                         <input type="text" class="form-control" value="<?php echo $other_name1 ?>" name="other_name1"
-                            id="other_name1">
+                            id="other_name1" placeholder="أدخل صيغة أخرى لاسم الناسخ">
                         <input type="text" class="form-control mt-1" value="<?php echo $other_name2 ?>"
-                            name="other_name2" id="other_name2">
+                            name="other_name2" id="other_name2" placeholder="أدخل صيغة أخرى لاسم الناسخ">
                         <input type="text" class="form-control mt-1" value="<?php echo $other_name3 ?>"
-                            name="other_name3" id="other_name3">
+                            name="other_name3" id="other_name3" placeholder="أدخل صيغة أخرى لاسم الناسخ">
                         <input type="text" class="form-control mt-1" value="<?php echo $other_name4 ?>"
-                            name="other_name4" id="other_name4">
+                            name="other_name4" id="other_name4" placeholder="أدخل صيغة أخرى لاسم الناسخ">
                     </div>
 
                     <div class="col-md-3 mt-4">

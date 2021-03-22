@@ -19,7 +19,7 @@ $searchQry = "SELECT count(manu_id) as manu_nbr, d_copiers.cop_id, full_name, la
 FROM d_copiers 
 LEFT JOIN countries ON countries.count_id = d_copiers.count_id
 LEFT JOIN cities ON cities.city_id = d_copiers.city_id
-INNER JOIN h_manuscripts_copiers ON h_manuscripts_copiers.cop_id =  d_copiers.cop_id
+LEFT JOIN h_manuscripts_copiers ON h_manuscripts_copiers.cop_id =  d_copiers.cop_id
 WHERE 
 (d_copiers.cop_id LIKE '%$cop_id%')
 AND (full_name LIKE '%$full_name%'
@@ -28,7 +28,8 @@ OR other_name1 LIKE '%$full_name%'
 OR other_name2 LIKE '%$full_name%'
 OR other_name3 LIKE '%$full_name%'
 OR other_name4 LIKE '%$full_name%')
-GROUP BY h_manuscripts_copiers.cop_id";
+GROUP BY h_manuscripts_copiers.cop_id
+ORDER BY d_copiers.last_edit_date DESC";
 
 if ($city_name !== "") {
     $searchSubQry1 = "AND (city_name LIKE '%$city_name%')";

@@ -55,14 +55,17 @@ $manuTypesListResult = mysqli_query($conn, $selectManuTypesQry);
 $rowsManuType = mysqli_fetch_all($manuTypesListResult, MYSQLI_ASSOC);
 $lastManuTypeKey = key(array_slice($rowsManuType, -1, 1, true));
 
+//select all cabinets
+$selectCabinetsQry = "SELECT cabinet_id, cabinet_name FROM cabinets";
+$cabinetsListResult = mysqli_query($conn, $selectCabinetsQry);
+$rowsCabinet = mysqli_fetch_all($cabinetsListResult, MYSQLI_ASSOC);
+$lastCabinetKey = key(array_slice($rowsCabinet, -1, 1, true));
+
 // days List
 $days = array("السبت", "الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة");
 
 //months List
 $months = array("محرم", "صفر", "ربيع الأول", "ربيع الثاني", "جمادى الأولى", "جمادى الثانية", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة");
-
-//cabinet names
-$cabinet_names = array("العامة", "أبو بكر الوارجلاني", "محمد حواش", "اطفيش");
 
 //font styles List
 $w_font_styles = array("المبسوط", "المجوهر", "المسند (الزمامي)", "المدمج", "الثلث المغربي", "الكوفي المغربي",);

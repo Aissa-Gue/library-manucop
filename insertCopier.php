@@ -54,10 +54,8 @@ if (isset($_POST['insertCopier'])) {
     $insertCopierQry = "INSERT INTO d_copiers VALUES ('$cop_id', '$full_name', '$descent1', '$descent2', '$descent3', '$descent4', '$descent5', '$last_name', '$nickname','$other_name1','$other_name2','$other_name3','$other_name4', $count_id, $city_id, '$creation_date','$last_edit_date')";
 
 
-
-
-    //********** Insert into e_manuscripts **********/
-    if (!mysqli_query($conn, $insertCopierQry)) array_push($insCopErrs, "<br> e_manuscripts >> " . mysqli_error($conn));
+    //********** Insert into d_copiers **********/
+    if (!mysqli_query($conn, $insertCopierQry)) array_push($insCopErrs, "<br> d_copiers >> " . mysqli_error($conn));
 
 
     if (count($insCopErrs) == 1) {

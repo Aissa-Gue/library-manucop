@@ -7,8 +7,8 @@ $manu_id_get = $_GET['manu_id'];
 
 // select manu book / country / city ...
 $manuSubQry1 = "SELECT e_manuscripts.manu_id, e_manuscripts.book_id, book_title, cop_name, 
-cop_day, cop_month, cop_syear, cop_eyear, cop_place,
-signing, cabinet_name, cabinet_nbr, manu_type, index_nbr,
+cop_day, cop_month, cop_syear, cop_eyear, date_type, cop_place,
+signing, cabinets.cabinet_id, cabinet_name, cabinet_nbr, manu_type, index_nbr,
 font, font_style, regular_lines, lines_notes, paper_size, 
 copied_from, copied_to, manu_level, cop_level, rost_completion, e_manuscripts.city_id, city_name , e_manuscripts.count_id, count_name,
 notes, e_manuscripts.creation_date, e_manuscripts.last_edit_date
@@ -16,6 +16,7 @@ FROM e_manuscripts
 INNER JOIN a_books ON a_books.book_id = e_manuscripts.book_id
 LEFT JOIN countries ON countries.count_id = e_manuscripts.count_id
 LEFT JOIN cities ON cities.city_id = e_manuscripts.city_id 
+LEFT JOIN cabinets ON cabinets.cabinet_id = e_manuscripts.cabinet_id
 WHERE e_manuscripts.manu_id = '$manu_id_get'";
 
 $manuSubQry1Result = mysqli_query($conn, $manuSubQry1);
@@ -31,10 +32,11 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
     $cop_month = $row['cop_month'];
     $cop_syear = $row['cop_syear'];
     $cop_eyear = $row['cop_eyear'];
+    $date_type = $row['date_type'];
     $cop_place = $row['cop_place'];
 
     $signing = $row['signing'];
-
+    $cabinet_id = $row['cabinet_id'];
     $cabinet_name = $row['cabinet_name'];
     $cabinet_nbr = $row['cabinet_nbr'];
     $manu_type = $row['manu_type'];
@@ -164,13 +166,22 @@ if (isset($_POST['editForm'])) {
     if (isset($_POST['cop_month'])) $cop_month = $_POST['cop_month'];
     else $cop_month = "";
 
-    if (isset($_POST['cop_syear']) and $_POST['cop_syear'] != "") {
+    if (isset($_POST['cop_eyear']) and $_POST['cop_eyear'] != NULL) $cop_eyear = $_POST['cop_eyear'];
+    else $cop_eyear = "NULL";
+
+    if (isset($_POST['cop_syear']) and $_POST['cop_syear'] != NULL) {
         $cop_syear = $_POST['cop_syear'];
-        $cop_eyear = $cop_syear;
+        if (!isset($_POST['cop_eyear'])) $cop_eyear = $cop_syear;
     } else $cop_syear = "NULL";
 
-    if (isset($_POST['cop_eyear']) and $_POST['cop_eyear'] != "") $cop_eyear = $_POST['cop_eyear'];
-    else $cop_eyear = "NULL";
+    if (isset($_POST['date_type']) and $_POST['date_type'] != NULL) $date_type = $_POST['date_type'];
+
+    //set null value to date_type if date not added
+    if ((!isset($_POST['cop_eyear']) and $_POST['cop_syear'] == NULL and $_POST['cop_month'] == NULL  and $_POST['cop_day'] == NULL)
+        or (isset($_POST['cop_eyear'])  and $_POST['cop_eyear'] == NULL and $_POST['cop_syear'] == NULL)
+    ) {
+        $date_type = "NULL";
+    }
 
     if (isset($_POST['cop_place'])) $cop_place = $_POST['cop_place'];
     else $cop_place = "";
@@ -178,8 +189,10 @@ if (isset($_POST['editForm'])) {
     if (isset($_POST['signing']) and $_POST['signing'] != "") $signing = $_POST['signing'];
     else $signing = "NULL";
 
-    if (isset($_POST['cabinet_name'])) $cabinet_name = $_POST['cabinet_name'];
-    else $cabinet_name = "";
+    if (isset($_POST['cabinet_name']) and $_POST['cabinet_name'] != "") {
+        $cabinet_id_explode = explode(' # ', $_POST['cabinet_name']);
+        $cabinet_id = $cabinet_id_explode[0]; // multi
+    } else $cabinet_id = "NULL";
 
     if (isset($_POST['cabinet_nbr']) and $_POST['cabinet_nbr'] != "") $cabinet_nbr = $_POST['cabinet_nbr'];
     else $cabinet_nbr = "NULL";
@@ -231,7 +244,7 @@ if (isset($_POST['editForm'])) {
     $creation_date = $date;
     $last_edit_date = $date;
 
-    $editManuQry = "UPDATE e_manuscripts SET manu_id= '$manu_id', book_id= '$book_id', cop_name= '$cop_name', cop_day= '$cop_day', cop_month= '$cop_month', cop_syear= $cop_syear, cop_eyear= $cop_eyear, cop_place= '$cop_place', signing=  $signing, cabinet_name= '$cabinet_name', cabinet_nbr= $cabinet_nbr, manu_type= '$manu_type', index_nbr= $index_nbr, font= '$font', font_style= '$font_style', regular_lines= $regular_lines, lines_notes= '$lines_notes', paper_size= $paper_size, copied_from= '$copied_from', copied_to= '$copied_to', manu_level= '$manu_level', cop_level= '$cop_level', rost_completion= $rost_completion, count_id= $count_id, city_id= $city_id, notes= '$notes', last_edit_date= '$last_edit_date' WHERE manu_id= '$prev_manu_id'";
+    $editManuQry = "UPDATE e_manuscripts SET manu_id= '$manu_id', book_id= '$book_id', cop_name= '$cop_name', cop_day= '$cop_day', cop_month= '$cop_month', cop_syear= $cop_syear, cop_eyear= $cop_eyear, date_type= $date_type, cop_place= '$cop_place', signing=  $signing, cabinet_id= $cabinet_id, cabinet_nbr= $cabinet_nbr, manu_type= '$manu_type', index_nbr= $index_nbr, font= '$font', font_style= '$font_style', regular_lines= $regular_lines, lines_notes= '$lines_notes', paper_size= $paper_size, copied_from= '$copied_from', copied_to= '$copied_to', manu_level= '$manu_level', cop_level= '$cop_level', rost_completion= $rost_completion, count_id= $count_id, city_id= $city_id, notes= '$notes', last_edit_date= '$last_edit_date' WHERE manu_id= '$prev_manu_id'";
 
 
     //********** Insert into j_manuscripts_motifs **********/
@@ -560,6 +573,14 @@ if (isset($_POST['editForm'])) {
                                 <input type="number" class="form-control" name="cop_syear" id="cop_syear"
                                     placeholder="أدخل السنة" value="<?php echo $cop_syear ?>">
                             </div>
+                            <div class="form-group col-md-2">
+                                <label for="date_type">نوع التقويم</label>
+                                <select name="date_type" id="date_type" class="form-control">
+                                    <option value="1" <?php if ($date_type == 1) echo "selected" ?>>ميلادي
+                                    </option>
+                                    <option value="0" <?php if ($date_type == 0) echo "selected" ?>>هجري</option>
+                                </select>
+                            </div>
 
                             <!-- add input dinamically -->
                             <div id="replaceCopDate" class="form-group col-md-auto"
@@ -585,6 +606,13 @@ if (isset($_POST['editForm'])) {
                                 <label for="cop_date">&nbsp;</label>
                                 <input type="text" class="form-control" name="cop_eyear" id="cop_date"
                                     value="<?php echo $cop_eyear ?>" placeholder="إلى السنة">
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="date_type">نوع التقويم</label>
+                                <select name="date_type" id="date_type" class="form-control">
+                                    <option value="1">ميلادي</option>
+                                    <option value="0" selected>هجري</option>
+                                </select>
                             </div>
                             <?php } ?>
                         </div>
@@ -638,19 +666,21 @@ if (isset($_POST['editForm'])) {
                         </div>
 
                         <div class="form-row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-7">
                                 <label for="cabinet_name">اسم الخزانة</label>
-                                <select name="cabinet_name" id="cabinet_name" class="form-control">
-                                    <option value="">-أدخل اسم الخزانة-</option>
-                                    <?php for ($i = 0; $i <= 3; $i++) { ?>
-                                    <option value="<?php echo $cabinet_names[$i]; ?>"
-                                        <?php if ($cabinet_name == $cabinet_names[$i]) echo "selected"; ?>>
-                                        <?php echo $cabinet_names[$i]; ?>
-                                    </option>
-                                    <?php } ?>
-                                </select>
+                                <input list="cabinet_names" class="form-control" name="cabinet_name"
+                                    value="<?php if ($cabinet_id != '') echo $cabinet_id . ' # ' . $cabinet_name ?>"
+                                    id="cabinet_name" placeholder="أدخل اسم الخزانة">
+                                <datalist id="cabinet_names">
+                                    <?php
+                                    for ($i = 0; $i <= $lastCabinetKey; $i++) { ?>
+                                    <option
+                                        value="<?php print_r($rowsCabinet[$i]['cabinet_id']) ?> # <?php print_r($rowsCabinet[$i]['cabinet_name']); ?>">
+                                        <?php  } ?>
+                                </datalist>
                             </div>
-                            <div class="form-group col-md-2">
+
+                            <div class="form-group col-md-auto">
                                 <label for="cabinet_nbr">الرقم في الخزانة</label>
                                 <input type="text" class="form-control" name="cabinet_nbr" id="cabinet_nbr"
                                     value="<?php echo $cabinet_nbr ?>">
@@ -658,8 +688,8 @@ if (isset($_POST['editForm'])) {
                             <div class="form-group col-md-auto">
                                 <label for="manu_type">نوع النسخة</label>
                                 <select name="manu_type" id="manu_type" class="form-control">
-                                    <option value="NULL">-أدخل نوع النسخة-</option>
-                                    <option value="" <?php if ($manu_type == '') echo "selected"; ?>>مجلد</option>
+                                    <option value="">-أدخل نوع النسخة-</option>
+                                    <option value="مج" <?php if ($manu_type == '') echo "selected"; ?>>مجلد</option>
                                     <option value="مص" <?php if ($manu_type == 'مص') echo "selected"; ?>>مصحف</option>
                                     <option value="دغ" <?php if ($manu_type == 'دغ') echo "selected"; ?>>دون غلاف
                                     </option>

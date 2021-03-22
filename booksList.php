@@ -16,7 +16,8 @@ FROM a_books
 LEFT JOIN `e_manuscripts` on e_manuscripts.book_id = a_books.book_id
 WHERE a_books.book_id LIKE '$book_id%' AND
 book_title LIKE '%$book_title%'
-GROUP BY a_books.book_id";
+GROUP BY a_books.book_id
+ORDER BY a_books.last_edit_date DESC";
 
 $searchResult = mysqli_query($conn, $searchQry);
 

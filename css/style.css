@@ -48,6 +48,9 @@ legend.scheduler-border {
   position: fixed;
   right: 0;
   z-index: 1030;
+
+  font-size: 15.3px;
+  font-weight: bold;
 }
 .my_mr_sidebar {
   margin-right: 16.5%;

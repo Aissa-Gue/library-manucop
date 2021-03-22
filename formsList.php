@@ -15,7 +15,8 @@ $searchQry = "SELECT manu_id, book_title
 FROM e_manuscripts, a_books 
 WHERE e_manuscripts.book_id = a_books.book_id
 AND manu_id LIKE '%$manu_id%'
-AND book_title LIKE '%$book_title%'";
+AND book_title LIKE '%$book_title%'
+ORDER BY e_manuscripts.last_edit_date DESC";
 
 $searchResult = mysqli_query($conn, $searchQry);
 

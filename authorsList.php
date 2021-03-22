@@ -17,7 +17,8 @@ LEFT JOIN `g_books_authors` on c_authors.auth_id = g_books_authors.auth_id
 LEFT JOIN `a_books` on a_books.book_id = g_books_authors.book_id
 WHERE c_authors.auth_id LIKE '$auth_id%' AND
 auth_name LIKE '%$auth_name%'
-GROUP BY c_authors.auth_id";
+GROUP BY c_authors.auth_id
+ORDER BY c_authors.last_edit_date DESC";
 
 $searchResult = mysqli_query($conn, $searchQry);
 

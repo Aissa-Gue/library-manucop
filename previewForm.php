@@ -6,7 +6,7 @@ $manu_id_get = $_GET['manu_id'];
 
 // select manu book / country / city ...
 $manuSubQry1 = "SELECT e_manuscripts.manu_id, e_manuscripts.book_id, book_title, cop_name, 
-cop_day, cop_month, cop_syear, cop_eyear, cop_place,
+cop_day, cop_month, cop_syear, cop_eyear, date_type, cop_place,
 signing, cabinet_name, cabinet_nbr, manu_type, index_nbr,
 font, font_style, regular_lines, lines_notes, paper_size,
 copied_from, copied_to, manu_level, cop_level, rost_completion, city_name , count_name,
@@ -14,7 +14,8 @@ notes, e_manuscripts.creation_date, e_manuscripts.last_edit_date
 FROM e_manuscripts
 INNER JOIN a_books ON a_books.book_id = e_manuscripts.book_id
 LEFT JOIN countries ON countries.count_id = e_manuscripts.count_id
-LEFT JOIN cities ON cities.city_id = e_manuscripts.city_id 
+LEFT JOIN cities ON cities.city_id = e_manuscripts.city_id
+LEFT JOIN cabinets ON cabinets.cabinet_id = e_manuscripts.cabinet_id
 WHERE e_manuscripts.manu_id = '$manu_id_get'";
 
 $manuSubQry1Result = mysqli_query($conn, $manuSubQry1);
@@ -30,6 +31,11 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
     $cop_month = $row['cop_month'];
     $cop_syear = $row['cop_syear'];
     $cop_eyear = $row['cop_eyear'];
+
+    $date_type = $row['date_type'];
+    if ($date_type == 1) $date_type = "ميلادي";
+    elseif ($date_type == 0) $date_type = "هجري";
+
     $cop_place = $row['cop_place'];
 
     $signing = $row['signing'];
@@ -243,11 +249,21 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                                 <input type="number" class="form-control" id="cop_syear"
                                     value="<?php echo $cop_syear ?>" readonly>
                             </div>
+                            <div class="form-group col-md-2">
+                                <label for="date_type">نوع التقويم</label>
+                                <input type="text" class="form-control" id="date_type" value="<?php echo $date_type ?>"
+                                    readonly>
+                            </div>
                             <?php } else { ?>
                             <div class="form-group col-md-2">
                                 <label for="cop_day">فترة النسخ ( بالتقدير )</label>
                                 <input type="text" class="form-control" id="cop_day"
                                     value="<?php echo $cop_syear . ' - ' . $cop_eyear ?>" readonly>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="date_type">نوع التقويم</label>
+                                <input type="text" class="form-control" id="date_type" value="<?php echo $date_type ?>"
+                                    readonly>
                             </div>
                             <?php } ?>
                         </div>
@@ -281,7 +297,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         </div>
 
                         <div class="form-row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-8">
                                 <label for="cabinet_name">اسم الخزانة</label>
                                 <input type="text" class="form-control" id="cabinet_name"
                                     value="<?php echo $cabinet_name ?>" readonly>
@@ -289,7 +305,8 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             <div class="form-group col-md-2">
                                 <label for="cabinet_nbr">الرقم في الخزانة</label>
                                 <input type="text" class="form-control" id="cabinet_nbr"
-                                    value="<?php echo $cabinet_nbr . ' ' . $manu_type ?>" readonly>
+                                    value="<?php echo $cabinet_nbr . ' ';
+                                                                                                if ($manu_type != "مج") echo $manu_type ?>" readonly>
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="index_nbr">الرقم في الفهرس</label>

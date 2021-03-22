@@ -46,33 +46,3 @@ if (isset($_GET['del_cop_id'])) {
         echo "<script> window.location.href= 'copiersList.php#copiersList'</script>";
     }
 }
-
-// Delete Order
-if (isset($_GET['del_order_id'])) {
-    $order_id = $_GET['del_order_id'];
-
-    $deleteOrderQry = "DELETE FROM c_orders WHERE order_id='$order_id'";
-    if (mysqli_query($conn, $deleteOrderQry)) {
-        echo "<script> alert('تم حذف الفاتورة $order_id بنجاح') </script>";
-        echo "<script> window.location.href= 'home.php#ordersList'</script>";
-    } else {
-        echo "<script> alert('حدثت مشكلة: لم يتم حذف الفاتورة!!') </script>";
-        echo "<script> window.location.href= 'home.php#ordersList'</script>";
-    }
-}
-
-// Delete book from Order
-if (isset($_GET['del_order_book_id'])) {
-    $order_book_id = $_GET['del_order_book_id'];
-    $title = $_GET['title'];
-    $order_id = $_GET['order_id'];
-
-    $deleteOrderBookQry = "DELETE FROM d_orders_books WHERE order_id='$order_id' AND book_id = '$order_book_id'";
-    if (mysqli_query($conn, $deleteOrderBookQry)) {
-        echo "<script> alert('تم حذف الكتاب $title من الفاتورة بنجاح') </script>";
-        //echo "<script> window.location.href= 'home.php#ordersList'</script>";
-    } else {
-        echo "<script> alert('حدثت مشكلة: لم يتم حذف الكتاب من الفاتورة!!') </script>";
-        //echo "<script> window.location.href= 'home.php#ordersList'</script>";
-    }
-}
