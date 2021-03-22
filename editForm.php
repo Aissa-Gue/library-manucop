@@ -622,7 +622,7 @@ if (isset($_POST['editForm'])) {
                             <div class="form-group col-md-4">
                                 <label for="cop_place">مكان النسخ</label>
                                 <input type="text" class="form-control" name="cop_place" id="cop_place"
-                                    value="<?php echo $cop_place ?>">
+                                    placeholder="أدخل مكان النسخ" value="<?php echo $cop_place ?>">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="city_name">المدينة</label>
@@ -683,8 +683,8 @@ if (isset($_POST['editForm'])) {
 
                             <div class="form-group col-md-auto">
                                 <label for="cabinet_nbr">الرقم في الخزانة</label>
-                                <input type="text" class="form-control" name="cabinet_nbr" id="cabinet_nbr"
-                                    value="<?php echo $cabinet_nbr ?>">
+                                <input type="number" class="form-control" name="cabinet_nbr" id="cabinet_nbr"
+                                    placeholder="أدخل الرقم في الخزانة" value="<?php echo $cabinet_nbr ?>">
                             </div>
                             <div class="form-group col-md-auto">
                                 <label for="manu_type">نوع النسخة</label>
@@ -696,10 +696,10 @@ if (isset($_POST['editForm'])) {
                                     </option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-3">
                                 <label for="index_nbr">الرقم في الفهرس</label>
-                                <input type="text" class="form-control" name="index_nbr" id="index_nbr"
-                                    value="<?php echo $index_nbr ?>">
+                                <input type="number" class="form-control" name="index_nbr" id="index_nbr"
+                                    placeholder="أدخل الرقم في الفهرس" value="<?php echo $index_nbr ?>">
                             </div>
                         </div>
 

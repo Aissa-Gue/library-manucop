@@ -60,7 +60,7 @@ $("#replaceCopDate").click(function () {
     
     html += '<div class="form-group col-md-2">';
     html += '<label for="date_type">نوع التقويم</label>';
-    html += '<select name="date_type" id="date_type" class="form-control">';
+    html += '<select name="date_type" id="date_type" class="custom-select">';
     html += '<option value="1">ميلادي</option>';
     html += '<option value="0" selected>هجري</option>';
     html += '</select>';
@@ -201,6 +201,10 @@ $("#addManuTypes").click(function () {
         i++;
     }
 });
+
+function scrollWin() {
+    window.scrollBy(0, 200);
+}
 
 //*** add active class (works with links in one page) ***//
 // $(".my_fixed_sidebar a").click(function() {

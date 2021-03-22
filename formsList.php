@@ -55,7 +55,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">رقم الاستمارة</span>
                                     </div>
-                                    <input type="text" name="manu_id" class="form-control col-md-3"
+                                    <input type="number" name="manu_id" class="form-control col-md-3"
                                         placeholder="أدخل رقم الاستمارة">
 
                                     <div class="input-group-prepend">

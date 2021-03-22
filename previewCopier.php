@@ -173,11 +173,11 @@ $copierManuListResult = mysqli_query($conn, $copierManuListQry);
                         <input type="text" class="form-control" value="<?php echo $country ?>" id="country" readonly>
                     </div>
                 </div>
-                <button type="submit" name="manuList" class="btn btn-info mt-3 mb-3">عرض قائمة المنسوخات </button>
+                <button type="button" onclick="scrollWin()" name="manuList" class="btn btn-info mt-3 mb-3">عرض قائمة
+                    المنسوخات </button>
             </form>
 
-            <!-- manuscript LIST -->
-            <?php if (isset($_POST['manuList'])) { ?>
+            <!-- Copier manuscripts LIST -->
             <div class="row">
                 <table class="table table-striped col-md-10">
                     <thead>
@@ -188,8 +188,9 @@ $copierManuListResult = mysqli_query($conn, $copierManuListQry);
                     </thead>
                     <tbody>
                         <?php
+                        if (mysqli_num_rows($copierManuListResult) > 0) {
                             while ($row = mysqli_fetch_array($copierManuListResult)) {
-                            ?>
+                        ?>
                         <tr>
                             <th scope="row" class="text-center"><?php echo $row['manu_id'] ?></th>
 
@@ -198,11 +199,13 @@ $copierManuListResult = mysqli_query($conn, $copierManuListQry);
                                     href="previewForm.php?manu_id=<?php echo $row['manu_id'] ?>"><?php echo $row['book_title'] ?></a>
                             </td>
                         </tr>
-                        <?php } ?>
+                        <?php }
+                        } else {
+                            echo '<th scope="row"></th><td>لا توجد منسوخات لهذا الناسخ</td>';
+                        } ?>
                     </tbody>
                 </table>
             </div>
-            <?php } ?>
 
             <button type="button" class="my_fixed_button1 my_col_btn btn btn-danger btn-lg rounded-pill"
                 onclick="window.history.go(-1);">
@@ -216,6 +219,7 @@ $copierManuListResult = mysqli_query($conn, $copierManuListQry);
 
         </div>
     </div>
+    <script src="js/main.js"></script>
 </body>
 
 </html>

@@ -125,8 +125,8 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">فترة النسخ</span>
                                     </div>
-                                    <input type="number" name="from_year" class="form-control" placeholder="من سنة">
-                                    <input type="number" name="to_year" class="form-control" placeholder="إلى سنة">
+                                    <input type="number" name="from_year" class="form-control" placeholder="من سنة ...">
+                                    <input type="number" name="to_year" class="form-control" placeholder="إلى سنة ...">
 
                                     <div class="input-group-prepend">
                                         <label class="input-group-text" for="date_type">نوع التقويم</label>
