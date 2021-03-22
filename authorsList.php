@@ -11,10 +11,13 @@ if (isset($_POST['authorSearch'])) {
 }
 
 // Author Search query
-$searchQry = "SELECT * 
-FROM c_authors 
-WHERE auth_id LIKE '$auth_id%' AND
-auth_name LIKE '%$auth_name%'";
+$searchQry = "SELECT c_authors.auth_id, auth_name, count(a_books.book_id) as books_nbr
+FROM c_authors
+LEFT JOIN `g_books_authors` on c_authors.auth_id = g_books_authors.auth_id
+LEFT JOIN `a_books` on a_books.book_id = g_books_authors.book_id
+WHERE c_authors.auth_id LIKE '$auth_id%' AND
+auth_name LIKE '%$auth_name%'
+GROUP BY c_authors.auth_id";
 
 $searchResult = mysqli_query($conn, $searchQry);
 
@@ -78,7 +81,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                 <tr>
                                     <th scope="col" class="text-center">رقم المؤلف</th>
                                     <th scope="col">اسم المؤلف</th>
-                                    <th scope="col" class="text-center">الكتب</th>
+                                    <th scope="col" class="text-center">عدد الكتب</th>
                                     <th scope="col" class="text-center">تفاصيل</th>
                                     <th scope="col" class="text-center">تعديل</th>
                                     <th scope="col" class="text-center">حذف</th>
@@ -89,10 +92,12 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                 <?php while ($row = mysqli_fetch_array($searchResult)) { ?>
                                 <tr>
                                     <th scope="row" class="text-center"><?php echo $row['auth_id'] ?></th>
-                                    <td><?php echo $row['auth_name'] ?>
+                                    <td>
+                                        <?php echo $row['auth_name'] ?>
                                     </td>
-                                    <td class="text-center"><?php //echo $row['city'] 
-                                                                ?></td>
+                                    <td class="text-center">
+                                        <?php echo $row['books_nbr'] ?>
+                                    </td>
                                     <td class="text-center">
                                         <a class="btn btn-outline-danger"
                                             href="previewAuthor.php?auth_id=<?php echo $row['auth_id'] ?>">

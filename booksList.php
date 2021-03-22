@@ -11,10 +11,12 @@ if (isset($_POST['bookSearch'])) {
 }
 
 // Book Search query
-$searchQry = "SELECT * 
-FROM a_books 
-WHERE book_id LIKE '$book_id%' AND
-book_title LIKE '%$book_title%'";
+$searchQry = "SELECT a_books.book_id, book_title, count(e_manuscripts.manu_id) as manu_nbr
+FROM a_books
+LEFT JOIN `e_manuscripts` on e_manuscripts.book_id = a_books.book_id
+WHERE a_books.book_id LIKE '$book_id%' AND
+book_title LIKE '%$book_title%'
+GROUP BY a_books.book_id";
 
 $searchResult = mysqli_query($conn, $searchQry);
 
@@ -78,7 +80,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                 <tr>
                                     <th scope="col" class="text-center">رقم الكتاب</th>
                                     <th scope="col">عنوان الكتاب</th>
-                                    <th scope="col" class="text-center">المنسوخات</th>
+                                    <th scope="col" class="text-center">عدد المنسوخات</th>
                                     <th scope="col" class="text-center">تفاصيل</th>
                                     <th scope="col" class="text-center">تعديل</th>
                                     <th scope="col" class="text-center">حذف</th>
@@ -91,8 +93,9 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <th scope="row" class="text-center"><?php echo $row['book_id'] ?></th>
                                     <td><?php echo $row['book_title'] ?>
                                     </td>
-                                    <td class="text-center"><?php //echo $row['city'] 
-                                                                ?></td>
+                                    <td class="text-center">
+                                        <?php echo $row['manu_nbr'] ?>
+                                    </td>
                                     <td class="text-center">
                                         <a class="btn btn-outline-danger"
                                             href="previewBook.php?book_id=<?php echo $row['book_id'] ?>">
