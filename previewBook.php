@@ -34,6 +34,15 @@ if (isset($_GET['book_id'])) {
     ON f_books_subjects.subj_id = b_subjects.subj_id
     WHERE f_books_subjects.book_id = '$book_id'";
     $subjectsResult = mysqli_query($conn, $subjectsQry);
+
+    // Book manuscripts List
+    $bookManuListQry = "SELECT e_manuscripts.manu_id, d_copiers.cop_id, full_name
+    FROM e_manuscripts
+    INNER JOIN h_manuscripts_copiers
+    ON h_manuscripts_copiers.manu_id = e_manuscripts.manu_id
+    INNER JOIN d_copiers
+    ON d_copiers.cop_id = h_manuscripts_copiers.cop_id
+    WHERE e_manuscripts.book_id = $book_id";
 }
 ?>
 <!DOCTYPE html>
@@ -71,7 +80,7 @@ if (isset($_GET['book_id'])) {
                 </div>
 
                 <!-- 2nd row -->
-                <div class="row mt-3">
+                <div class="row mt-2">
                     <div class="col-md-9">
                         <label for="author" class="form-label">المؤلفين</label>
                         <?php
@@ -84,13 +93,13 @@ if (isset($_GET['book_id'])) {
                 </div>
 
                 <!-- 3rd row -->
-                <label for="subject_name" class="form-label mt-3">المواضيع</label>
+                <label for="subject_name" class="form-label mt-2">المواضيع</label>
                 <div class="row">
                     <?php
                     while ($row = mysqli_fetch_array($subjectsResult)) {
                     ?>
                     <div class="col-md-auto">
-                        <input type="text" class="form-control" value="<?php echo  $row['subj_name']; ?>"
+                        <input type="text" class="form-control mb-1" value="<?php echo  $row['subj_name']; ?>"
                             name="subj_name" id="subject_name" readonly>
                     </div>
                     <?php } ?>
@@ -109,21 +118,56 @@ if (isset($_GET['book_id'])) {
                             id="last_edit_date" readonly>
                     </div>
                 </div>
-
-                <div class="form-row justify-content-end">
-                    <div class="form-group my_col_btn">
-                        <button type="button" class="btn btn-danger btn-block btn-lg rounded-pill"
-                            onclick="window.history.go(-1);">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                                class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                            </svg>
-                            رجوع
-                        </button>
-                    </div>
-                </div>
+                <button type="submit" name="copList" class="btn btn-info mt-3 mb-3">عرض قائمة
+                    الاستمارات / النساخ </button>
             </form>
+
+            <!-- Copier manuscripts LIST -->
+            <?php if (isset($_POST['copList'])) { ?>
+            <div class="row">
+                <table class="table table-striped col-md-10">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">رقم الاستمارة</th>
+                            <th scope="col" class="text-center">رقم الناسخ</th>
+                            <th scope="col">اسم الناسخ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            $bookManuListResult = mysqli_query($conn, $bookManuListQry);
+                            if (mysqli_num_rows($bookManuListResult) > 0) {
+                                while ($row = mysqli_fetch_array($bookManuListResult)) {
+                            ?>
+                        <tr>
+                            <th scope="row" class="text-center">
+                                <a
+                                    href="previewForm.php?manu_id=<?php echo $row['manu_id'] ?>"><?php echo $row['manu_id'] ?></a>
+                            </th>
+                            <td scope="row" class="text-center"><?php echo $row['cop_id'] ?></td>
+                            <td>
+                                <a
+                                    href="previewCopier.php?cop_id=<?php echo $row['cop_id'] ?>"><?php echo $row['full_name'] ?></a>
+                            </td>
+                        </tr>
+                        <?php }
+                            } else {
+                                echo '<th scope="row"></th><td>لا توجد منسوخات لهذا الكتاب</td>';
+                            } ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php } ?>
+            <button type="button" class="my_fixed_button1 my_col_btn btn btn-danger btn-lg rounded-pill"
+                onclick="window.history.go(-1);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                    class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+                </svg>
+                رجوع
+            </button>
+
         </div>
     </div>
 </body>

@@ -59,8 +59,6 @@ INNER JOIN a_books
 ON e_manuscripts.book_id = a_books.book_id)
 WHERE h_manuscripts_copiers.cop_id = $cop_id_get";
 
-$copierManuListResult = mysqli_query($conn, $copierManuListQry);
-
 
 ?>
 <!DOCTYPE html>
@@ -173,11 +171,12 @@ $copierManuListResult = mysqli_query($conn, $copierManuListQry);
                         <input type="text" class="form-control" value="<?php echo $country ?>" id="country" readonly>
                     </div>
                 </div>
-                <button type="button" onclick="scrollWin()" name="manuList" class="btn btn-info mt-3 mb-3">عرض قائمة
+                <button type="submit" onclick="scrollWin()" name="manuList" class="btn btn-info mt-3 mb-3">عرض قائمة
                     المنسوخات </button>
             </form>
 
             <!-- Copier manuscripts LIST -->
+            <?php if (isset($_POST['manuList'])) { ?>
             <div class="row">
                 <table class="table table-striped col-md-10">
                     <thead>
@@ -188,9 +187,10 @@ $copierManuListResult = mysqli_query($conn, $copierManuListQry);
                     </thead>
                     <tbody>
                         <?php
-                        if (mysqli_num_rows($copierManuListResult) > 0) {
-                            while ($row = mysqli_fetch_array($copierManuListResult)) {
-                        ?>
+                            $copierManuListResult = mysqli_query($conn, $copierManuListQry);
+                            if (mysqli_num_rows($copierManuListResult) > 0) {
+                                while ($row = mysqli_fetch_array($copierManuListResult)) {
+                            ?>
                         <tr>
                             <th scope="row" class="text-center"><?php echo $row['manu_id'] ?></th>
 
@@ -200,13 +200,13 @@ $copierManuListResult = mysqli_query($conn, $copierManuListQry);
                             </td>
                         </tr>
                         <?php }
-                        } else {
-                            echo '<th scope="row"></th><td>لا توجد منسوخات لهذا الناسخ</td>';
-                        } ?>
+                            } else {
+                                echo '<th scope="row"></th><td>لا توجد منسوخات لهذا الناسخ</td>';
+                            } ?>
                     </tbody>
                 </table>
             </div>
-
+            <?php } ?>
             <button type="button" class="my_fixed_button1 my_col_btn btn btn-danger btn-lg rounded-pill"
                 onclick="window.history.go(-1);">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
