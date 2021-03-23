@@ -69,8 +69,6 @@ if (isset($_POST['manuSearch'])) {
 
 
 
-
-
     if ($manu_id != '') $manu_idQry = "AND e_manuscripts.manu_id =" . $manu_id;
     if ($subj_name != '') $subj_nameQry = "AND subj_name LIKE" . "'%$subj_name%'";
     if ($cop_name != '') "AND (cop_name LIKE '%$cop_name%' OR full_name LIKE '%$cop_name%' OR descent1 LIKE '%$cop_name%' OR descent2 LIKE '%$cop_name%' OR descent3 LIKE '%$cop_name%' OR descent4 LIKE '%$cop_name%' OR descent5 LIKE '%$cop_name%' OR last_name LIKE '%$cop_name%' OR nickname LIKE '%$cop_name%' OR other_name1 LIKE '%$cop_name%' OR other_name2 LIKE '%$cop_name%' OR other_name3 LIKE '%$cop_name%' OR other_name4 LIKE '%$cop_name%')";
@@ -91,6 +89,13 @@ if (isset($_POST['manuSearch'])) {
     if ($regular_lines != '') $regular_linesQry = "AND regular_lines LIKE" . "'%$regular_lines%'";
     if ($signing != '') $signingQry = "AND signing LIKE" . "'%$signing%'";
     if ($rost_completion != '') $rost_completionQry = "AND rost_completion LIKE" . "'%$rost_completion%'";
+
+    if ($cabinet_name != '') $cabinet_nameQry = "AND cabinet_name LIKE" . "'%$cabinet_name%'";
+    if ($cabinet_nbr != '') $cabinet_nbrQry = "AND cabinet_nbr = " . $cabinet_nbr;
+    if ($index_nbr != '') $index_nbrQry = "AND index_nbr = " . $index_nbr;
+    if ($cop_syear != '') $cop_syearQry = "AND cop_syear >=" . "$cop_syear";
+    if ($cop_eyear != '') $cop_eyearQry = "AND cop_eyear <=" . "$cop_eyear";
+    if ($date_type != '') $date_typeQry = "AND date_type =" . "$date_type";
 }
 
 // Search query
@@ -137,6 +142,12 @@ $regular_linesQry
 $signingQry
 $rost_completionQry
 
+$cabinet_nameQry
+$cabinet_nbrQry
+$index_nbrQry
+$cop_syearQry
+$cop_eyearQry
+$date_typeQry
 
 GROUP BY e_manuscripts.manu_id
 ORDER BY e_manuscripts.last_edit_date DESC";
