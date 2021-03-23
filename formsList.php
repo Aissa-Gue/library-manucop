@@ -3,16 +3,94 @@ include 'header.php';
 include 'lists.php';
 
 // input values
-$manu_idQry = "";
 $book_title = "";
-$cop_name = "";
-$subj_name = "";
+$manu_idQry = "";
+$subj_nameQry = "";
+$cop_nameQry = "";
+$auth_nameQry = "";
+$type_nameQry = "";
+$copied_fromQry = "";
+$copied_toQry = "";
+$manu_typeQry = "";
+$cop_placeQry = "";
+$city_nameQry = "";
+$count_nameQry = "";
+$fontQry = "";
+$font_styleQry = "";
+$color_nameQry = "";
+$manu_levelQry = "";
+$cop_levelQry = "";
+$paper_sizeQry = "";
+$regular_linesQry = "";
+$signingQry = "";
+$rost_completionQry = "";
+
+$cabinet_nameQry = "";
+$cabinet_nbrQry = "";
+$index_nbrQry = "";
+$cop_syearQry = "";
+$cop_eyearQry = "";
+$date_typeQry = "";
+
+
+
+
 
 if (isset($_POST['manuSearch'])) {
-    if ($_POST['manu_id'] != '') $manu_idQry = "AND e_manuscripts.manu_id =" . $_POST['manu_id'];
     $book_title = $_POST['book_title'];
+    $manu_id = $_POST['manu_id'];
+    $subj_name =  $_POST['subj_name'];
     $cop_name = $_POST['cop_name'];
-    $subj_name = $_POST['subj_name'];
+    $auth_name = $_POST['auth_name'];
+    $type_name = $_POST['type_name'];
+    $copied_from = $_POST['copied_from'];
+    $copied_to = $_POST['copied_to'];
+    $manu_type = $_POST['manu_type'];
+    $cop_place = $_POST['cop_place'];
+    $city_name = $_POST['city_name'];
+    $count_name = $_POST['count_name'];
+    $font = $_POST['font'];
+    $font_style = $_POST['font_style'];
+    $color_name = $_POST['color_name'];
+    $manu_level = $_POST['manu_level'];
+    $cop_level = $_POST['cop_level'];
+    $paper_size = $_POST['paper_size'];
+    $regular_lines = $_POST['regular_lines'];
+    $signing = $_POST['signing'];
+    $rost_completion = $_POST['rost_completion'];
+
+    $cabinet_name = $_POST['cabinet_name'];
+    $cabinet_nbr = $_POST['cabinet_nbr'];
+    $index_nbr = $_POST['index_nbr'];
+    $cop_syear = $_POST['cop_syear'];
+    $cop_eyear = $_POST['cop_eyear'];
+    $date_type = $_POST['date_type'];
+
+
+
+
+
+
+    if ($manu_id != '') $manu_idQry = "AND e_manuscripts.manu_id =" . $manu_id;
+    if ($subj_name != '') $subj_nameQry = "AND subj_name LIKE" . "'%$subj_name%'";
+    if ($cop_name != '') "AND (cop_name LIKE '%$cop_name%' OR full_name LIKE '%$cop_name%' OR descent1 LIKE '%$cop_name%' OR descent2 LIKE '%$cop_name%' OR descent3 LIKE '%$cop_name%' OR descent4 LIKE '%$cop_name%' OR descent5 LIKE '%$cop_name%' OR last_name LIKE '%$cop_name%' OR nickname LIKE '%$cop_name%' OR other_name1 LIKE '%$cop_name%' OR other_name2 LIKE '%$cop_name%' OR other_name3 LIKE '%$cop_name%' OR other_name4 LIKE '%$cop_name%')";
+    if ($auth_name != '') $auth_nameQry = "AND auth_name LIKE" . "'%$auth_name%'";
+    if ($type_name != '') $type_nameQry = "AND type_name LIKE" . "'%$type_name%'";
+    if ($copied_from != '') $copied_fromQry = "AND copied_from LIKE" . "'%$copied_from%'";
+    if ($copied_to != '') $copied_toQry = "AND copied_to LIKE" . "'%$copied_to%'";
+    if ($manu_type != '') $manu_typeQry = "AND manu_type LIKE" . "'%$manu_type%'";
+    if ($cop_place != '') $cop_placeQry = "AND cop_place LIKE" . "'%$cop_place%'";
+    if ($city_name != '') $city_nameQry = "AND city_name LIKE" . "'%$city_name%'";
+    if ($count_name != '') $count_nameQry = "AND count_name LIKE" . "'%$count_name%'";
+    if ($font != '') $fontQry = "AND font LIKE" . "'%$font%'";
+    if ($font_style != '') $font_styleQry = "AND font_style LIKE" . "'%$font_style%'";
+    if ($color_name != '') $color_nameQry = "AND color_name LIKE" . "'%$color_name%'";
+    if ($manu_level != '') $manu_levelQry = "AND manu_level LIKE" . "'%$manu_level%'";
+    if ($cop_level != '') $cop_levelQry = "AND cop_level LIKE" . "'%$cop_level%'";
+    if ($paper_size != '') $paper_sizeQry = "AND paper_size LIKE" . "'%$paper_size%'";
+    if ($regular_lines != '') $regular_linesQry = "AND regular_lines LIKE" . "'%$regular_lines%'";
+    if ($signing != '') $signingQry = "AND signing LIKE" . "'%$signing%'";
+    if ($rost_completion != '') $rost_completionQry = "AND rost_completion LIKE" . "'%$rost_completion%'";
 }
 
 // Search query
@@ -38,11 +116,34 @@ LEFT JOIN d_manutypes ON d_manutypes.type_id = j_manuscripts_manutypes.type_id
 LEFT JOIN cabinets ON cabinets.cabinet_id = e_manuscripts.cabinet_id
 
 WHERE book_title LIKE '%$book_title%'
-AND (cop_name LIKE '%$cop_name%' OR full_name LIKE '%$cop_name%' OR descent1 LIKE '%$cop_name%' OR descent2 LIKE '%$cop_name%' OR descent3 LIKE '%$cop_name%' OR descent4 LIKE '%$cop_name%' OR descent5 LIKE '%$cop_name%' OR last_name LIKE '%$cop_name%' OR nickname LIKE '%$cop_name%' OR other_name1 LIKE '%$cop_name%' OR other_name2 LIKE '%$cop_name%' OR other_name3 LIKE '%$cop_name%' OR other_name4 LIKE '%$cop_name%')
-AND subj_name LIKE '%$subj_name%'
 $manu_idQry
+$cop_nameQry
+$subj_nameQry
+$auth_nameQry
+$type_nameQry
+$copied_fromQry
+$copied_toQry
+$manu_typeQry
+$cop_placeQry
+$city_nameQry
+$count_nameQry
+$fontQry
+$font_styleQry
+$color_nameQry
+$manu_levelQry
+$cop_levelQry
+$paper_sizeQry
+$regular_linesQry
+$signingQry
+$rost_completionQry
+
+
 GROUP BY e_manuscripts.manu_id
 ORDER BY e_manuscripts.last_edit_date DESC";
+//$qry = "AND (cop_name LIKE '%$cop_name%' OR full_name LIKE '%$cop_name%' OR descent1 LIKE '%$cop_name%' OR descent2 LIKE '%$cop_name%' OR descent3 LIKE '%$cop_name%' OR descent4 LIKE '%$cop_name%' OR descent5 LIKE '%$cop_name%' OR last_name LIKE '%$cop_name%' OR nickname LIKE '%$cop_name%' OR other_name1 LIKE '%$cop_name%' OR other_name2 LIKE '%$cop_name%' OR other_name3 LIKE '%$cop_name%' OR other_name4 LIKE '%$cop_name%')
+//$qry = "AND CONCAT_WS('', cop_name, full_name, descent1, descent2, descent3, descent4, descent5, last_name, nickname, other_name1, other_name2, other_name3, other_name4) LIKE '%$cop_name%'
+
+
 
 $searchResult = mysqli_query($conn, $searchQry);
 
@@ -93,12 +194,11 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">الموضوع</span>
                                     </div>
-                                    <input list="subjects" name="subj_name" class="form-control col-md-3"
-                                        placeholder="-- اختر موضوع --">
+                                    <input list="subjects" name="subj_name" class="form-control col-md-3">
                                     <datalist id="subjects">
                                         <?php
                                         for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
-                                        <option value="<?php print_r($rowsSubj[$i]['subj_name']); ?>">
+                                        <option value="<?php print_r($rowsSubj[$i]['subj_name']) ?>">
                                             <?php  } ?>
                                     </datalist>
                                 </div>
@@ -118,7 +218,13 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">عمل الناسخ</span>
                                     </div>
-                                    <input type="text" name="manu_types" class="form-control col-md-2">
+                                    <input list="manu_types" class="form-control col-md-2" name="type_name">
+                                    <datalist id="manu_types">
+                                        <?php
+                                        for ($i = 0; $i <= $lastManuTypeKey; $i++) { ?>
+                                        <option value="<?php print_r($rowsManuType[$i]['type_name']); ?>">
+                                            <?php  } ?>
+                                    </datalist>
 
                                 </div>
                             </div>
@@ -138,7 +244,12 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">نوع النسخة</span>
                                     </div>
-                                    <input type="text" name="manu_type" class="form-control col-md-2">
+                                    <select name="manu_type" class="custom-select col-md-2">
+                                        <option value="" selected></option>
+                                        <option value="مج">مجلد</option>
+                                        <option value="مص">مصحف</option>
+                                        <option value="دغ">دون غلاف</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -147,17 +258,29 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">مكـــان النسخ</span>
                                     </div>
-                                    <input type="text" name="place_name" class="form-control col-md-5">
+                                    <input type="text" name="cop_place" class="form-control col-md-5">
 
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">مدينة النسخ</span>
                                     </div>
-                                    <input type="text" name="city_name" class="form-control col-md-5">
+                                    <input list="cities" name="city_name" class="form-control col-md-5">
+                                    <datalist id="cities">
+                                        <?php
+                                        for ($i = 0; $i <= $lastCityKey; $i++) { ?>
+                                        <option value="<?php print_r($rowsCities[$i]['city_name']); ?>">
+                                            <?php  } ?>
+                                    </datalist>
 
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">بـــلد النسخ</span>
                                     </div>
-                                    <input type="text" name="count_name" class="form-control col-md-2">
+                                    <input list="countries" name="count_name" class="form-control col-md-2">
+                                    <datalist id="countries">
+                                        <?php
+                                        for ($i = 0; $i <= $lastCountKey; $i++) { ?>
+                                        <option value="<?php print_r($rowsCount[$i]['count_name']); ?>">
+                                            <?php  } ?>
+                                    </datalist>
                                 </div>
                             </div>
 
@@ -166,17 +289,34 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">خط النــــــاسخ</span>
                                     </div>
-                                    <input type="text" name="font" class="form-control col-md-5">
+                                    <select name="font" id="font" class="custom-select col-md-5">
+                                        <option value="" selected></option>
+                                        <option value="مغربي">مغربي</option>
+                                        <option value="مشرقي">مشرقي</option>
+                                    </select>
 
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">نــوع الخــــط</span>
                                     </div>
-                                    <input type="text" name="font_style" class="form-control col-md-5">
+                                    <select name="font_style" id="font_style" class="custom-select col-md-5">
+                                        <option value="" selected></option>
+                                        <?php for ($i = 0; $i <= 5; $i++) { ?>
+                                        <option value="<?php echo $w_font_styles[$i]; ?>">
+                                            <?php echo $w_font_styles[$i]; ?>
+                                        </option>
+                                        <?php } ?>
+                                    </select>
 
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">لــــون الحبر</span>
                                     </div>
-                                    <input type="text" name="inkColor" class="form-control col-md-2">
+                                    <input list="inkColors" name="color_name" class="form-control col-md-2">
+                                    <datalist id="inkColors">
+                                        <?php
+                                        for ($i = 0; $i <= $lastColorKey; $i++) { ?>
+                                        <option value="<?php print_r($rowsColor[$i]['color_name']); ?>">
+                                            <?php  } ?>
+                                    </datalist>
                                 </div>
                             </div>
 
@@ -185,36 +325,65 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">مستوى النسخة</span>
                                     </div>
-                                    <input type="text" name="manu_level" class="form-control col-md-5">
+                                    <select name="manu_level" class="custom-select col-md-5">
+                                        <option selected value=""></option>
+                                        <option value="جيد">جيد</option>
+                                        <option value="حسن">حسن</option>
+                                        <option value="متوسط">متوسط</option>
+                                        <option value="رديء">رديء</option>
+                                    </select>
 
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">مستوى الناسخ</span>
                                     </div>
-                                    <input type="text" name="cop_level" class="form-control col-md-5">
+                                    <select name="cop_level" class="custom-select col-md-5">
+                                        <option selected value=""></option>
+                                        <option value="جيد">جيد</option>
+                                        <option value="حسن">حسن</option>
+                                        <option value="متوسط">متوسط</option>
+                                        <option value="رديء">رديء</option>
+                                    </select>
 
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">مقاس الورق</span>
                                     </div>
-                                    <input type="text" name="paperSize" class="form-control col-md-2">
+                                    <select name="paper_size" class="custom-select col-md-2">
+                                        <option value="" selected></option>
+                                        <option value="1">القطع الكبير</option>
+                                        <option value="2">القطع المتوسط</option>
+                                        <option value="3">القطع الصغير</option>
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="form-row justify-content-md-center mb-1">
                                 <div class="input-group col-md-12">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">نوع المسطرة</span>
+                                        <span class="input-group-text">نـوع المسطـــرة</span>
                                     </div>
-                                    <input type="text" name="regular_lines" class="form-control col-md-5">
+                                    <select name="regular_lines" class="custom-select col-md-5">
+                                        <option value="" selected></option>
+                                        <option value="1">منتظمة</option>
+                                        <option value="0">غير منتظمة</option>
+                                    </select>
 
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">توقيع النسخة</span>
                                     </div>
-                                    <input type="text" name="signing" class="form-control col-md-5">
+                                    <select name="signing" class="custom-select col-md-5">
+                                        <option value="" selected></option>
+                                        <option value="1">موقعة</option>
+                                        <option value="0">بالمقارنة</option>
+                                    </select>
 
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">الترميم والإتمام</span>
                                     </div>
-                                    <input type="text" name="rost_completion" class="form-control col-md-2">
+                                    <select name="rost_completion" class="custom-select col-md-2">
+                                        <option value="" selected></option>
+                                        <option value="1">نعم</option>
+                                        <option value="0">لا</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -223,7 +392,14 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">اسم الخزانــــــــة</span>
                                     </div>
-                                    <input type="text" name="cabinet_name" class="form-control col-md-5">
+                                    <input list="cabinet_names" class="form-control col-md-5" name="cabinet_name"
+                                        id="cabinet_name" placeholder="حدد اسم الخزانة">
+                                    <datalist id="cabinet_names">
+                                        <?php
+                                        for ($i = 0; $i <= $lastCabinetKey; $i++) { ?>
+                                        <option value="<?php print_r($rowsCabinet[$i]['cabinet_name']); ?>">
+                                            <?php  } ?>
+                                    </datalist>
 
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">الرقم في الخزانة</span>
@@ -237,8 +413,8 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                 </div>
                             </div>
 
-                            <div class="form-row justify-content-md-start mb-1">
-                                <div class="input-group col-md-7">
+                            <div class="form-row justify-content-md-center mb-3">
+                                <div class="input-group col-md-9">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">فتــــرة النســـــخ</span>
                                     </div>
@@ -246,6 +422,16 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                         placeholder="من سنة">
                                     <input type="text" name="cop_eyear" class="form-control col-md-3"
                                         placeholder="إلى سنة">
+
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">نوع التقويـــم</span>
+                                    </div>
+                                    <select name="date_type" id="date_type" class="custom-select col-md-3">
+                                        <option value="" selected></option>
+                                        <option value="1">ميلادي</option>
+                                        <option value="0">هجري</option>
+                                    </select>
+
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" name="manuSearch" type="submit">بحث</button>
                                     </div>

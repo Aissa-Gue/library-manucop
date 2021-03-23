@@ -463,7 +463,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-3">
                                         <label for="city_name">المدينة</label>
                                         <input list="cities" class="form-control" name="city_name" id="city_name"
-                                            placeholder="أدخل مدينة النسخ">
+                                            placeholder="حدد مدينة النسخ">
                                         <datalist id="cities">
                                             <?php
                                             for ($i = 0; $i <= $lastCityKey; $i++) { ?>
@@ -477,7 +477,7 @@ if (isset($_POST['insertForm'])) {
                                         <label for="count_name">البلد حاليا</label>
 
                                         <input list="countries" class="form-control" name="count_name" id="count_name"
-                                            placeholder="أدخل بلد النسخ">
+                                            placeholder="حدد بلد النسخ">
                                         <datalist id="countries">
                                             <?php
                                             for ($i = 0; $i <= $lastCountKey; $i++) { ?>
@@ -503,7 +503,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-7">
                                         <label for="cabinet_name">اسم الخزانة</label>
                                         <input list="cabinet_names" class="form-control" name="cabinet_name"
-                                            id="cabinet_name" placeholder="أدخل اسم الخزانة">
+                                            id="cabinet_name" placeholder="حدد اسم الخزانة">
                                         <datalist id="cabinet_names">
                                             <?php
                                             for ($i = 0; $i <= $lastCabinetKey; $i++) { ?>
@@ -521,7 +521,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-auto">
                                         <label for="manu_type">نوع النسخة</label>
                                         <select name="manu_type" id="manu_type" class="custom-select">
-                                            <option value="" selected>-أدخل نوع النسخة-</option>
+                                            <option value="" selected>-اختر نوع النسخة-</option>
                                             <option value="مج">مجلد</option>
                                             <option value="مص">مصحف</option>
                                             <option value="دغ">دون غلاف</option>
