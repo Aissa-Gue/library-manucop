@@ -353,62 +353,75 @@ if (isset($_POST['editForm'])) {
         $editCopFMQry4 = "INSERT INTO i_cop_fm VALUES('$cop_match4','$cop_fm4','$manu_id') ON DUPLICATE KEY UPDATE cop_id = '$cop_match4', cop_fm= '$cop_fm4', manu_id= '$manu_id'";
     } else $editCopFMQry4 = "SELECT 1";
 
+    //START TRANSACTION 
+    mysqli_query($conn, "START TRANSACTION");
+
     //********** Insert into e_manuscripts **********/
-    if (!mysqli_query($conn, $editManuQry)) array_push($editManuErrs, "<br> e_manuscripts >> " . mysqli_error($conn));
-    //echo "<br> e_manuscripts >> " . mysqli_error($conn);
+    $R = mysqli_query($conn, $editManuQry);
+    if ($R == false) array_push($editManuErrs, "<br> e_manuscripts >> " . mysqli_error($conn));
 
     //********** Insert into Manuscriptions_Copiers **********/
-    if (!mysqli_query($conn, $editCopQry1)) array_push($editManuErrs, "<br> Manuscriptions_Copiers#1 >> " . mysqli_error($conn));
-    //echo "<br> Manuscriptions_Copiers#1 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $editCopQry2)) array_push($editManuErrs, "<br> Manuscriptions_Copiers#2 >> " . mysqli_error($conn));
-    // echo "<br> Manuscriptions_Copiers#2 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $editCopQry3)) array_push($editManuErrs, "<br> Manuscriptions_Copiers#3 >> " . mysqli_error($conn));
-    //echo "<br> Manuscriptions_Copiers#3 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $editCopQry4)) array_push($editManuErrs, "<br> Manuscriptions_Copiers#4 >> " . mysqli_error($conn));
-    //echo "<br> Manuscriptions_Copiers#4 >> " . mysqli_error($conn);
+    $R1 = mysqli_query($conn, $editCopQry1);
+    $R2 = mysqli_query($conn, $editCopQry2);
+    $R3 = mysqli_query($conn, $editCopQry3);
+    $R4 = mysqli_query($conn, $editCopQry4);
+
+    if ($R1 == false) array_push($editManuErrs, "<br> Manuscriptions_Copiers#1 >> " . mysqli_error($conn));
+    if ($R2 == false) array_push($editManuErrs, "<br> Manuscriptions_Copiers#2 >> " . mysqli_error($conn));
+    if ($R3 == false) array_push($editManuErrs, "<br> Manuscriptions_Copiers#3 >> " . mysqli_error($conn));
+    if ($R4 == false) array_push($editManuErrs, "<br> Manuscriptions_Copiers#4 >> " . mysqli_error($conn));
 
     //********** Insert into j_manuscripts_motifs **********/
-    if (!mysqli_query($conn, $insertMotifQry1)) array_push($insManuErrs, "<br> j_manuscripts_motifs#1 >> " . mysqli_error($conn));
-    //echo "<br> j_manuscripts_motifs#1 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertMotifQry2)) array_push($insManuErrs, "<br> j_manuscripts_motifs#2 >> " . mysqli_error($conn));
-    // echo "<br> j_manuscripts_motifs#2 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertMotifQry3)) array_push($insManuErrs, "<br> j_manuscripts_motifs#3 >> " . mysqli_error($conn));
-    //echo "<br> j_manuscripts_motifs#3 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertMotifQry4)) array_push($insManuErrs, "<br> j_manuscripts_motifs#4 >> " . mysqli_error($conn));
-    //echo "<br> j_manuscripts_motifs#4 >> " . mysqli_error($conn);
+    $R5 = mysqli_query($conn, $insertMotifQry1);
+    $R6 = mysqli_query($conn, $insertMotifQry2);
+    $R7 = mysqli_query($conn, $insertMotifQry3);
+    $R8 = mysqli_query($conn, $insertMotifQry4);
+
+    if ($R5 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#1 >> " . mysqli_error($conn));
+    if ($R6 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#2 >> " . mysqli_error($conn));
+    if ($R7 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#3 >> " . mysqli_error($conn));
+    if ($R8 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#4 >> " . mysqli_error($conn));
 
     //********** Insert into j_manuscripts_colors **********/
-    if (!mysqli_query($conn, $insertInkColorQry1)) array_push($insManuErrs, "<br> j_manuscripts_colors#1 >> " . mysqli_error($conn));
-    //echo "<br> j_manuscripts_colors#1 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertInkColorQry2)) array_push($insManuErrs, "<br> j_manuscripts_colors#2 >> " . mysqli_error($conn));
-    // echo "<br> j_manuscripts_colors#2 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertInkColorQry3)) array_push($insManuErrs, "<br> j_manuscripts_colors#3 >> " . mysqli_error($conn));
-    //echo "<br> j_manuscripts_colors#3 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertInkColorQry4)) array_push($insManuErrs, "<br> j_manuscripts_colors#4 >> " . mysqli_error($conn));
-    //echo "<br> j_manuscripts_colors#4 >> " . mysqli_error($conn);
+    $R9 = mysqli_query($conn, $insertInkColorQry1);
+    $R10 = mysqli_query($conn, $insertInkColorQry2);
+    $R11 = mysqli_query($conn, $insertInkColorQry3);
+    $R12 = mysqli_query($conn, $insertInkColorQry4);
+
+    if ($R9 == false) array_push($insManuErrs, "<br> j_manuscripts_colors#1 >> " . mysqli_error($conn));
+    if ($R10 == false) array_push($insManuErrs, "<br> j_manuscripts_colors#2 >> " . mysqli_error($conn));
+    if ($R11 == false) array_push($insManuErrs, "<br> j_manuscripts_colors#3 >> " . mysqli_error($conn));
+    if ($R12 == false) array_push($insManuErrs, "<br> j_manuscripts_colors#4 >> " . mysqli_error($conn));
 
     //********** Insert into j_manuscripts_manuTypes **********/
-    if (!mysqli_query($conn, $insertManuTypeQry1)) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#1 >> " . mysqli_error($conn));
-    //echo "<br> j_manuscripts_manuTypes#1 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertManuTypeQry2)) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#2 >> " . mysqli_error($conn));
-    // echo "<br> j_manuscripts_manuTypes#2 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertManuTypeQry3)) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#3 >> " . mysqli_error($conn));
-    //echo "<br> j_manuscripts_manuTypes#3 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertManuTypeQry4)) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#4 >> " . mysqli_error($conn));
-    //echo "<br> j_manuscripts_manuTypes#4 >> " . mysqli_error($conn);
+    $R13 = mysqli_query($conn, $insertManuTypeQry1);
+    $R14 = mysqli_query($conn, $insertManuTypeQry2);
+    $R15 = mysqli_query($conn, $insertManuTypeQry3);
+    $R16 = mysqli_query($conn, $insertManuTypeQry4);
+
+    if ($R13 == false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#1 >> " . mysqli_error($conn));
+    if ($R14 == false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#2 >> " . mysqli_error($conn));
+    if ($R15 == false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#3 >> " . mysqli_error($conn));
+    if ($R16 == false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#4 >> " . mysqli_error($conn));
 
     //********** Insert into i_cop_fm **********/
-    if (!mysqli_query($conn, $editCopFMQry1)) array_push($editManuErrs, "<br> i_cop_fm#1 >> " . mysqli_error($conn));
-    if (!mysqli_query($conn, $editCopFMQry2)) array_push($editManuErrs, "<br> i_cop_fm#2 >> " . mysqli_error($conn));
-    if (!mysqli_query($conn, $editCopFMQry3)) array_push($editManuErrs, "<br> i_cop_fm#3 >> " . mysqli_error($conn));
-    if (!mysqli_query($conn, $editCopFMQry4)) array_push($editManuErrs, "<br> i_cop_fm#4 >> " . mysqli_error($conn));
+    $R17 = mysqli_query($conn, $editCopFMQry1);
+    $R18 = mysqli_query($conn, $editCopFMQry2);
+    $R19 = mysqli_query($conn, $editCopFMQry3);
+    $R20 = mysqli_query($conn, $editCopFMQry4);
 
+    if ($R17 == false) array_push($editManuErrs, "<br> i_cop_fm#1 >> " . mysqli_error($conn));
+    if ($R18 == false) array_push($editManuErrs, "<br> i_cop_fm#2 >> " . mysqli_error($conn));
+    if ($R19 == false) array_push($editManuErrs, "<br> i_cop_fm#3 >> " . mysqli_error($conn));
+    if ($R20 == false) array_push($editManuErrs, "<br> i_cop_fm#4 >> " . mysqli_error($conn));
 
-
-    if (count($editManuErrs) == 1) {
+    // COMMIT OR ROLLBACK QUERIES
+    if ($R and $R1 and $R2 and $R3 and $R4 and $R5 and $R6 and $R7 and $R8 and $R9 and $R10 and $R11 and $R12 and $R13 and $R14 and $R15 and $R16 and $R17 and $R18 and $R19 and $R20) {
+        mysqli_query($conn, "COMMIT");
         echo "<script>alert('تم تعديل الاستمارة رقم: $manu_id بنجاح')</script>";
         echo '<script>window.location.href = "editForm.php?manu_id=' . $manu_id . '"</script>';
     } else {
+        mysqli_query($conn, "ROLLBACK");
         echo "<script>alert('فشلت عملية تعديل الاستمارة')</script>";
         echo print_r($editManuErrs);
         echo '<script>window.location.href = "editForm.php?manu_id=' . $manu_id . '"</script>';

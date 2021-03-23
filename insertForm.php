@@ -250,91 +250,71 @@ if (isset($_POST['insertForm'])) {
     $R = mysqli_query($conn, $insertManuQry);
     if ($R == false) array_push($insManuErrs, "<br> e_manuscripts >> " . mysqli_error($conn));
 
-
     //********** Insert into Manuscriptions_Copiers **********/
     $R1 = mysqli_query($conn, $insertCopQry1);
-    if ($R1 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#1 >> " . mysqli_error($conn));
-
     $R2 = mysqli_query($conn, $insertCopQry2);
-    if ($R2 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#2 >> " . mysqli_error($conn));
-
     $R3 = mysqli_query($conn, $insertCopQry3);
-    if ($R3 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#3 >> " . mysqli_error($conn));
-
     $R4 = mysqli_query($conn, $insertCopQry4);
+
+    if ($R1 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#1 >> " . mysqli_error($conn));
+    if ($R2 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#2 >> " . mysqli_error($conn));
+    if ($R3 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#3 >> " . mysqli_error($conn));
     if ($R4 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#4 >> " . mysqli_error($conn));
 
     //********** Insert into j_manuscripts_motifs **********/
     $R5 = mysqli_query($conn, $insertMotifQry1);
-    if ($R5 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#1 >> " . mysqli_error($conn));
-
     $R6 = mysqli_query($conn, $insertMotifQry2);
-    if ($R6 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#2 >> " . mysqli_error($conn));
-
     $R7 = mysqli_query($conn, $insertMotifQry3);
-    if ($R7 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#3 >> " . mysqli_error($conn));
-
     $R8 = mysqli_query($conn, $insertMotifQry4);
-    if ($R8 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#4 >> " . mysqli_error($conn));
 
+    if ($R5 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#1 >> " . mysqli_error($conn));
+    if ($R6 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#2 >> " . mysqli_error($conn));
+    if ($R7 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#3 >> " . mysqli_error($conn));
+    if ($R8 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#4 >> " . mysqli_error($conn));
 
     //********** Insert into j_manuscripts_colors **********/
     $R9 = mysqli_query($conn, $insertInkColorQry1);
-    if ($R9 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#1 >> " . mysqli_error($conn));
-
     $R10 = mysqli_query($conn, $insertInkColorQry2);
-    if ($R10 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#2 >> " . mysqli_error($conn));
-
     $R11 = mysqli_query($conn, $insertInkColorQry3);
-    if ($R11 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#3 >> " . mysqli_error($conn));
-
     $R12 = mysqli_query($conn, $insertInkColorQry4);
-    if ($R12 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#4 >> " . mysqli_error($conn));
 
+    if ($R9 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#1 >> " . mysqli_error($conn));
+    if ($R10 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#2 >> " . mysqli_error($conn));
+    if ($R11 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#3 >> " . mysqli_error($conn));
+    if ($R12 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#4 >> " . mysqli_error($conn));
 
     //********** Insert into j_manuscripts_manuTypes **********/
     $R13 = mysqli_query($conn, $insertManuTypeQry1);
-    if ($R13 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#1 >> " . mysqli_error($conn));
-
     $R14 = mysqli_query($conn, $insertManuTypeQry2);
-    if ($R14 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#2 >> " . mysqli_error($conn));
-
     $R15 = mysqli_query($conn, $insertManuTypeQry3);
-    if ($R15 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#3 >> " . mysqli_error($conn));
-
     $R16 = mysqli_query($conn, $insertManuTypeQry4);
-    if ($R16 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#4 >> " . mysqli_error($conn));
 
+    if ($R13 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#1 >> " . mysqli_error($conn));
+    if ($R14 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#2 >> " . mysqli_error($conn));
+    if ($R15 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#3 >> " . mysqli_error($conn));
+    if ($R16 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#4 >> " . mysqli_error($conn));
 
     //********** Insert into i_cop_fm **********/
     $R17 = mysqli_query($conn, $insertCopFMQry1);
-    if ($R17 = false) array_push($insManuErrs, "<br> i_cop_fm#1 >> " . mysqli_error($conn));
-
     $R18 = mysqli_query($conn, $insertCopFMQry2);
-    if ($R18 = false) array_push($insManuErrs, "<br> i_cop_fm#2 >> " . mysqli_error($conn));
-
     $R19 = mysqli_query($conn, $insertCopFMQry3);
-    if ($R19 = false) array_push($insManuErrs, "<br> i_cop_fm#3 >> " . mysqli_error($conn));
-
     $R20 = mysqli_query($conn, $insertCopFMQry4);
+
+    if ($R17 = false) array_push($insManuErrs, "<br> i_cop_fm#1 >> " . mysqli_error($conn));
+    if ($R18 = false) array_push($insManuErrs, "<br> i_cop_fm#2 >> " . mysqli_error($conn));
+    if ($R19 = false) array_push($insManuErrs, "<br> i_cop_fm#3 >> " . mysqli_error($conn));
     if ($R20 = false) array_push($insManuErrs, "<br> i_cop_fm#4 >> " . mysqli_error($conn));
-
-
-
-    if (count($insManuErrs) == 1) {
-        echo "<script>alert('تم إضافة الاستمارة رقم: $manu_id بنجاح')</script>";
-        echo '<script>window.location.href = "insertForm.php#insertForm"</script>';
-    } else {
-        echo "<script>alert('فشلت عملية إضافة الاستمارة')</script>";
-        echo print_r($insManuErrs);
-        echo '<script>window.location.href = "insertForm.php#insertForm"</script>';
-    }
 
     // COMMIT OR ROLLBACK QUERIES
     if ($R and $R1 and $R2 and $R3 and $R4 and $R5 and $R6 and $R7 and $R8 and $R9 and $R10 and $R11 and $R12 and $R13 and $R14 and $R15 and $R16 and $R17 and $R18 and $R19 and $R20) {
         mysqli_query($conn, "COMMIT");
+        echo "<script>alert('تم إضافة الاستمارة رقم: $manu_id بنجاح')</script>";
+        echo '<script>window.location.href = "insertForm.php#insertForm"</script>';
     } else {
         mysqli_query($conn, "ROLLBACK");
+        echo "<script>alert('فشلت عملية إضافة الاستمارة')</script>";
+        echo print_r($insManuErrs);
+        echo '<script>window.location.href = "insertForm.php#insertForm"</script>';
     }
 }
 

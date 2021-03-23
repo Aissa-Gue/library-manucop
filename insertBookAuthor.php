@@ -75,36 +75,43 @@ if (isset($_POST['insertBook'])) {
 
     $insertBookQry = "INSERT INTO a_books VALUES ('$book_id', '$book_title', '$creation_date', '$last_edit_date')";
 
+    // START TRANSACTION 
+    mysqli_query($conn, "START TRANSACTION");
+
     //********** Insert into Books **********/
-    if (!mysqli_query($conn, $insertBookQry)) array_push($insBookErrs, "<br> Books >> " . mysqli_error($conn));
-    //echo "<br> Books >> " . mysqli_error($conn);
+    $R1 = mysqli_query($conn, $insertBookQry);
+    if ($R1 == false) array_push($insBookErrs, "<br> Books >> " . mysqli_error($conn));
 
     //********** Insert into Books_Subjects **********/
-    if (!mysqli_query($conn, $insertSubjQry1)) array_push($insBookErrs, "<br> Books_Subjects#1 >> " . mysqli_error($conn));
-    //echo "<br> Books_Subjects#1 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertSubjQry2)) array_push($insBookErrs, "<br> Books_Subjects#2 >> " . mysqli_error($conn));
-    //echo "<br> Books_Subjects#2 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertSubjQry3)) array_push($insBookErrs, "<br> Books_Subjects#3 >> " . mysqli_error($conn));
-    //echo "<br> Books_Subjects#3 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertSubjQry4)) array_push($insBookErrs, "<br> Books_Subjects#4 >> " . mysqli_error($conn));
-    //echo "<br> Books_Subjects#4 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertSubjQry5)) array_push($insBookErrs, "<br> Books_Subjects#5 >> " . mysqli_error($conn));
-    //echo "<br> Books_Subjects#5 >> " . mysqli_error($conn);
+    $R2 = mysqli_query($conn, $insertSubjQry1);
+    $R3 = mysqli_query($conn, $insertSubjQry2);
+    $R4 = mysqli_query($conn, $insertSubjQry3);
+    $R5 = mysqli_query($conn, $insertSubjQry4);
+    $R6 = mysqli_query($conn, $insertSubjQry5);
+
+    if ($R2 == false) array_push($insBookErrs, "<br> Books_Subjects#1 >> " . mysqli_error($conn));
+    if ($R3 == false) array_push($insBookErrs, "<br> Books_Subjects#2 >> " . mysqli_error($conn));
+    if ($R4 == false) array_push($insBookErrs, "<br> Books_Subjects#3 >> " . mysqli_error($conn));
+    if ($R5 == false) array_push($insBookErrs, "<br> Books_Subjects#4 >> " . mysqli_error($conn));
+    if ($R6 == false) array_push($insBookErrs, "<br> Books_Subjects#5 >> " . mysqli_error($conn));
 
 
     //********** Insert into Books_Authors **********/
-    if (!mysqli_query($conn, $insertAuthQry1)) array_push($insBookErrs, "<br> Books_Authors#1 >> " . mysqli_error($conn));
-    //echo "<br> Books_Authors#1 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertAuthQry2)) array_push($insBookErrs, "<br> Books_Authors#2 >> " . mysqli_error($conn));
-    //echo "<br> Books_Authors#2 >> " . mysqli_error($conn);
-    if (!mysqli_query($conn, $insertAuthQry3)) array_push($insBookErrs, "<br> Books_Authors#3 >> " . mysqli_error($conn));
-    //echo "<br> Books_Authors#2 >> " . mysqli_error($conn);
+    $R7 = mysqli_query($conn, $insertAuthQry1);
+    $R8 = mysqli_query($conn, $insertAuthQry2);
+    $R9 = mysqli_query($conn, $insertAuthQry3);
 
+    if ($R7 == false) array_push($insBookErrs, "<br> Books_Authors#1 >> " . mysqli_error($conn));
+    if ($R8 == false) array_push($insBookErrs, "<br> Books_Authors#2 >> " . mysqli_error($conn));
+    if ($R9 == false) array_push($insBookErrs, "<br> Books_Authors#3 >> " . mysqli_error($conn));
 
-    if (count($insBookErrs) == 1) {
+    // COMMIT OR ROLLBACK
+    if ($R1 and $R2 and $R3 and $R4 and $R5 and $R6 and $R7 and $R8 and $R9) {
+        mysqli_query($conn, "COMMIT");
         echo "<script>alert('تم إضافة الكتاب: $book_title بنجاح')</script>";
         echo '<script>window.location.href = "insertBookAuthor.php#insertBookAuthor"</script>';
     } else {
+        mysqli_query($conn, "ROLLBACK");
         echo "<script>alert('فشلت عملية إضافة الكتاب')</script>";
         echo print_r($insBookErrs);
         echo '<script>window.location.href = "insertBookAuthor.php#insertBookAuthor"</script>';
