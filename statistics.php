@@ -1,7 +1,7 @@
 <?php
 include 'header.php';
 // By Country
-$byCountryQry = "SELECT COUNT(manu_id) as manu_nbr, count_name 
+$byCountryQry = "SELECT COUNT(manu_id) as manu_nbr, count_name, e_manuscripts.count_id 
 FROM e_manuscripts
 LEFT JOIN countries ON countries.count_id = e_manuscripts.count_id
 GROUP BY e_manuscripts.count_id
@@ -10,7 +10,7 @@ ORDER BY e_manuscripts.count_id DESC";
 $byCountryResult = mysqli_query($conn, $byCountryQry);
 
 // By City
-$byCityQry = "SELECT COUNT(manu_id) as manu_nbr, city_name 
+$byCityQry = "SELECT COUNT(manu_id) as manu_nbr_city, city_name 
 FROM e_manuscripts
 LEFT JOIN cities ON cities.city_id = e_manuscripts.city_id
 GROUP BY e_manuscripts.city_id
@@ -159,17 +159,48 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php while ($countryRows = mysqli_fetch_array($byCountryResult)) { ?>
+                                                    <?php while ($countryRows = mysqli_fetch_array($byCountryResult)) {
+                                                        $count_id = $countryRows['count_id']; ?>
                                                     <tr>
                                                         <th scope="row">
-                                                            <?php
-                                                                if ($countryRows['count_name'] == NULL) echo '(غير مصنف)';
-                                                                else echo $countryRows['count_name']; ?>
+                                                            <a href="#byCity<?php echo $count_id ?>"
+                                                                data-toggle="collapse" role="button"
+                                                                aria-expanded="false">
+                                                                <?php
+                                                                    if ($countryRows['count_name'] == NULL) echo '(غير مصنف)';
+                                                                    else echo $countryRows['count_name']; ?>
+                                                            </a>
                                                         </th>
-                                                        <td class="text-center"><?php echo $countryRows['manu_nbr'] ?>
+                                                        <td class="text-center">
+                                                            <?php echo $countryRows['manu_nbr'] ?>
+                                                    </tr>
+
+                                                    <?php
+                                                        // By City
+                                                        if ($countryRows['count_name'] == NULL) $count_idQry = "e_manuscripts.count_id IS NULL";
+                                                        else $count_idQry = "e_manuscripts.count_id = '$count_id'";
+
+                                                        $byCityQry = "SELECT COUNT(manu_id) as manu_nbr_city, city_name 
+                                                        FROM e_manuscripts
+                                                        LEFT JOIN cities ON cities.city_id = e_manuscripts.city_id
+                                                        WHERE $count_idQry
+                                                        GROUP BY e_manuscripts.city_id
+                                                        ORDER BY e_manuscripts.city_id DESC";
+                                                        $byCityResult = mysqli_query($conn, $byCityQry);
+
+                                                        while ($cityRows = mysqli_fetch_array($byCityResult)) { ?>
+                                                    <tr id="byCity<?php echo $count_id ?>" class="collapse">
+                                                        <td scope="row">
+                                                            <?php
+                                                                    if ($cityRows['city_name'] == NULL) echo '- ' . ' (غير مصنف)';
+                                                                    else echo "- " . $cityRows['city_name']; ?>
+                                                        </td>
+                                                        <td><?php echo '[ ' . $cityRows['manu_nbr_city'] . ' ]' ?>
                                                         </td>
                                                     </tr>
-                                                    <?php } ?>
+                                                    <?php } //end city rows
+                                                    } //end country rows
+                                                    ?>
                                                 </tbody>
                                             </table>
                                         </div>

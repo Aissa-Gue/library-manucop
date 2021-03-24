@@ -23,9 +23,9 @@ if (mysqli_connect_errno()) {
 }
 
 // current date
+$date = date('Y-m-d H:i:s', time());
 //$date = date("Y-m-d");
 //$date = date('Y-m-d H:i:s', '1299762201428');
-$date = date('Y-m-d H:i:s', time());
 
 //arabic lang chars
 mysqli_set_charset($conn, 'utf8');

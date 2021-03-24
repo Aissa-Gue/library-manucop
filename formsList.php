@@ -145,8 +145,6 @@ ORDER BY e_manuscripts.last_edit_date DESC";
 //$qry = "AND (cop_name LIKE '%$cop_name%' OR full_name LIKE '%$cop_name%' OR descent1 LIKE '%$cop_name%' OR descent2 LIKE '%$cop_name%' OR descent3 LIKE '%$cop_name%' OR descent4 LIKE '%$cop_name%' OR descent5 LIKE '%$cop_name%' OR last_name LIKE '%$cop_name%' OR nickname LIKE '%$cop_name%' OR other_name1 LIKE '%$cop_name%' OR other_name2 LIKE '%$cop_name%' OR other_name3 LIKE '%$cop_name%' OR other_name4 LIKE '%$cop_name%')
 //$qry = "AND CONCAT_WS('', cop_name, full_name, descent1, descent2, descent3, descent4, descent5, last_name, nickname, other_name1, other_name2, other_name3, other_name4) LIKE '%$cop_name%'
 
-
-
 $searchResult = mysqli_query($conn, $searchQry);
 
 // search num rows
@@ -161,8 +159,14 @@ $search_num_rows = mysqli_num_rows($searchResult);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forms List</title>
 </head>
+<style>
+.card-header {
+    padding: 3px 3px;
+}
+</style>
 
 <body class="my_bg">
+
     <!-- START row -->
     <div class="container-fluid mt-5">
         <div class="row">
@@ -179,267 +183,344 @@ $search_num_rows = mysqli_num_rows($searchResult);
                         </div>
 
                         <form action="" method="post">
-                            <div class="form-row justify-content-md-center mb-1">
-                                <div class="input-group col-md-12">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">رقم الاستمارة</span>
+                            <div class="accordion" id="accordion1">
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link btn-block text-left" type="button"
+                                                data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                                بحث بسيط </button>
+                                        </h2>
                                     </div>
-                                    <input type="number" name="manu_id" class="form-control col-md-2"
-                                        placeholder="أدخل رقم">
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">عنوان الكتاب</span>
-                                    </div>
-                                    <input type="text" name="book_title" class="form-control col-md-7"
-                                        placeholder="أدخل عنوان الكتاب">
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                        data-parent="#accordion1">
+                                        <div class="card-body">
+                                            <div class="form-row justify-content-md-center mb-1">
+                                                <div class="input-group col-md-12">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">رقم الاستمارة</span>
+                                                    </div>
+                                                    <input type="number" name="manu_id" class="form-control col-md-2"
+                                                        placeholder="أدخل رقم">
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">الموضوع</span>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">عنوان الكتاب</span>
+                                                    </div>
+                                                    <input type="text" name="book_title" class="form-control col-md-7"
+                                                        placeholder="أدخل عنوان الكتاب">
+
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">الموضوع</span>
+                                                    </div>
+                                                    <input list="subjects" name="subj_name"
+                                                        class="form-control col-md-3">
+                                                    <datalist id="subjects">
+                                                        <?php
+                                                        for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
+                                                        <option value="<?php print_r($rowsSubj[$i]['subj_name']) ?>">
+                                                            <?php  } ?>
+                                                    </datalist>
+
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary" name="manuSearch"
+                                                            type="submit">بحث</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <input list="subjects" name="subj_name" class="form-control col-md-3">
-                                    <datalist id="subjects">
-                                        <?php
-                                        for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
-                                        <option value="<?php print_r($rowsSubj[$i]['subj_name']) ?>">
-                                            <?php  } ?>
-                                    </datalist>
                                 </div>
-                            </div>
-                            <div class=" form-row justify-content-md-center mb-1">
-                                <div class="input-group col-md-12">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">اسم النــــاسخ</span>
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link btn-block text-left collapsed" type="button"
+                                                data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                                                aria-controls="collapseTwo">
+                                                #2 بحث مخصص </button>
+                                        </h2>
                                     </div>
-                                    <input type="text" name="cop_name" class="form-control col-md-5">
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                        data-parent="#accordion1">
+                                        <div class="card-body">
+                                            <div class="form-row justify-content-md-center mb-1">
+                                                <div class="input-group col-md-12">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">رقم الاستمارة</span>
+                                                    </div>
+                                                    <input type="number" name="manu_id" class="form-control col-md-2"
+                                                        placeholder="أدخل رقم">
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">اسم المؤلف</span>
-                                    </div>
-                                    <input type="text" name="auth_name" class="form-control col-md-5">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">عنوان الكتاب</span>
+                                                    </div>
+                                                    <input type="text" name="book_title" class="form-control col-md-7"
+                                                        placeholder="أدخل عنوان الكتاب">
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">عمل الناسخ</span>
-                                    </div>
-                                    <input list="manu_types" class="form-control col-md-2" name="type_name">
-                                    <datalist id="manu_types">
-                                        <?php
-                                        for ($i = 0; $i <= $lastManuTypeKey; $i++) { ?>
-                                        <option value="<?php print_r($rowsManuType[$i]['type_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">الموضوع</span>
+                                                    </div>
+                                                    <input list="subjects" name="subj_name"
+                                                        class="form-control col-md-3">
+                                                    <datalist id="subjects">
+                                                        <?php
+                                                        for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
+                                                        <option value="<?php print_r($rowsSubj[$i]['subj_name']) ?>">
+                                                            <?php  } ?>
+                                                    </datalist>
+                                                </div>
+                                            </div>
+                                            <div class=" form-row justify-content-md-center mb-1">
+                                                <div class="input-group col-md-12">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">اسم النــــاسخ</span>
+                                                    </div>
+                                                    <input type="text" name="cop_name" class="form-control col-md-5">
 
-                                </div>
-                            </div>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">اسم المؤلف</span>
+                                                    </div>
+                                                    <input type="text" name="auth_name" class="form-control col-md-5">
 
-                            <div class="form-row justify-content-md-center mb-1">
-                                <div class="input-group col-md-12">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">المنسوخ منه</span>
-                                    </div>
-                                    <input type="text" name="copied_from" class="form-control col-md-5">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">عمل الناسخ</span>
+                                                    </div>
+                                                    <input list="manu_types" class="form-control col-md-2"
+                                                        name="type_name">
+                                                    <datalist id="manu_types">
+                                                        <?php
+                                                        for ($i = 0; $i <= $lastManuTypeKey; $i++) { ?>
+                                                        <option
+                                                            value="<?php print_r($rowsManuType[$i]['type_name']); ?>">
+                                                            <?php  } ?>
+                                                    </datalist>
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">المنسوخ له</span>
-                                    </div>
-                                    <input type="text" name="copied_to" class="form-control col-md-5">
+                                                </div>
+                                            </div>
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">نوع النسخة</span>
-                                    </div>
-                                    <select name="manu_type" class="custom-select col-md-2">
-                                        <option value="" selected></option>
-                                        <option value="مج">مجلد</option>
-                                        <option value="مص">مصحف</option>
-                                        <option value="دغ">دون غلاف</option>
-                                    </select>
-                                </div>
-                            </div>
+                                            <div class="form-row justify-content-md-center mb-1">
+                                                <div class="input-group col-md-12">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">المنسوخ منه</span>
+                                                    </div>
+                                                    <input type="text" name="copied_from" class="form-control col-md-5">
 
-                            <div class="form-row justify-content-md-center mb-1">
-                                <div class="input-group col-md-12">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">مكـــان النسخ</span>
-                                    </div>
-                                    <input type="text" name="cop_place" class="form-control col-md-5">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">المنسوخ له</span>
+                                                    </div>
+                                                    <input type="text" name="copied_to" class="form-control col-md-5">
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">مدينة النسخ</span>
-                                    </div>
-                                    <input list="cities" name="city_name" class="form-control col-md-5">
-                                    <datalist id="cities">
-                                        <?php
-                                        for ($i = 0; $i <= $lastCityKey; $i++) { ?>
-                                        <option value="<?php print_r($rowsCities[$i]['city_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">نوع النسخة</span>
+                                                    </div>
+                                                    <select name="manu_type" class="custom-select col-md-2">
+                                                        <option value="" selected></option>
+                                                        <option value="مج">مجلد</option>
+                                                        <option value="مص">مصحف</option>
+                                                        <option value="دغ">دون غلاف</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">بـــلد النسخ</span>
-                                    </div>
-                                    <input list="countries" name="count_name" class="form-control col-md-2">
-                                    <datalist id="countries">
-                                        <?php
-                                        for ($i = 0; $i <= $lastCountKey; $i++) { ?>
-                                        <option value="<?php print_r($rowsCount[$i]['count_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
-                                </div>
-                            </div>
+                                            <div class="form-row justify-content-md-center mb-1">
+                                                <div class="input-group col-md-12">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">مكـــان النسخ</span>
+                                                    </div>
+                                                    <input type="text" name="cop_place" class="form-control col-md-5">
 
-                            <div class="form-row justify-content-md-center mb-1">
-                                <div class="input-group col-md-12">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">خط النــــــاسخ</span>
-                                    </div>
-                                    <select name="font" id="font" class="custom-select col-md-5">
-                                        <option value="" selected></option>
-                                        <option value="مغربي">مغربي</option>
-                                        <option value="مشرقي">مشرقي</option>
-                                    </select>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">مدينة النسخ</span>
+                                                    </div>
+                                                    <input list="cities" name="city_name" class="form-control col-md-5">
+                                                    <datalist id="cities">
+                                                        <?php
+                                                        for ($i = 0; $i <= $lastCityKey; $i++) { ?>
+                                                        <option value="<?php print_r($rowsCities[$i]['city_name']); ?>">
+                                                            <?php  } ?>
+                                                    </datalist>
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">نــوع الخــــط</span>
-                                    </div>
-                                    <select name="font_style" id="font_style" class="custom-select col-md-5">
-                                        <option value="" selected></option>
-                                        <?php for ($i = 0; $i <= 5; $i++) { ?>
-                                        <option value="<?php echo $w_font_styles[$i]; ?>">
-                                            <?php echo $w_font_styles[$i]; ?>
-                                        </option>
-                                        <?php } ?>
-                                    </select>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">بـــلد النسخ</span>
+                                                    </div>
+                                                    <input list="countries" name="count_name"
+                                                        class="form-control col-md-2">
+                                                    <datalist id="countries">
+                                                        <?php
+                                                        for ($i = 0; $i <= $lastCountKey; $i++) { ?>
+                                                        <option value="<?php print_r($rowsCount[$i]['count_name']); ?>">
+                                                            <?php  } ?>
+                                                    </datalist>
+                                                </div>
+                                            </div>
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">لــــون الحبر</span>
-                                    </div>
-                                    <input list="inkColors" name="color_name" class="form-control col-md-2">
-                                    <datalist id="inkColors">
-                                        <?php
-                                        for ($i = 0; $i <= $lastColorKey; $i++) { ?>
-                                        <option value="<?php print_r($rowsColor[$i]['color_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
-                                </div>
-                            </div>
+                                            <div class="form-row justify-content-md-center mb-1">
+                                                <div class="input-group col-md-12">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">خط النــــــاسخ</span>
+                                                    </div>
+                                                    <select name="font" id="font" class="custom-select col-md-5">
+                                                        <option value="" selected></option>
+                                                        <option value="مغربي">مغربي</option>
+                                                        <option value="مشرقي">مشرقي</option>
+                                                    </select>
 
-                            <div class="form-row justify-content-md-center mb-1">
-                                <div class="input-group col-md-12">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">مستوى النسخة</span>
-                                    </div>
-                                    <select name="manu_level" class="custom-select col-md-5">
-                                        <option selected value=""></option>
-                                        <option value="جيد">جيد</option>
-                                        <option value="حسن">حسن</option>
-                                        <option value="متوسط">متوسط</option>
-                                        <option value="رديء">رديء</option>
-                                    </select>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">نــوع الخــــط</span>
+                                                    </div>
+                                                    <select name="font_style" id="font_style"
+                                                        class="custom-select col-md-5">
+                                                        <option value="" selected></option>
+                                                        <?php for ($i = 0; $i <= 5; $i++) { ?>
+                                                        <option value="<?php echo $w_font_styles[$i]; ?>">
+                                                            <?php echo $w_font_styles[$i]; ?>
+                                                        </option>
+                                                        <?php } ?>
+                                                    </select>
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">مستوى الناسخ</span>
-                                    </div>
-                                    <select name="cop_level" class="custom-select col-md-5">
-                                        <option selected value=""></option>
-                                        <option value="جيد">جيد</option>
-                                        <option value="حسن">حسن</option>
-                                        <option value="متوسط">متوسط</option>
-                                        <option value="رديء">رديء</option>
-                                    </select>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">لــــون الحبر</span>
+                                                    </div>
+                                                    <input list="inkColors" name="color_name"
+                                                        class="form-control col-md-2">
+                                                    <datalist id="inkColors">
+                                                        <?php
+                                                        for ($i = 0; $i <= $lastColorKey; $i++) { ?>
+                                                        <option value="<?php print_r($rowsColor[$i]['color_name']); ?>">
+                                                            <?php  } ?>
+                                                    </datalist>
+                                                </div>
+                                            </div>
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">مقاس الورق</span>
-                                    </div>
-                                    <select name="paper_size" class="custom-select col-md-2">
-                                        <option value="" selected></option>
-                                        <option value="1">القطع الكبير</option>
-                                        <option value="2">القطع المتوسط</option>
-                                        <option value="3">القطع الصغير</option>
-                                    </select>
-                                </div>
-                            </div>
+                                            <div class="form-row justify-content-md-center mb-1">
+                                                <div class="input-group col-md-12">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">مستوى النسخة</span>
+                                                    </div>
+                                                    <select name="manu_level" class="custom-select col-md-5">
+                                                        <option selected value=""></option>
+                                                        <option value="جيد">جيد</option>
+                                                        <option value="حسن">حسن</option>
+                                                        <option value="متوسط">متوسط</option>
+                                                        <option value="رديء">رديء</option>
+                                                    </select>
 
-                            <div class="form-row justify-content-md-center mb-1">
-                                <div class="input-group col-md-12">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">نـوع المسطـــرة</span>
-                                    </div>
-                                    <select name="regular_lines" class="custom-select col-md-5">
-                                        <option value="" selected></option>
-                                        <option value="1">منتظمة</option>
-                                        <option value="0">غير منتظمة</option>
-                                    </select>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">مستوى الناسخ</span>
+                                                    </div>
+                                                    <select name="cop_level" class="custom-select col-md-5">
+                                                        <option selected value=""></option>
+                                                        <option value="جيد">جيد</option>
+                                                        <option value="حسن">حسن</option>
+                                                        <option value="متوسط">متوسط</option>
+                                                        <option value="رديء">رديء</option>
+                                                    </select>
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">توقيع النسخة</span>
-                                    </div>
-                                    <select name="signing" class="custom-select col-md-5">
-                                        <option value="" selected></option>
-                                        <option value="1">موقعة</option>
-                                        <option value="0">بالمقارنة</option>
-                                    </select>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">مقاس الورق</span>
+                                                    </div>
+                                                    <select name="paper_size" class="custom-select col-md-2">
+                                                        <option value="" selected></option>
+                                                        <option value="1">القطع الكبير</option>
+                                                        <option value="2">القطع المتوسط</option>
+                                                        <option value="3">القطع الصغير</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">الترميم والإتمام</span>
-                                    </div>
-                                    <select name="rost_completion" class="custom-select col-md-2">
-                                        <option value="" selected></option>
-                                        <option value="1">نعم</option>
-                                        <option value="0">لا</option>
-                                    </select>
-                                </div>
-                            </div>
+                                            <div class="form-row justify-content-md-center mb-1">
+                                                <div class="input-group col-md-12">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">نـوع المسطـــرة</span>
+                                                    </div>
+                                                    <select name="regular_lines" class="custom-select col-md-5">
+                                                        <option value="" selected></option>
+                                                        <option value="1">منتظمة</option>
+                                                        <option value="0">غير منتظمة</option>
+                                                    </select>
 
-                            <div class="form-row justify-content-md-center mb-1">
-                                <div class="input-group col-md-12">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">اسم الخزانــــــــة</span>
-                                    </div>
-                                    <input list="cabinet_names" class="form-control col-md-5" name="cabinet_name"
-                                        id="cabinet_name" placeholder="حدد اسم الخزانة">
-                                    <datalist id="cabinet_names">
-                                        <?php
-                                        for ($i = 0; $i <= $lastCabinetKey; $i++) { ?>
-                                        <option value="<?php print_r($rowsCabinet[$i]['cabinet_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">توقيع النسخة</span>
+                                                    </div>
+                                                    <select name="signing" class="custom-select col-md-5">
+                                                        <option value="" selected></option>
+                                                        <option value="1">موقعة</option>
+                                                        <option value="0">بالمقارنة</option>
+                                                    </select>
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">الرقم في الخزانة</span>
-                                    </div>
-                                    <input type="text" name="cabinet_nbr" class="form-control col-md-5">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">الترميم والإتمام</span>
+                                                    </div>
+                                                    <select name="rost_completion" class="custom-select col-md-2">
+                                                        <option value="" selected></option>
+                                                        <option value="1">نعم</option>
+                                                        <option value="0">لا</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">الرقم في الفهرس</span>
-                                    </div>
-                                    <input type="text" name="index_nbr" class="form-control col-md-2">
-                                </div>
-                            </div>
+                                            <div class="form-row justify-content-md-center mb-1">
+                                                <div class="input-group col-md-12">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">اسم الخزانــــــــة</span>
+                                                    </div>
+                                                    <input list="cabinet_names" class="form-control col-md-5"
+                                                        name="cabinet_name" id="cabinet_name"
+                                                        placeholder="حدد اسم الخزانة">
+                                                    <datalist id="cabinet_names">
+                                                        <?php
+                                                        for ($i = 0; $i <= $lastCabinetKey; $i++) { ?>
+                                                        <option
+                                                            value="<?php print_r($rowsCabinet[$i]['cabinet_name']); ?>">
+                                                            <?php  } ?>
+                                                    </datalist>
 
-                            <div class="form-row justify-content-md-center mb-3">
-                                <div class="input-group col-md-9">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">فتــــرة النســـــخ</span>
-                                    </div>
-                                    <input type="text" name="cop_syear" class="form-control col-md-3"
-                                        placeholder="من سنة">
-                                    <input type="text" name="cop_eyear" class="form-control col-md-3"
-                                        placeholder="إلى سنة">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">الرقم في الخزانة</span>
+                                                    </div>
+                                                    <input type="text" name="cabinet_nbr" class="form-control col-md-5">
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">نوع التقويـــم</span>
-                                    </div>
-                                    <select name="date_type" id="date_type" class="custom-select col-md-3">
-                                        <option value="" selected></option>
-                                        <option value="1">ميلادي</option>
-                                        <option value="0">هجري</option>
-                                    </select>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">الرقم في الفهرس</span>
+                                                    </div>
+                                                    <input type="text" name="index_nbr" class="form-control col-md-2">
+                                                </div>
+                                            </div>
 
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" name="manuSearch" type="submit">بحث</button>
+                                            <div class="form-row justify-content-md-center mb-3">
+                                                <div class="input-group col-md-9">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">فتــــرة النســـــخ</span>
+                                                    </div>
+                                                    <input type="text" name="cop_syear" class="form-control col-md-3"
+                                                        placeholder="من سنة">
+                                                    <input type="text" name="cop_eyear" class="form-control col-md-3"
+                                                        placeholder="إلى سنة">
+
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">نوع التقويـــم</span>
+                                                    </div>
+                                                    <select name="date_type" id="date_type"
+                                                        class="custom-select col-md-3">
+                                                        <option value="" selected></option>
+                                                        <option value="1">ميلادي</option>
+                                                        <option value="0">هجري</option>
+                                                    </select>
+
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary" name="manuSearch"
+                                                            type="submit">بحث</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
+
+
 
                         <div class="alert alert-warning text-center" role="alert">
                             <strong> عدد النتائج = </strong>

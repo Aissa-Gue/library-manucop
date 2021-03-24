@@ -2,8 +2,8 @@
 include 'check.php';
 
 /***Export DB***/
-$backup_name        = "cards_db_" . $date . ".sql";
-$tables             = array("students", "users");
+$backup_name        = "library_manucop_db_" . $date . ".sql";
+$tables             = array("a_books", "b_subjects", "cabinets", "cities", "countries", "c_authors", "d_colors", "d_copiers", "d_manutypes", "d_motifs", "e_manuscripts", "f_books_subjects", "g_books_authors", "h_manuscripts_copiers", "i_cop_fm", "j_manuscripts_colors", "j_manuscripts_manutypes", "j_manuscripts_motifs", "users");
 
 Export_Database($servername, $username, $password, $dbname,  $tables, $backup_name);
 

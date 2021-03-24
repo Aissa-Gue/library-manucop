@@ -36,45 +36,25 @@ include 'header.php';
                             <div class="tab-pane fade show active" id="nav_database" role="tabpanel">
                                 <div class="row mt-3">
                                     <div class="col-md-12">
-                                        <h4>إدخال قاعدة بيانات النساخ</h4>
+                                        <h4>إدارة قاعدة بيانات البرنامج</h4>
                                         <hr>
-                                        <form method="post" action="file_upload.php" enctype="multipart/form-data">
-                                            <!-- First row -->
-                                            <div class="form-group row mb-3">
-                                                <div class="input-group">
-                                                    <label class="col-md-3">أدخل قائمة النساخ (Excel)</label>
-                                                    <div class="col-md-5">
-                                                        <input type="file" name="uploadfile" class="form-control"
-                                                            accept=".xlsx, .xls" required />
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <input type="submit" name="submit" class="btn btn-primary"
-                                                            value="إدخال">
-                                                        <a class="btn btn-secondary" href="template/ex_1.xlsx">
-                                                            <i class="bi bi-download"> نموذج</i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- END First row -->
-                                        </form>
 
                                         <form method="post" action="import_db.php" enctype="multipart/form-data">
-                                            <!-- Second row -->
                                             <div class="form-group row mb-3">
-                                                <div class="input-group">
+                                                <div class="input-group mb-3">
                                                     <label class="col-md-3">أدخل النسخة الاحتياطية (SQL) </label>
-                                                    <div class="col-md-5">
-                                                        <input type="file" name="db" class="form-control" accept=".sql"
-                                                            required />
+                                                    <div class="custom-file col-md-5">
+                                                        <input type="file" class="custom-file-input" name="db"
+                                                            accept=".sql" id="db" required>
+                                                        <label class="custom-file-label" for="db">اختر ملف قاعدة
+                                                            البيانات</label>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="input-group-append">
                                                         <input type="submit" name="importDb" class="btn btn-primary"
                                                             value="إدخال">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- END second row -->
                                         </form>
 
                                         <form method="post" action="export_db.php" enctype="multipart/form-data">
