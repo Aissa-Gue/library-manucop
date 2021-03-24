@@ -89,3 +89,33 @@ if (isset($_GET['del_manu_id'])) {
         echo "<script> window.location.href= 'formsList.php#formsList'</script>";
     }
 }
+
+// Delete country
+if (isset($_GET['del_count_id'])) {
+    $count_id = $_GET['del_count_id'];
+    $count_name = $_GET['count_name'];
+
+    $deleteCountQry = "DELETE FROM countries WHERE count_id='$count_id'";
+    if (mysqli_query($conn, $deleteCountQry)) {
+        echo "<script> alert('تم حذف البلد $count_id => $count_name بنجاح') </script>";
+        echo "<script> window.location.href= 'insertCountry.php#insertCountry'</script>";
+    } else {
+        echo "<script> alert('حدثت مشكلة: لم يتم حذف البلد ... تأكد من كونه غير موجود في استمارة !') </script>";
+        echo "<script> window.location.href= 'insertCountry.php#insertCountry'</script>";
+    }
+}
+
+// Delete City
+if (isset($_GET['del_city_id'])) {
+    $city_id = $_GET['del_city_id'];
+    $city_name = $_GET['city_name'];
+
+    $deleteCityQry = "DELETE FROM cities WHERE city_id='$city_id'";
+    if (mysqli_query($conn, $deleteCityQry)) {
+        echo "<script> alert('تم حذف المدينة $city_id => $city_name بنجاح') </script>";
+        echo "<script> window.location.href= 'insertCountry.php#insertCountry'</script>";
+    } else {
+        echo "<script> alert('حدثت مشكلة: لم يتم حذف المدينة ... تأكد من كونها غير موجودة في استمارة !') </script>";
+        echo "<script> window.location.href= 'insertCountry.php#insertCountry'</script>";
+    }
+}
