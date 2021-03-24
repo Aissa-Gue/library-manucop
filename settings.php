@@ -44,7 +44,7 @@ include 'header.php';
                                                 <div class="input-group mb-3">
                                                     <label class="col-md-3">أدخل النسخة الاحتياطية (SQL) </label>
                                                     <div class="custom-file col-md-5">
-                                                        <input type="file" class="custom-file-input" name="db"
+                                                        <input type="file" class="form-control-file" name="db"
                                                             accept=".sql" id="db" required>
                                                         <label class="custom-file-label" for="db">اختر ملف قاعدة
                                                             البيانات</label>
@@ -57,7 +57,7 @@ include 'header.php';
                                             </div>
                                         </form>
 
-                                        <form method="post" action="export_db.php" enctype="multipart/form-data">
+                                        <form method="post" action="export_db2.php" enctype="multipart/form-data">
                                             <!-- Third row -->
                                             <div class="form-group row mb-3">
                                                 <label class="col-md-3">استخراج قاعدة البيانات</label>

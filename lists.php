@@ -2,6 +2,7 @@
 include 'check.php';
 
 //Select all countries
+
 $selectCountQry = "SELECT count_id, count_name FROM countries";
 $countListResult = mysqli_query($conn, $selectCountQry);
 $rowsCount = mysqli_fetch_all($countListResult, MYSQLI_ASSOC);
