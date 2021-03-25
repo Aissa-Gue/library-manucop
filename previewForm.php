@@ -173,7 +173,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                     ?>
                     <fieldset class="scheduler-border">
                         <legend class="scheduler-border">معلومات الناسخ <?php if ($ci > 1) echo $ci ?></legend>
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">الرقم: </h5>
                             </div>
@@ -188,7 +188,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">الاسم الوارد في النسخة: </h5>
                             </div>
@@ -197,7 +197,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">النسبة (1): </h5>
                             </div>
@@ -230,7 +230,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">النسبة (4): </h5>
                             </div>
@@ -254,7 +254,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">اللقب (اسم الشهرة): </h5>
                             </div>
@@ -277,7 +277,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">بلد الناسخ: </h5>
                             </div>
@@ -301,7 +301,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         </div>
 
                         <?php if ($row['other_name1'] != "") { ?>
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-3">
                                 <h5 class="text-danger">صيغ أخرى لاسم الناسخ: </h5>
                             </div>
@@ -312,7 +312,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         <?php } ?>
 
                         <?php if ($row['other_name2'] != "") { ?>
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-3">
                                 <h5 class="text-danger"></h5>
                             </div>
@@ -323,7 +323,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         <?php } ?>
 
                         <?php if ($row['other_name3'] != "") { ?>
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-3">
                                 <h5 class="text-danger"></h5>
                             </div>
@@ -334,7 +334,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         <?php } ?>
 
                         <?php if ($row['other_name4'] != "") { ?>
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-3">
                                 <h5 class="text-danger"></h5>
                             </div>
@@ -349,7 +349,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
 
                     <fieldset class="scheduler-border">
                         <legend class="scheduler-border">معلومات النسخة</legend>
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">الرقم: </h5>
                             </div>
@@ -364,7 +364,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-2">
                                 <h5 class="text-danger">المؤلفين: </h5>
                             </div>
@@ -396,7 +396,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             } ?>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-2">
                                 <h5 class="text-danger">المواضيع: </h5>
                             </div>
@@ -416,7 +416,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             } ?>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <?php if ($cop_syear == $cop_eyear) { ?>
                             <div class="col-md-2">
                                 <h5 class="text-danger">تاريخ النسخ: </h5>
@@ -443,7 +443,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             <?php } ?>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">مكان النسخ: </h5>
                             </div>
@@ -476,7 +476,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">نوع النسخة: </h5>
                             </div>
@@ -489,7 +489,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">اسم الخزانة: </h5>
                             </div>
@@ -525,7 +525,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
 
                         <h5 class="my_line"><span>تفاصيل النسخة</span></h5>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">الخط: </h5>
                             </div>
@@ -549,7 +549,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">مقاس الورق: </h5>
                             </div>
@@ -562,7 +562,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">نوع المسطرة: </h5>
                             </div>
@@ -588,7 +588,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
 
 
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">نوع الزخارف: </h5>
                             </div>
@@ -606,7 +606,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">ألوان الحبر: </h5>
                             </div>
@@ -627,7 +627,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
 
                         <h5 class="my_line"><span>محتوى النسخة</span></h5>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">عمل الناسخ عدا نقل المحتوى: </h5>
                             </div>
@@ -644,7 +644,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">مستوى النسخة من حيث الجودة والضبط: </h5>
                             </div>
@@ -660,7 +660,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
 
                         <h5 class="my_line"><span>الملاحظات</span></h5>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">الأصل المنسوخ منه: </h5>
                             </div>
@@ -673,7 +673,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">المنسوخ له: </h5>
                             </div>
@@ -694,7 +694,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                                 $cop_fm = $row['cop_fm'];
                                 $fm_full_name = $row['full_name'];
                         ?>
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <table class="table table-bordered">
                                     <thead>
@@ -716,7 +716,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         <?php }
                         } ?>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">مستوى ضبط الناسخ: </h5>
                             </div>
@@ -729,7 +729,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">ترميم وإتمام: </h5>
                             </div>
@@ -742,7 +742,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">ملاحظات أخرى: </h5>
                             </div>
