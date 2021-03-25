@@ -325,7 +325,7 @@ if (isset($_POST['insertForm'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insert Form</title>
+    <title><?php echo $ProjTitle ?></title>
 </head>
 
 <body class="my_bg">
@@ -388,7 +388,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-9">
                                         <label for="cop_name">اسم الناسخ الوارد في النسخة</label>
                                         <input type="text" class="form-control" name="cop_name" id="cop_name"
-                                            placeholder="أدخل اسم الناسخ كما ورد في النسخة">
+                                            placeholder="أدخل اسم الناسخ كما ورد في النسخة" required>
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -421,9 +421,10 @@ if (isset($_POST['insertForm'])) {
                                         <label for="cop_month">&nbsp;</label>
                                         <select name="cop_month" id="cop_month" class="custom-select">
                                             <option value="" selected>-أدخل الشهر-</option>
-                                            <?php for ($i = 0; $i <= 11; $i++) { ?>
+                                            <?php for ($i = 0; $i <= 23; $i++) { ?>
                                             <option value="<?php echo $months[$i]; ?>"><?php echo $months[$i]; ?>
                                             </option>
+                                            <?php if ($i == 11) echo "<option disabled>──────────</option>" ?>
                                             <?php } ?>
                                         </select>
                                     </div>

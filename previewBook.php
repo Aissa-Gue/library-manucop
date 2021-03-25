@@ -51,7 +51,7 @@ if (isset($_GET['book_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Preview</title>
+    <title><?php echo $ProjTitle ?></title>
 </head>
 
 <body class="my_bg">
@@ -69,13 +69,11 @@ if (isset($_GET['book_id'])) {
                 <div class="row mt-3">
                     <div class="col-md-2">
                         <label for="book_id" class="form-label">رقم الكتاب</label>
-                        <input type="text" class="form-control text-center" value="<?php echo $book_id ?>"
-                            name="book_id" id="book_id" readonly>
+                        <input type="text" class="form-control text-center" value="<?php echo $book_id ?>" name="book_id" id="book_id" readonly>
                     </div>
                     <div class="col-md-9">
                         <label for="book_title" class="form-label">عنوان الكتاب</label>
-                        <input type="text" class="form-control" value="<?php echo $book_title ?>" name="book_title"
-                            id="book_title" readonly>
+                        <input type="text" class="form-control" value="<?php echo $book_title ?>" name="book_title" id="book_title" readonly>
                     </div>
                 </div>
 
@@ -86,8 +84,7 @@ if (isset($_GET['book_id'])) {
                         <?php
                         while ($row = mysqli_fetch_array($authorsResult)) {
                         ?>
-                        <input type="text" class="form-control mb-2" value="<?php echo $row['auth_name']; ?>"
-                            name="auth_name" id="author" readonly>
+                            <input type="text" class="form-control mb-2" value="<?php echo $row['auth_name']; ?>" name="auth_name" id="author" readonly>
                         <?php } ?>
                     </div>
                 </div>
@@ -98,10 +95,9 @@ if (isset($_GET['book_id'])) {
                     <?php
                     while ($row = mysqli_fetch_array($subjectsResult)) {
                     ?>
-                    <div class="col-md-auto">
-                        <input type="text" class="form-control mb-1" value="<?php echo  $row['subj_name']; ?>"
-                            name="subj_name" id="subject_name" readonly>
-                    </div>
+                        <div class="col-md-auto">
+                            <input type="text" class="form-control mb-1" value="<?php echo  $row['subj_name']; ?>" name="subj_name" id="subject_name" readonly>
+                        </div>
                     <?php } ?>
                 </div>
 
@@ -109,13 +105,11 @@ if (isset($_GET['book_id'])) {
                 <div class="row mt-3">
                     <div class="col-md-3">
                         <label for="creation_date" class="form-label">تاريخ الإضافة</label>
-                        <input type="text" class="form-control" value="<?php echo $creation_date ?>" id="creation_date"
-                            readonly>
+                        <input type="text" class="form-control" value="<?php echo $creation_date ?>" id="creation_date" readonly>
                     </div>
                     <div class="col-md-3">
                         <label for="last_edit_date" class="form-label">تاريخ آخر تعديل</label>
-                        <input type="text" class="form-control" value="<?php echo $last_edit_date ?>"
-                            id="last_edit_date" readonly>
+                        <input type="text" class="form-control" value="<?php echo $last_edit_date ?>" id="last_edit_date" readonly>
                     </div>
                 </div>
                 <button type="submit" name="copList" class="btn btn-info mt-3 mb-3">عرض قائمة
@@ -124,46 +118,41 @@ if (isset($_GET['book_id'])) {
 
             <!-- Copier manuscripts LIST -->
             <?php if (isset($_POST['copList'])) { ?>
-            <div class="row">
-                <table class="table table-striped col-md-10">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="text-center">رقم الاستمارة</th>
-                            <th scope="col" class="text-center">رقم الناسخ</th>
-                            <th scope="col">اسم الناسخ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
+                <div class="row">
+                    <table class="table table-striped col-md-10">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center">رقم الاستمارة</th>
+                                <th scope="col" class="text-center">رقم الناسخ</th>
+                                <th scope="col">اسم الناسخ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
                             $bookManuListResult = mysqli_query($conn, $bookManuListQry);
                             if (mysqli_num_rows($bookManuListResult) > 0) {
                                 while ($row = mysqli_fetch_array($bookManuListResult)) {
                             ?>
-                        <tr>
-                            <th scope="row" class="text-center">
-                                <a
-                                    href="previewForm.php?manu_id=<?php echo $row['manu_id'] ?>"><?php echo $row['manu_id'] ?></a>
-                            </th>
-                            <td scope="row" class="text-center"><?php echo $row['cop_id'] ?></td>
-                            <td>
-                                <a
-                                    href="previewCopier.php?cop_id=<?php echo $row['cop_id'] ?>"><?php echo $row['full_name'] ?></a>
-                            </td>
-                        </tr>
-                        <?php }
+                                    <tr>
+                                        <th scope="row" class="text-center">
+                                            <a href="previewForm.php?manu_id=<?php echo $row['manu_id'] ?>"><?php echo $row['manu_id'] ?></a>
+                                        </th>
+                                        <td scope="row" class="text-center"><?php echo $row['cop_id'] ?></td>
+                                        <td>
+                                            <a href="previewCopier.php?cop_id=<?php echo $row['cop_id'] ?>"><?php echo $row['full_name'] ?></a>
+                                        </td>
+                                    </tr>
+                            <?php }
                             } else {
                                 echo '<th scope="row"></th><td>لا توجد منسوخات لهذا الكتاب</td>';
                             } ?>
-                    </tbody>
-                </table>
-            </div>
+                        </tbody>
+                    </table>
+                </div>
             <?php } ?>
-            <button type="button" class="my_fixed_button1 my_col_btn btn btn-danger btn-lg rounded-pill"
-                onclick="window.history.go(-1);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                    class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                        d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+            <button type="button" class="my_fixed_button1 my_col_btn btn btn-danger btn-lg rounded-pill" onclick="window.history.go(-1);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
                 </svg>
                 رجوع
             </button>

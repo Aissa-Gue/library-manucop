@@ -99,7 +99,7 @@ if (isset($_POST['editCopier'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>edit Copier</title>
+    <title><?php echo $ProjTitle ?></title>
 </head>
 
 <body class="my_bg">
@@ -116,54 +116,45 @@ if (isset($_POST['editCopier'])) {
                 <div class="row mt-3">
                     <div class="col-md-2">
                         <label for="cop_id" class="form-label">رقم الناسخ</label>
-                        <input type="text" class="form-control text-center" value="<?php echo $cop_id ?>" name="cop_id"
-                            id="cop_id" placeholder="أدخل رقم الناسخ" required>
+                        <input type="text" class="form-control text-center" value="<?php echo $cop_id ?>" name="cop_id" id="cop_id" placeholder="أدخل رقم الناسخ" required>
                     </div>
                 </div>
                 <!-- 2nd row -->
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <label for="full_name" class="form-label">الإسم الكامل</label>
-                        <input type="text" class="form-control" value="<?php echo $full_name ?>" name="full_name"
-                            id="full_name" placeholder="أدخل اسم الناسخ" required>
+                        <input type="text" class="form-control" value="<?php echo $full_name ?>" name="full_name" id="full_name" placeholder="أدخل اسم الناسخ" required>
                     </div>
                     <div class="col-md-auto">
                         <label for="last_name" class="form-label">اللقب (اسم الشهرة)</label>
-                        <input type="text" class="form-control" value="<?php echo $last_name ?>" name="last_name"
-                            id="last_name" placeholder="أدخل لقب الناسخ">
+                        <input type="text" class="form-control" value="<?php echo $last_name ?>" name="last_name" id="last_name" placeholder="أدخل لقب الناسخ">
                     </div>
                     <div class="col-md-auto">
                         <label for="nickname" class="form-label">الكنية</label>
-                        <input type="text" class="form-control" value="<?php echo $nickname ?>" name="nickname"
-                            id="nickname" placeholder="أدخل كنية الناسخ">
+                        <input type="text" class="form-control" value="<?php echo $nickname ?>" name="nickname" id="nickname" placeholder="أدخل كنية الناسخ">
                     </div>
                 </div>
                 <!-- 3rd row -->
                 <div class="row mt-3">
                     <div class="col-md-2">
                         <label for="descent1" class="form-label">النسبة 1</label>
-                        <input type="text" class="form-control" value="<?php echo $descent1 ?>" name="descent1"
-                            id="descent1" placeholder="أدخل نسبة">
+                        <input type="text" class="form-control" value="<?php echo $descent1 ?>" name="descent1" id="descent1" placeholder="أدخل نسبة">
                     </div>
                     <div class="col-md-2">
                         <label for="descent2" class="form-label">النسبة 2</label>
-                        <input type="text" class="form-control" value="<?php echo $descent2 ?>" name="descent2"
-                            id="descent2" placeholder="أدخل نسبة">
+                        <input type="text" class="form-control" value="<?php echo $descent2 ?>" name="descent2" id="descent2" placeholder="أدخل نسبة">
                     </div>
                     <div class="col-md-2">
                         <label for="descent3" class="form-label">النسبة 3</label>
-                        <input type="text" class="form-control" value="<?php echo $descent3 ?>" name="descent3"
-                            id="descent3" placeholder="أدخل نسبة">
+                        <input type="text" class="form-control" value="<?php echo $descent3 ?>" name="descent3" id="descent3" placeholder="أدخل نسبة">
                     </div>
                     <div class="col-md-2">
                         <label for="descent4" class="form-label">النسبة 4</label>
-                        <input type="text" class="form-control" value="<?php echo $descent4 ?>" name="descent4"
-                            id="descent4" placeholder="أدخل نسبة">
+                        <input type="text" class="form-control" value="<?php echo $descent4 ?>" name="descent4" id="descent4" placeholder="أدخل نسبة">
                     </div>
                     <div class="col-md-2">
                         <label for="descent5" class="form-label">النسبة 5</label>
-                        <input type="text" class="form-control" value="<?php echo $descent5 ?>" name="descent5"
-                            id="descent5" placeholder="أدخل نسبة">
+                        <input type="text" class="form-control" value="<?php echo $descent5 ?>" name="descent5" id="descent5" placeholder="أدخل نسبة">
                     </div>
                 </div>
 
@@ -171,39 +162,29 @@ if (isset($_POST['editCopier'])) {
                 <div class="row mt-3">
                     <div class="col-md-7">
                         <label for="other_name1" class="form-label">صيغ أخرى لاسم الناسخ</label>
-                        <input type="text" class="form-control" value="<?php echo $other_name1 ?>" name="other_name1"
-                            id="other_name1" placeholder="أدخل صيغة أخرى لاسم الناسخ">
-                        <input type="text" class="form-control mt-1" value="<?php echo $other_name2 ?>"
-                            name="other_name2" id="other_name2" placeholder="أدخل صيغة أخرى لاسم الناسخ">
-                        <input type="text" class="form-control mt-1" value="<?php echo $other_name3 ?>"
-                            name="other_name3" id="other_name3" placeholder="أدخل صيغة أخرى لاسم الناسخ">
-                        <input type="text" class="form-control mt-1" value="<?php echo $other_name4 ?>"
-                            name="other_name4" id="other_name4" placeholder="أدخل صيغة أخرى لاسم الناسخ">
+                        <input type="text" class="form-control" value="<?php echo $other_name1 ?>" name="other_name1" id="other_name1" placeholder="أدخل صيغة أخرى لاسم الناسخ">
+                        <input type="text" class="form-control mt-1" value="<?php echo $other_name2 ?>" name="other_name2" id="other_name2" placeholder="أدخل صيغة أخرى لاسم الناسخ">
+                        <input type="text" class="form-control mt-1" value="<?php echo $other_name3 ?>" name="other_name3" id="other_name3" placeholder="أدخل صيغة أخرى لاسم الناسخ">
+                        <input type="text" class="form-control mt-1" value="<?php echo $other_name4 ?>" name="other_name4" id="other_name4" placeholder="أدخل صيغة أخرى لاسم الناسخ">
                     </div>
 
                     <div class="col-md-3 mt-4">
                         <label for="city_name" class="form-label">المدينة</label>
-                        <input list="cities" class="form-control" name="city_name"
-                            value="<?php if ($city_id != '') echo $city_id . ' # ' . $city_name ?>" id="city_name"
-                            placeholder="أدخل مدينة الناسخ">
+                        <input list="cities" class="form-control" name="city_name" value="<?php if ($city_id != '') echo $city_id . ' # ' . $city_name ?>" id="city_name" placeholder="أدخل مدينة الناسخ">
                         <datalist id="cities">
                             <?php
                             for ($i = 0; $i <= $lastCityKey; $i++) { ?>
-                            <option
-                                value="<?php print_r($rowsCities[$i]['city_id']) ?> # <?php print_r($rowsCities[$i]['city_name']); ?>">
+                                <option value="<?php print_r($rowsCities[$i]['city_id']) ?> # <?php print_r($rowsCities[$i]['city_name']); ?>">
                                 <?php  } ?>
                         </datalist>
 
                         <div class="mt-3"></div>
                         <label for="count_name">البلد</label>
-                        <input list="countries" class="form-control" name="count_name"
-                            value="<?php if ($count_id != '') echo $count_id . ' # ' . $count_name ?>" id="count_name"
-                            placeholder="أدخل بلد الناسخ">
+                        <input list="countries" class="form-control" name="count_name" value="<?php if ($count_id != '') echo $count_id . ' # ' . $count_name ?>" id="count_name" placeholder="أدخل بلد الناسخ">
                         <datalist id="countries">
                             <?php
                             for ($i = 0; $i <= $lastCountKey; $i++) { ?>
-                            <option
-                                value="<?php print_r($rowsCount[$i]['count_id']) ?> # <?php print_r($rowsCount[$i]['count_name']); ?>">
+                                <option value="<?php print_r($rowsCount[$i]['count_id']) ?> # <?php print_r($rowsCount[$i]['count_name']); ?>">
                                 <?php  } ?>
                         </datalist>
                     </div>
@@ -211,19 +192,15 @@ if (isset($_POST['editCopier'])) {
 
                 <div class="form-row justify-content-end">
                     <div class="form-group my_col_btn">
-                        <button type="button" class="btn btn-danger btn-block btn-lg rounded-pill"
-                            onclick="window.history.go(-1);">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                                class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+                        <button type="button" class="btn btn-danger btn-block btn-lg rounded-pill" onclick="window.history.go(-1);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
                             </svg>
                             رجوع
                         </button>
                     </div>
                     <div class="form-group my_col_btn">
-                        <button type="submit" name="editCopier"
-                            class="btn btn-success btn-block btn-lg rounded-pill">تحديث</button>
+                        <button type="submit" name="editCopier" class="btn btn-success btn-block btn-lg rounded-pill">تحديث</button>
                     </div>
                 </div>
             </form>

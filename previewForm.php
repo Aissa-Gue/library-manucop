@@ -5,8 +5,8 @@ include 'header.php';
 $manu_id_get = $_GET['manu_id'];
 
 // select manu book / country / city ...
-$manuSubQry1 = "SELECT e_manuscripts.manu_id, e_manuscripts.book_id, book_title, cop_name, 
-cop_day, cop_month, cop_syear, cop_eyear, date_type, cop_place,
+$manuSubQry1 = "SELECT e_manuscripts.manu_id, e_manuscripts.book_id, book_title,
+cop_day, cop_day_nbr, cop_month, cop_syear, cop_eyear, date_type, cop_place,
 signing, cabinet_name, cabinet_nbr, manu_type, index_nbr,
 font, font_style, regular_lines, lines_notes, paper_size,
 copied_from, copied_to, manu_level, cop_level, rost_completion, city_name , count_name,
@@ -26,21 +26,21 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
     $book_id = $row['book_id'];
     $book_title = $row['book_title'];
 
-    $cop_name = $row['cop_name'];
     $cop_day = $row['cop_day'];
+    $cop_day_nbr = $row['cop_day_nbr'];
     $cop_month = $row['cop_month'];
     $cop_syear = $row['cop_syear'];
     $cop_eyear = $row['cop_eyear'];
 
     $date_type = $row['date_type'];
     if ($date_type == 1) $date_type = "ميلادي";
-    elseif ($date_type == 0) $date_type = "هجري";
+    elseif ($date_type == 0 and $date_type != null) $date_type = "هجري";
 
     $cop_place = $row['cop_place'];
 
     $signing = $row['signing'];
     if ($signing == 1) $signing = "موقعة";
-    else $signing = "بالمقارنة";
+    elseif ($signing == 0 and $signing != null) $signing = "بالمقارنة";
 
     $cabinet_name = $row['cabinet_name'];
     $cabinet_nbr = $row['cabinet_nbr'];
@@ -51,7 +51,7 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
 
     $regular_lines = $row['regular_lines'];
     if ($regular_lines == 1) $regular_lines = "منتظمة";
-    else $regular_lines = "غير منتظمة";
+    elseif ($regular_lines == 0 and $regular_lines != null) $regular_lines = "غير منتظمة";
 
     $lines_notes = $row['lines_notes'];
 
@@ -70,7 +70,7 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
 
     $rost_completion = $row['rost_completion'];
     if ($rost_completion == 1) $rost_completion = "نعم";
-    else $rost_completion = "لا";
+    elseif ($rost_completion == 0 and $rost_completion != null) $rost_completion = "لا";
 
     $city_name = $row['city_name'];
     $count_name = $row['count_name'];
@@ -81,9 +81,11 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
 }
 
 // select manu copiers
-$manuSubQry2 = "SELECT d_copiers.cop_id, full_name
+$manuSubQry2 = "SELECT d_copiers.cop_id, full_name, name_in_manu, descent1, descent2, descent3, descent4, descent5, last_name, nickname, other_name1, other_name2, other_name3, other_name4, count_name, city_name
 FROM d_copiers
 INNER JOIN h_manuscripts_copiers ON h_manuscripts_copiers.cop_id = d_copiers.cop_id
+LEFT JOIN countries ON countries.count_id = d_copiers.count_id
+LEFT JOIN cities ON cities.city_id = d_copiers.city_id
 WHERE h_manuscripts_copiers.manu_id = '$manu_id_get'";
 
 $manuSubQry2Result = mysqli_query($conn, $manuSubQry2);
@@ -146,7 +148,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preview Form</title>
+    <title><?php echo $ProjTitle ?></title>
 </head>
 
 <body class="my_bg">
@@ -163,307 +165,596 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                     <h4>معلومات الاستمارة</h4>
                 </div>
                 <form action="" method="post">
+
+                    <?php
+                    $ci = 0;
+                    while ($row = mysqli_fetch_array($manuSubQry2Result)) {
+                        $ci++;
+                    ?>
                     <fieldset class="scheduler-border">
-                        <legend class="scheduler-border">معلومات الناسخ</legend>
-                        <div class="form-row">
-                            <div class="form-group col-md-7">
-                                <label for="full_name">اسم الناسخ</label>
-                                <?php
-                                while ($row = mysqli_fetch_array($manuSubQry2Result)) {
-                                    $cop_id = $row['cop_id'];
-                                    $full_name = $row['full_name'];
-                                ?>
-                                <input type="text" class="form-control mb-2"
-                                    value="<?php echo $cop_id . ' # ' . $full_name ?>" id="full_name">
+                        <legend class="scheduler-border">معلومات الناسخ <?php if ($ci > 1) echo $ci ?></legend>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">الرقم: </h5>
+                            </div>
+                            <div class="col-md-1">
+                                <p><?php echo $row['cop_id'] ?></p>
+                            </div>
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">الاسم الكامل: </h5>
+                            </div>
+                            <div class="col-md-7">
+                                <p><?php echo $row['full_name'] ?></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">الاسم الوارد في النسخة: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <p><?php echo $row['name_in_manu'] ?></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">النسبة (1): </h5>
+                            </div>
+                            <div class="col-md-2">
+                                <?php if ($row['descent1']) { ?>
+                                <p><?php echo $row['descent1']; ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">النسبة (2): </h5>
+                            </div>
+                            <div class="col-md-2">
+                                <?php if ($row['descent2']) { ?>
+                                <p><?php echo $row['descent2']; ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">النسبة (3): </h5>
+                            </div>
+                            <div class="col-md-2">
+                                <?php if ($row['descent3']) { ?>
+                                <p><?php echo $row['descent3']; ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
                                 <?php } ?>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">النسبة (4): </h5>
+                            </div>
+                            <div class="col-md-2">
+                                <?php if ($row['descent4']) { ?>
+                                <p><?php echo $row['descent4']; ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">النسبة (5): </h5>
+                            </div>
+                            <div class="col-md-2">
+                                <?php if ($row['descent5']) { ?>
+                                <p><?php echo $row['descent5']; ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">اللقب (اسم الشهرة): </h5>
+                            </div>
+                            <div class="col-md-3">
+                                <?php if ($row['last_name']) { ?>
+                                <p><?php echo $row['last_name']; ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">الكنية (5): </h5>
+                            </div>
+                            <div class="col-md-2">
+                                <?php if ($row['nickname']) { ?>
+                                <p><?php echo $row['nickname']; ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">بلد الناسخ: </h5>
+                            </div>
+                            <div class="col-md-4">
+                                <?php if ($row['count_name']) { ?>
+                                <p><?php echo $row['count_name']; ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">مدينة الناسخ: </h5>
+                            </div>
+                            <div class="col-md-4">
+                                <?php if ($row['city_name']) { ?>
+                                <p><?php echo $row['city_name']; ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+                        </div>
+
+                        <?php if ($row['other_name1'] != "") { ?>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5 class="text-danger">صيغ أخرى لاسم الناسخ: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <p><?php echo $row['other_name1'] ?></p>
+                            </div>
+                        </div>
+                        <?php } ?>
+
+                        <?php if ($row['other_name2'] != "") { ?>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5 class="text-danger"></h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <p><?php echo $row['other_name2'] ?></p>
+                            </div>
+                        </div>
+                        <?php } ?>
+
+                        <?php if ($row['other_name3'] != "") { ?>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5 class="text-danger"></h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <p><?php echo $row['other_name3'] ?></p>
+                            </div>
+                        </div>
+                        <?php } ?>
+
+                        <?php if ($row['other_name4'] != "") { ?>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5 class="text-danger"></h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <p><?php echo $row['other_name4'] ?></p>
+                            </div>
+                        </div>
+                        <?php } ?>
                     </fieldset>
+                    <?php } ?>
+
 
                     <fieldset class="scheduler-border">
                         <legend class="scheduler-border">معلومات النسخة</legend>
-                        <div class="form-row">
-                            <div class="form-group col-md-auto">
-                                <label for="manu_id">رقم الاستمارة</label>
-                                <input type="number" class="form-control text-center" value="<?php echo $manu_id ?>"
-                                    id="manu_id">
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">الرقم: </h5>
+                            </div>
+                            <div class="col-md-1">
+                                <p><?php echo $manu_id ?></p>
+                            </div>
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">عنوان الكتاب: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <p><?php echo $book_title ?></p>
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-9">
-                                <label for="cop_name">اسم الناسخ الوارد في النسخة</label>
-                                <input type="text" class="form-control" id="cop_name" value="<?php echo $cop_name ?>">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h5 class="text-danger">المؤلفين: </h5>
                             </div>
-                        </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-9">
-                                <label for="title">عنوان الكتاب</label>
-                                <input type="text" class="form-control" id="title" value="<?php echo $book_title ?>">
+                            <?php if (mysqli_num_rows($manuSubQry3Result) == 0) { ?>
+                            <div class="col-md-auto">
+                                <p class="text-success">/ / /</p>
                             </div>
-                        </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-9">
-                                <label for="auth_name">المؤلفين</label>
-                                <?php
+                            <?php } else {
+                                $i = 0;
                                 while ($row = mysqli_fetch_array($manuSubQry3Result)) {
-                                    $auth_id = $row['auth_id'];
-                                    $auth_name = $row['auth_name'];
+                                    $i++;
+
                                 ?>
-                                <input type="text" class="form-control mb-2" id="auth_name"
-                                    value="<?php echo $auth_id . ' # ' . $auth_name ?>">
+                            <?php if ($i == 1) { ?>
+                            <div class="col-md-10">
+                                <p><?php echo $row['auth_name'] ?></p>
+                            </div>
+                            <?php } else { ?>
+                            <div class="col-md-2">
+                                <p class="text-success"></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p><?php echo $row['auth_name'] ?></p>
+                            </div>
+                            <?php } ?>
+                            <?php }
+                            } ?>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h5 class="text-danger">المواضيع: </h5>
+                            </div>
+
+                            <?php if (mysqli_num_rows($manuSubQry4Result) == 0) { ?>
+                            <div class="col-md-auto">
+                                <p class="text-success">/ / /</p>
+                            </div>
+
+                            <?php } else {
+                                while ($row = mysqli_fetch_array($manuSubQry4Result)) {
+                                ?>
+                            <div class="col-md-auto">
+                                <p><?php echo $row['subj_name'] .  ' /' ?></p>
+                            </div>
+                            <?php }
+                            } ?>
+                        </div>
+
+                        <div class="row">
+                            <?php if ($cop_syear == $cop_eyear) { ?>
+                            <div class="col-md-2">
+                                <h5 class="text-danger">تاريخ النسخ: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($cop_day or $cop_day_nbr or $cop_month or $cop_syear or $cop_eyear) { ?>
+                                <p>
+                                    <?php echo $cop_day . ' ' . $cop_day_nbr . ' ' . $cop_month . ' ' . $cop_syear . ' / ' . $date_type  ?>
+                                </p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+
+                            <?php } else { ?>
+                            <div class="col-md-2">
+                                <h5 class="text-danger">فترة النسخ: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <p>
+                                    <?php echo ' من سنة: ' . $cop_syear . ' إلى سنة: ' . $cop_eyear . ' / ' . $date_type  ?>
+                                </p>
+                            </div>
+                            <?php } ?>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">مكان النسخ: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($cop_place) { ?>
+                                <p><?php echo $cop_place ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">المدينة: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($city_name) { ?>
+                                <p><?php echo $city_name ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">البلد حاليا: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($count_name) { ?>
+                                <p><?php echo $count_name ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
                                 <?php } ?>
                             </div>
                         </div>
 
-                        <label for="subj_name">المواضيع</label>
-                        <div class="form-row">
-                            <?php
-                            while ($row = mysqli_fetch_array($manuSubQry4Result)) {
-                                $subj_id = $row['subj_id'];
-                                $subj_name = $row['subj_name'];
-                            ?>
-                            <div class="form-group col-md-auto">
-                                <input type="text" class="form-control mb-2" id="subj_name"
-                                    value="<?php echo $subj_name ?>">
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">نوع النسخة: </h5>
                             </div>
-                            <?php } ?>
-                        </div>
-
-                        <div class="form-row" id="cop_date">
-                            <?php if ($cop_syear == $cop_eyear) { ?>
-                            <div class="form-group col-md-2">
-                                <label for="cop_day">تاريخ النسخ</label>
-                                <input type="text" class="form-control" id="cop_day" value="<?php echo $cop_day ?>"
-                                    readonly>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="cop_month">&nbsp;</label>
-                                <input type="text" class="form-control" id="cop_month" value="<?php echo $cop_month ?>"
-                                    readonly>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="cop_syear">&nbsp;</label>
-                                <input type="number" class="form-control" id="cop_syear"
-                                    value="<?php echo $cop_syear ?>" readonly>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="date_type">نوع التقويم</label>
-                                <input type="text" class="form-control" id="date_type" value="<?php echo $date_type ?>"
-                                    readonly>
-                            </div>
-                            <?php } else { ?>
-                            <div class="form-group col-md-2">
-                                <label for="cop_day">فترة النسخ ( بالتقدير )</label>
-                                <input type="text" class="form-control" id="cop_day"
-                                    value="<?php echo $cop_syear . ' - ' . $cop_eyear ?>" readonly>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="date_type">نوع التقويم</label>
-                                <input type="text" class="form-control" id="date_type" value="<?php echo $date_type ?>"
-                                    readonly>
-                            </div>
-                            <?php } ?>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label for="cop_place">مكان النسخ</label>
-                                <input type="text" class="form-control" id="cop_place" value="<?php echo $cop_place ?>"
-                                    readonly>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="city_name">المدينة</label>
-                                <input type="text" class="form-control" id="city_name" value="<?php echo $city_name ?>"
-                                    readonly>
-                            </div>
-
-                            <div class="form-group col-md-3">
-                                <label for="count_name">البلد حاليا</label>
-
-                                <input type="text" class="form-control" id="count_name"
-                                    value="<?php echo $count_name ?>" readonly>
+                            <div class="col-md-auto">
+                                <?php if ($signing) { ?>
+                                <p><?php echo $signing ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label for="signing">موقعة أو بالمقارنة</label>
-                                <input type="text" class="form-control" id="signing" value="<?php echo $signing ?>"
-                                    readonly>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">اسم الخزانة: </h5>
                             </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-8">
-                                <label for="cabinet_name">اسم الخزانة</label>
-                                <input type="text" class="form-control" id="cabinet_name"
-                                    value="<?php echo $cabinet_name ?>" readonly>
+                            <div class="col-md-auto">
+                                <?php if ($cabinet_name) { ?>
+                                <p><?php echo $cabinet_name ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
                             </div>
-                            <div class="form-group col-md-2">
-                                <label for="cabinet_nbr">الرقم في الخزانة</label>
-                                <input type="text" class="form-control" id="cabinet_nbr"
-                                    value="<?php echo $cabinet_nbr . ' ';
-                                                                                                if ($manu_type != "مج") echo $manu_type ?>" readonly>
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">الرقم في الخزانة: </h5>
                             </div>
-                            <div class="form-group col-md-2">
-                                <label for="index_nbr">الرقم في الفهرس</label>
-                                <input type="text" class="form-control" id="index_nbr" value="<?php echo $index_nbr ?>"
-                                    readonly>
+                            <div class="col-md-auto">
+                                <?php if ($cabinet_nbr or $manu_type) { ?>
+                                <p><?php echo $cabinet_nbr;
+                                        if ($manu_type != "مج") echo ' ' . $manu_type ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">الرقم في الفهرس: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($index_nbr) { ?>
+                                <p><?php echo $index_nbr ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
                             </div>
                         </div>
 
                         <h5 class="my_line"><span>تفاصيل النسخة</span></h5>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-2">
-                                <label for="font">الخط</label>
-                                <input type="text" class="form-control" id="font" value="<?php echo $font ?>" readonly>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">الخط: </h5>
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="font_style">نوع الخط</label>
-                                <input type="text" class="form-control" id="font_style"
-                                    value="<?php echo $font_style ?>" readonly>
+                            <div class="col-md-auto">
+                                <?php if ($font) { ?>
+                                <p><?php echo $font ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
                             </div>
-                            <div class="form-group col-md-2">
-                                <label for="regular_lines">نوع المسطرة</label>
-                                <input type="text" class="form-control" id="regular_lines"
-                                    value="<?php echo $regular_lines ?>" readonly>
+
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">نوعه: </h5>
                             </div>
-                            <div class="form-group col-md-4">
-                                <label for="lines_notes">ملاحظات على المسطرة</label>
-                                <input type="text" class="form-control" id="lines_notes"
-                                    value="<?php echo $lines_notes ?>" readonly>
+                            <div class="col-md-auto">
+                                <?php if ($font_style) { ?>
+                                <p><?php echo $font_style ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label for="paper_size">مقاس الورق</label>
-                                <input type="text" class="form-control" id="paper_size"
-                                    value="<?php echo $paper_size ?>" readonly>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">مقاس الورق: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($paper_size) { ?>
+                                <p><?php echo $paper_size ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
                             </div>
                         </div>
 
-                        <label for="motifs">الزخارف</label><br>
-                        <div class="form-row">
-                            <?php
-                            while ($row = mysqli_fetch_array($manuSubQry6Result)) {                            ?>
-                            <div class="form-group col-md-auto">
-                                <input type="text" class="form-control" id="motifs"
-                                    value="<?php echo $row['motif_name']; ?>" readonly>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">نوع المسطرة: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($regular_lines) { ?>
+                                <p><?php echo $regular_lines; ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">ملاحظات على المسطرة: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($lines_notes) { ?>
+                                <p><?php echo $lines_notes ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">نوع الزخارف: </h5>
+                            </div>
+                            <?php if (mysqli_num_rows($manuSubQry6Result) == 0) { ?>
+                            <div class="col-md-auto">
+                                <p class="text-success">/ / /</p>
                             </div>
                             <?php } ?>
+                            <div class="col-md-auto">
+                                <p><?php
+                                    while ($row = mysqli_fetch_array($manuSubQry6Result)) {
+                                        echo $row['motif_name'] . ' / ';
+                                    } ?>
+                                </p>
+                            </div>
                         </div>
 
-                        <label for="ink_colors">ألوان الحبر</label><br>
-                        <div class="form-row">
-                            <?php
-                            while ($row = mysqli_fetch_array($manuSubQry7Result)) {
-                            ?>
-                            <div class="form-group col-md-2">
-                                <input type="text" class="form-control" id="ink_colors"
-                                    value="<?php echo $row['color_name']; ?>" readonly>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">ألوان الحبر: </h5>
+                            </div>
+                            <?php if (mysqli_num_rows($manuSubQry7Result) == 0) { ?>
+                            <div class="col-md-auto">
+                                <p class="text-success">/ / /</p>
                             </div>
                             <?php } ?>
+                            <div class="col-md-auto">
+                                <p><?php
+                                    while ($row = mysqli_fetch_array($manuSubQry7Result)) {
+                                        echo $row['color_name'] . ' / ';
+                                    } ?>
+                                </p>
+                            </div>
                         </div>
+
 
                         <h5 class="my_line"><span>محتوى النسخة</span></h5>
 
-                        <label for="manu_types">عمل الناسخ عدا نقل المحتوى</label><br>
-                        <div class="form-row">
-                            <?php
-                            while ($row = mysqli_fetch_array($manuSubQry8Result)) {
-                            ?>
-                            <div class="form-group col-md-2">
-                                <input type="text" class="form-control" id="manu_types"
-                                    value="<?php echo $row['type_name']; ?>" readonly>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">عمل الناسخ عدا نقل المحتوى: </h5>
+                            </div>
+                            <?php if (mysqli_num_rows($manuSubQry8Result) == 0) { ?>
+                            <div class="col-md-auto">
+                                <p class="text-success">/ / /</p>
                             </div>
                             <?php } ?>
-                        </div>
-
-                        <div class="form-row mt-4">
-                            <div class="form-group col-md-auto">
-                                <label for="manu_level">مستوى النسخة من حيث الجودة والضبط</label>
-                                <input type="text" class="form-control" id="manu_level"
-                                    value="<?php echo $manu_level ?>" readonly>
+                            <div class="col-md-auto">
+                                <p><?php while ($row = mysqli_fetch_array($manuSubQry8Result)) {
+                                        echo $row['type_name'] . ' / ';
+                                    } ?>
+                                </p>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">مستوى النسخة من حيث الجودة والضبط: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($manu_level) { ?>
+                                <p><?php echo $manu_level; ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
+                            </div>
+                        </div>
+
 
                         <h5 class="my_line"><span>الملاحظات</span></h5>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-8">
-                                <label for="copied_from">الأصل المنسوخ منه</label>
-                                <input type="text" class="form-control" id="copied_from"
-                                    value="<?php echo $copied_from ?>" readonly>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">الأصل المنسوخ منه: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($copied_from) { ?>
+                                <p><?php echo $copied_from ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-8">
-                                <label for="copied_to">المنسوخ له</label>
-                                <input type="text" class="form-control" id="copied_to" value="<?php echo $copied_to ?>"
-                                    readonly>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">المنسوخ له: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($copied_to) { ?>
+                                <p><?php echo $copied_to ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
                             </div>
                         </div>
-
 
                         <?php
                         if (mysqli_num_rows($manuSubQry5Result) > 0) {
+
+                            while ($row = mysqli_fetch_array($manuSubQry5Result)) {
+                                $cop_id = $row['cop_id'];
+                                $cop_fm = $row['cop_fm'];
+                                $fm_full_name = $row['full_name'];
                         ?>
-                        <div class="form-row">
-                            <div class="form-group col-md-auto">
-                                <label for="cop_match">رقم الناسخ (من الاستمارة أعلاه)</label>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-danger text-center">رقم الناسخ (من الاستمارة
+                                                أعلاه): </th>
+                                            <th scope="col" class="text-danger">الناسخ المشابه له في الخط:</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="text-center"><?php echo $cop_id ?></th>
+                                            <td><?php echo '[ ' . $cop_fm . ' ] => ' . $fm_full_name ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
+                        </div>
+                        <?php }
+                        } ?>
 
-                            <div class="form-group col-md-9">
-                                <label for="cop_fm">تشابه خط الناسخ بغيره من الناسخين</label>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">مستوى ضبط الناسخ: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($cop_level) { ?>
+                                <p><?php echo $cop_level ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <?php
-                                while ($row = mysqli_fetch_array($manuSubQry5Result)) {
-                                    $cop_id = $row['cop_id'];
-                                    $cop_fm = $row['cop_fm'];
-                                    $fm_full_name = $row['full_name'];
-                                ?>
-                            <div class="form-group col-md-auto">
-                                <input type="text" class="form-control text-center" value="<?php echo $cop_id ?>"
-                                    id="cop_match" readonly>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">ترميم وإتمام: </h5>
                             </div>
-                            =>
-                            <div class="form-group col-md-9">
-                                <input type="text" class="form-control" id="cop_fm"
-                                    value="<?php echo $cop_fm . ' # ' . $fm_full_name ?>" readonly>
-                            </div>
-                            <?php } ?>
-                        </div>
-                        <?php } ?>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label for="cop_level">مستوى ضبط الناسخ</label>
-                                <input type="text" class="form-control" id="cop_level" value="<?php echo $cop_level ?>"
-                                    readonly>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="rost_completion">ترميم وإتمام</label>
-                                <input type="text" class="form-control" id="rost_completion"
-                                    value="<?php echo $rost_completion ?>" readonly>
+                            <div class="col-md-auto">
+                                <?php if ($rost_completion) { ?>
+                                <p><?php echo $rost_completion ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-7">
-                                <label for="notes">ملاحظات أخرى</label>
-                                <textarea class="form-control" name="notes" id="notes" rows="3"
-                                    readonly><?php echo $notes ?></textarea>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <h5 class="text-danger">ملاحظات أخرى: </h5>
+                            </div>
+                            <div class="col-md-auto">
+                                <?php if ($notes) { ?>
+                                <p><?php echo $notes ?></p>
+                                <?php } else { ?>
+                                <p class="text-success">/ / /</p>
+                                <?php } ?>
                             </div>
                         </div>
+
                     </fieldset>
                 </form>
             </div>
@@ -471,7 +762,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
     </div>
 </body>
 
-<script src="js/main.js?<?php echo time() ?>"></script>
+<script src="js/main.js"></script>
 <script>
 scrollTop();
 storeSelectedTab();

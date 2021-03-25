@@ -29,3 +29,5 @@ $date = date('Y-m-d H:i:s', time());
 
 //arabic lang chars
 mysqli_set_charset($conn, 'utf8');
+
+$ProjTitle = "برنامج نساخ المخطوطات";

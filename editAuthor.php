@@ -41,7 +41,7 @@ if (isset($_POST['editAuthor'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Author Edit</title>
+    <title><?php echo $ProjTitle ?></title>
 </head>
 
 <body class="my_bg">
@@ -59,34 +59,28 @@ if (isset($_POST['editAuthor'])) {
                 <div class="row mt-3">
                     <div class="col-md-2">
                         <label for="auth_id" class="form-label">رقم المؤلف</label>
-                        <input type="text" class="form-control text-center" value="<?php echo $auth_id ?>"
-                            name="auth_id" id="auth_id" required>
+                        <input type="text" class="form-control text-center" value="<?php echo $auth_id ?>" name="auth_id" id="auth_id" required>
                     </div>
                 </div>
                 <!-- 2nd row -->
                 <div class="row mt-3">
                     <div class="col-md-9">
                         <label for="auth_name" class="form-label">اسم المؤلف</label>
-                        <input type="text" class="form-control" value="<?php echo $auth_name ?>" name="auth_name"
-                            id="auth_name" required>
+                        <input type="text" class="form-control" value="<?php echo $auth_name ?>" name="auth_name" id="auth_name" required>
                     </div>
                 </div>
 
                 <div class="form-row justify-content-end mt-4">
                     <div class="form-group my_col_btn">
-                        <button type="button" class="btn btn-danger btn-block btn-lg rounded-pill"
-                            onclick="window.history.go(-1);">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                                class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+                        <button type="button" class="btn btn-danger btn-block btn-lg rounded-pill" onclick="window.history.go(-1);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
                             </svg>
                             رجوع
                         </button>
                     </div>
                     <div class="form-group my_col_btn">
-                        <button type="submit" name="editAuthor"
-                            class="btn btn-success btn-block btn-lg rounded-pill">تحديث</button>
+                        <button type="submit" name="editAuthor" class="btn btn-success btn-block btn-lg rounded-pill">تحديث</button>
                     </div>
                 </div>
             </form>

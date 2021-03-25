@@ -244,7 +244,7 @@ if (isset($_POST['editForm'])) {
     $creation_date = $date;
     $last_edit_date = $date;
 
-    $editManuQry = "UPDATE e_manuscripts SET manu_id= '$manu_id', book_id= '$book_id', cop_name= '$cop_name', cop_day= '$cop_day', cop_month= '$cop_month', cop_syear= $cop_syear, cop_eyear= $cop_eyear, date_type= $date_type, cop_place= '$cop_place', signing=  $signing, cabinet_id= $cabinet_id, cabinet_nbr= $cabinet_nbr, manu_type= '$manu_type', index_nbr= $index_nbr, font= '$font', font_style= '$font_style', regular_lines= $regular_lines, lines_notes= '$lines_notes', paper_size= $paper_size, copied_from= '$copied_from', copied_to= '$copied_to', manu_level= '$manu_level', cop_level= '$cop_level', rost_completion= $rost_completion, count_id= $count_id, city_id= $city_id, notes= '$notes', last_edit_date= '$last_edit_date' WHERE manu_id= '$prev_manu_id'";
+    $editManuQry = "UPDATE e_manuscripts SET manu_id= '$manu_id', book_id= '$book_id', cop_name= '$cop_name', cop_day= '$cop_day', cop_month= '$cop_month', cop_syear= $cop_syear, cop_eyear= $cop_eyear, date_type= $date_type, cop_place= '$cop_place', signing=  $signing, cabinet_id= $cabinet_id, cabinet_nbr= $cabinet_nbr, manu_type= '$manu_type', index_nbr= $index_nbr, font= '$font', font_style= '$font_style', regular_lines= $regular_lines, lines_notes= '$lines_notes', paper_size= $paper_size, copied_from= '$copied_from', copied_to= '$copied_to', manu_level= '$manu_level', cop_level= '$cop_level', rost_completion= $rost_completion, count_id= $count_id, city_id= $city_id, notes= '$notes', last_edit_date= '$last_edit_date' WHERE manu_id= $prev_manu_id";
 
 
     //********** Insert into j_manuscripts_motifs **********/
@@ -436,7 +436,7 @@ if (isset($_POST['editForm'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Form</title>
+    <title><?php echo $ProjTitle ?></title>
 </head>
 
 <body class="my_bg">
@@ -533,7 +533,8 @@ if (isset($_POST['editForm'])) {
                             <div class="form-group col-md-9">
                                 <label for="cop_name">اسم الناسخ الوارد في النسخة</label>
                                 <input type="text" class="form-control" name="cop_name" id="cop_name"
-                                    value="<?php echo $cop_name ?>" placeholder="أدخل اسم الناسخ كما ورد في النسخة">
+                                    value="<?php echo $cop_name ?>" placeholder="أدخل اسم الناسخ كما ورد في النسخة"
+                                    required>
                             </div>
                         </div>
 
@@ -573,11 +574,12 @@ if (isset($_POST['editForm'])) {
                                 <label for="cop_month">&nbsp;</label>
                                 <select name="cop_month" id="cop_month" class="custom-select">
                                     <option value="">-أدخل الشهر-</option>
-                                    <?php for ($i = 0; $i <= 11; $i++) { ?>
+                                    <?php for ($i = 0; $i <= 23; $i++) { ?>
                                     <option value="<?php echo $months[$i]; ?>"
                                         <?php if ($cop_month == $months[$i]) echo "selected"; ?>>
                                         <?php echo $months[$i]; ?>
                                     </option>
+                                    <?php if ($i == 11) echo "<option disabled>──────────</option>" ?>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -670,11 +672,10 @@ if (isset($_POST['editForm'])) {
                             <div class="form-group col-md-3">
                                 <label for="signing">موقعة أو بالمقارنة</label>
                                 <select name="signing" id="signing" class="custom-select">
-                                    <option value="" <?php if ($signing == NULL) echo "selected" ?>>
-                                        - اختر نوع النسخة -
-                                    </option>
+                                    <option value="">- اختر نوع النسخة -</option>
                                     <option value="1" <?php if ($signing == 1) echo "selected" ?>>موقعة</option>
-                                    <option value="0" <?php if ($signing == 0) echo "selected" ?>>بالمقارنة</option>
+                                    <option value="0" <?php if ($signing == 0 and $signing != null) echo "selected" ?>>
+                                        بالمقارنة</option>
                                 </select>
                             </div>
                         </div>
@@ -703,7 +704,7 @@ if (isset($_POST['editForm'])) {
                                 <label for="manu_type">نوع النسخة</label>
                                 <select name="manu_type" id="manu_type" class="custom-select">
                                     <option value="">-أدخل نوع النسخة-</option>
-                                    <option value="مج" <?php if ($manu_type == '') echo "selected"; ?>>مجلد</option>
+                                    <option value="مج" <?php if ($manu_type == 'مج') echo "selected"; ?>>مجلد</option>
                                     <option value="مص" <?php if ($manu_type == 'مص') echo "selected"; ?>>مصحف</option>
                                     <option value="دغ" <?php if ($manu_type == 'دغ') echo "selected"; ?>>دون غلاف
                                     </option>
@@ -739,14 +740,15 @@ if (isset($_POST['editForm'])) {
                                     <?php } ?>
                                 </select>
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-3">
                                 <label for="regular_lines">نوع المسطرة</label>
                                 <select name="regular_lines" id="regular_lines" class="custom-select">
                                     <option value="">- اختر نوع المسطرة -</option>
                                     <option value="1" <?php if ($regular_lines == 1) echo "selected"; ?>>
                                         منتظمة
                                     </option>
-                                    <option value="0" <?php if ($regular_lines == 0) echo "selected"; ?>>
+                                    <option value="0"
+                                        <?php if ($regular_lines == 0 and $regular_lines != null) echo "selected"; ?>>
                                         غير منتظمة
                                     </option>
                                 </select>
@@ -1096,7 +1098,9 @@ if (isset($_POST['editForm'])) {
                                     <option value="">- اختر خيار -</option>
                                     <option value="1" <?php if ($rost_completion == 1) echo "selected"; ?>>نعم
                                     </option>
-                                    <option value="0" <?php if ($rost_completion == 0) echo "selected"; ?>>لا
+                                    <option value="0"
+                                        <?php if ($rost_completion == 0 and $rost_completion != null) echo "selected"; ?>>
+                                        لا
                                     </option>
                                 </select>
                             </div>

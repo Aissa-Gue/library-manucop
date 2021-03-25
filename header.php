@@ -15,7 +15,7 @@ header('Cache-Control: no cache');
 
     <!-- FONTS -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Mirza&display=swap" rel="stylesheet">
     <!-- my styles -->
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -25,7 +25,7 @@ header('Cache-Control: no cache');
     <nav class="navbar navbar-dark bg-primary fixed-top">
         <a class="navbar-brand" href="insertForm.php#insertForm">
             <img src="img/logo.JPG" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
-            برنامج نساخ المخطوطات
+            <?php echo $ProjTitle ?>
         </a>
         <a class="navbar-brand" href="insertForm.php#insertForm">
             قسم التراث والمكتبة

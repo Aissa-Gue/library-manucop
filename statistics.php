@@ -114,7 +114,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistics</title>
+    <title><?php echo $ProjTitle ?></title>
 </head>
 
 <body class="my_bg">
@@ -142,9 +142,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                 <div class="card">
                                     <div class="card-header">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-left" type="button"
-                                                data-toggle="collapse" data-target="#byCountryCity"
-                                                aria-expanded="true">
+                                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#byCountryCity" aria-expanded="true">
                                                 #1 حسب البلد والمدينة</button>
                                         </h2>
                                     </div>
@@ -161,21 +159,19 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                 <tbody>
                                                     <?php while ($countryRows = mysqli_fetch_array($byCountryResult)) {
                                                         $count_id = $countryRows['count_id']; ?>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#byCity<?php echo $count_id ?>"
-                                                                data-toggle="collapse" role="button"
-                                                                aria-expanded="false">
-                                                                <?php
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <a href="#byCity<?php echo $count_id ?>" data-toggle="collapse" role="button" aria-expanded="false">
+                                                                    <?php
                                                                     if ($countryRows['count_name'] == NULL) echo '(غير مصنف)';
                                                                     else echo $countryRows['count_name']; ?>
-                                                            </a>
-                                                        </th>
-                                                        <td class="text-center">
-                                                            <?php echo $countryRows['manu_nbr'] ?>
-                                                    </tr>
+                                                                </a>
+                                                            </th>
+                                                            <td class="text-center">
+                                                                <?php echo $countryRows['manu_nbr'] ?>
+                                                        </tr>
 
-                                                    <?php
+                                                        <?php
                                                         // By City
                                                         if ($countryRows['count_name'] == NULL) $count_idQry = "e_manuscripts.count_id IS NULL";
                                                         else $count_idQry = "e_manuscripts.count_id = '$count_id'";
@@ -189,15 +185,15 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                         $byCityResult = mysqli_query($conn, $byCityQry);
 
                                                         while ($cityRows = mysqli_fetch_array($byCityResult)) { ?>
-                                                    <tr id="byCity<?php echo $count_id ?>" class="collapse">
-                                                        <td scope="row">
-                                                            <?php
+                                                            <tr id="byCity<?php echo $count_id ?>" class="collapse">
+                                                                <td scope="row">
+                                                                    <?php
                                                                     if ($cityRows['city_name'] == NULL) echo '- ' . ' (غير مصنف)';
                                                                     else echo "- " . $cityRows['city_name']; ?>
-                                                        </td>
-                                                        <td><?php echo '[ ' . $cityRows['manu_nbr_city'] . ' ]' ?>
-                                                        </td>
-                                                    </tr>
+                                                                </td>
+                                                                <td><?php echo '[ ' . $cityRows['manu_nbr_city'] . ' ]' ?>
+                                                                </td>
+                                                            </tr>
                                                     <?php } //end city rows
                                                     } //end country rows
                                                     ?>
@@ -210,8 +206,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                 <div class="card">
                                     <div class="card-header">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                                data-toggle="collapse" data-target="#byCabinet" aria-expanded="false">
+                                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#byCabinet" aria-expanded="false">
                                                 #2 حسب الخزانة
                                             </button>
                                         </h2>
@@ -227,15 +222,15 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                 </thead>
                                                 <tbody>
                                                     <?php while ($cabinetRows = mysqli_fetch_array($byCabinetResult)) { ?>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <?php
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <?php
                                                                 if ($cabinetRows['cabinet_name'] == NULL) echo '(غير مصنف)';
                                                                 else echo $cabinetRows['cabinet_name']; ?>
-                                                        </th>
-                                                        <td class="text-center"><?php echo $cabinetRows['manu_nbr'] ?>
-                                                        </td>
-                                                    </tr>
+                                                            </th>
+                                                            <td class="text-center"><?php echo $cabinetRows['manu_nbr'] ?>
+                                                            </td>
+                                                        </tr>
                                                     <?php } ?>
                                                 </tbody>
                                             </table>
@@ -246,8 +241,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                 <div class="card">
                                     <div class="card-header">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                                data-toggle="collapse" data-target="#byManuType" aria-expanded="false">
+                                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#byManuType" aria-expanded="false">
                                                 #3 حسب نوع النسخة
                                             </button>
                                         </h2>
@@ -263,17 +257,17 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                 </thead>
                                                 <tbody>
                                                     <?php while ($manuTypeRows = mysqli_fetch_array($byManuTypeResult)) { ?>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <?php
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <?php
                                                                 if ($manuTypeRows['manu_type'] == NULL) echo '(غير مصنف)';
                                                                 elseif ($manuTypeRows['manu_type'] == "مص") echo 'مصحف';
                                                                 elseif ($manuTypeRows['manu_type'] == "مج") echo 'مجلد';
                                                                 elseif ($manuTypeRows['manu_type'] == "دغ") echo 'دون غلاف'; ?>
-                                                        </th>
-                                                        <td class="text-center"><?php echo $manuTypeRows['manu_nbr'] ?>
-                                                        </td>
-                                                    </tr>
+                                                            </th>
+                                                            <td class="text-center"><?php echo $manuTypeRows['manu_nbr'] ?>
+                                                            </td>
+                                                        </tr>
                                                     <?php } ?>
                                                 </tbody>
                                             </table>
@@ -284,8 +278,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                 <div class="card">
                                     <div class="card-header">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                                data-toggle="collapse" data-target="#byManuLevel" aria-expanded="false">
+                                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#byManuLevel" aria-expanded="false">
                                                 #4 حسب مستوى النسخة
                                             </button>
                                         </h2>
@@ -301,15 +294,15 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                 </thead>
                                                 <tbody>
                                                     <?php while ($manuLevelRows = mysqli_fetch_array($byManuLevelResult)) { ?>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <?php
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <?php
                                                                 if ($manuLevelRows['manu_level'] == NULL) echo '(غير مصنف)';
                                                                 else echo $manuLevelRows['manu_level']; ?>
-                                                        </th>
-                                                        <td class="text-center"><?php echo $manuLevelRows['manu_nbr'] ?>
-                                                        </td>
-                                                    </tr>
+                                                            </th>
+                                                            <td class="text-center"><?php echo $manuLevelRows['manu_nbr'] ?>
+                                                            </td>
+                                                        </tr>
                                                     <?php } ?>
                                                 </tbody>
                                             </table>
@@ -320,8 +313,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                 <div class="card">
                                     <div class="card-header">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                                data-toggle="collapse" data-target="#byCopLevel" aria-expanded="false">
+                                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#byCopLevel" aria-expanded="false">
                                                 #5 حسب مستوى ضبط الناسخ
                                             </button>
                                         </h2>
@@ -337,15 +329,15 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                 </thead>
                                                 <tbody>
                                                     <?php while ($copLevelRows = mysqli_fetch_array($byCopLevelResult)) { ?>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <?php
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <?php
                                                                 if ($copLevelRows['cop_level'] == NULL) echo '(غير مصنف)';
                                                                 else echo $copLevelRows['cop_level']; ?>
-                                                        </th>
-                                                        <td class="text-center"><?php echo $copLevelRows['manu_nbr'] ?>
-                                                        </td>
-                                                    </tr>
+                                                            </th>
+                                                            <td class="text-center"><?php echo $copLevelRows['manu_nbr'] ?>
+                                                            </td>
+                                                        </tr>
                                                     <?php } ?>
                                                 </tbody>
                                             </table>
@@ -359,8 +351,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                 <div class="card">
                                     <div class="card-header">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-left" type="button"
-                                                data-toggle="collapse" data-target="#bySubject" aria-expanded="true">
+                                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#bySubject" aria-expanded="true">
                                                 #6 حسب المواضيع</button>
                                         </h2>
                                     </div>
@@ -376,14 +367,14 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                 </thead>
                                                 <tbody>
                                                     <?php while ($subjRows = mysqli_fetch_array($bySubjectResult)) { ?>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <?php
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <?php
                                                                 if ($subjRows['subj_name'] == NULL) echo '(غير مصنف)';
                                                                 else echo $subjRows['subj_name']; ?>
-                                                        </th>
-                                                        <td class="text-center"><?php echo $subjRows['manu_nbr'] ?></td>
-                                                    </tr>
+                                                            </th>
+                                                            <td class="text-center"><?php echo $subjRows['manu_nbr'] ?></td>
+                                                        </tr>
                                                     <?php } ?>
                                                 </tbody>
                                             </table>
@@ -394,8 +385,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                 <div class="card">
                                     <div class="card-header">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                                data-toggle="collapse" data-target="#byPaperSize" aria-expanded="false">
+                                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#byPaperSize" aria-expanded="false">
                                                 #7 حسب مقاس الورق </button>
                                         </h2>
                                     </div>
@@ -410,18 +400,18 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                 </thead>
                                                 <tbody>
                                                     <?php while ($paperSizeRows = mysqli_fetch_array($byPaperSizeResult)) { ?>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <?php
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <?php
                                                                 if ($paperSizeRows['paper_size'] == 1) echo "القطع الكبير";
                                                                 elseif ($paperSizeRows['paper_size'] == 2) echo 'القطع المتوسط';
                                                                 elseif ($paperSizeRows['paper_size'] == 3) echo 'القطع الصغير';
                                                                 else echo '(غير مصنف)';
                                                                 ?>
-                                                        </th>
-                                                        <td class="text-center"><?php echo $paperSizeRows['manu_nbr'] ?>
-                                                        </td>
-                                                    </tr>
+                                                            </th>
+                                                            <td class="text-center"><?php echo $paperSizeRows['manu_nbr'] ?>
+                                                            </td>
+                                                        </tr>
                                                     <?php } ?>
                                                 </tbody>
                                             </table>
@@ -432,8 +422,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                 <div class="card">
                                     <div class="card-header">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                                data-toggle="collapse" data-target="#byFont" aria-expanded="false">
+                                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#byFont" aria-expanded="false">
                                                 #8 حسب نوع الخط
                                             </button>
                                         </h2>
@@ -449,15 +438,15 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                 </thead>
                                                 <tbody>
                                                     <?php while ($fontRows = mysqli_fetch_array($byFontResult)) { ?>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <?php
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <?php
                                                                 if ($fontRows['font'] == NULL) echo '(غير مصنف)';
                                                                 else echo $fontRows['font']; ?>
-                                                        </th>
-                                                        <td class="text-center"><?php echo $fontRows['manu_nbr'] ?>
-                                                        </td>
-                                                    </tr>
+                                                            </th>
+                                                            <td class="text-center"><?php echo $fontRows['manu_nbr'] ?>
+                                                            </td>
+                                                        </tr>
                                                     <?php } ?>
                                                 </tbody>
                                             </table>
@@ -468,8 +457,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                 <div class="card">
                                     <div class="card-header">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                                data-toggle="collapse" data-target="#bySigning" aria-expanded="false">
+                                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#bySigning" aria-expanded="false">
                                                 #9 حسب التوقيع
                                             </button>
                                         </h2>
@@ -485,17 +473,17 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                 </thead>
                                                 <tbody>
                                                     <?php while ($signingRows = mysqli_fetch_array($bySigningResult)) { ?>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <?php
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <?php
                                                                 if ($signingRows['signing'] == NULL) echo '(غير مصنف)';
                                                                 elseif ($signingRows['signing'] == 1) echo 'موقعة';
                                                                 elseif ($signingRows['signing'] == 0) echo 'بالمقارنة';
                                                                 ?>
-                                                        </th>
-                                                        <td class="text-center"><?php echo $signingRows['manu_nbr'] ?>
-                                                        </td>
-                                                    </tr>
+                                                            </th>
+                                                            <td class="text-center"><?php echo $signingRows['manu_nbr'] ?>
+                                                            </td>
+                                                        </tr>
                                                     <?php } ?>
                                                 </tbody>
                                             </table>
@@ -506,9 +494,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                 <div class="card">
                                     <div class="card-header">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                                data-toggle="collapse" data-target="#byRostCompletion"
-                                                aria-expanded="false">
+                                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#byRostCompletion" aria-expanded="false">
                                                 #10 حسب الترميم والإتمام
                                             </button>
                                         </h2>
@@ -524,18 +510,18 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
                                                 </thead>
                                                 <tbody>
                                                     <?php while ($rostCompletionRows = mysqli_fetch_array($byRostCompletionResult)) { ?>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <?php
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <?php
                                                                 if ($rostCompletionRows['rost_completion'] == NULL) echo '(غير مصنف)';
                                                                 elseif ($rostCompletionRows['rost_completion'] == 1) echo 'مرممة ومتممة';
                                                                 elseif ($rostCompletionRows['rost_completion'] == 0) echo 'غير مرممة';
                                                                 ?>
-                                                        </th>
-                                                        <td class="text-center">
-                                                            <?php echo $rostCompletionRows['manu_nbr'] ?>
-                                                        </td>
-                                                    </tr>
+                                                            </th>
+                                                            <td class="text-center">
+                                                                <?php echo $rostCompletionRows['manu_nbr'] ?>
+                                                            </td>
+                                                        </tr>
                                                     <?php } ?>
                                                 </tbody>
                                             </table>
@@ -552,8 +538,8 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
 </body>
 
 <script>
-scrollTop();
-storeSelectedTab();
+    scrollTop();
+    storeSelectedTab();
 </script>
 
 </html>

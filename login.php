@@ -14,7 +14,7 @@
     <!-- my styles -->
     <link rel="stylesheet" href="css/style.css">
 
-    <title>Login</title>
+    <title><?php echo $ProjTitle ?></title>
 </head>
 
 <body>

@@ -158,16 +158,16 @@ $search_num_rows = mysqli_num_rows($searchResult);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forms List</title>
+    <title><?php echo $ProjTitle ?></title>
 </head>
 <style>
-.card-header {
-    padding: 3px 3px;
-}
+    .card-header {
+        padding: 3px 3px;
+    }
 
-.input-group-text {
-    width: 140px;
-}
+    .input-group-text {
+        width: 140px;
+    }
 </style>
 
 <body class="my_bg">
@@ -192,15 +192,12 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                 <div class="card">
                                     <div class="card-header" id="headingOne">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-left" type="button"
-                                                data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                                                aria-controls="collapseOne">
+                                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                                 بحث بسيط </button>
                                         </h2>
                                     </div>
 
-                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                                        data-parent="#accordion1">
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion1">
                                         <div class="card-body">
                                             <div class="form-row mb-2">
                                                 <div class="col-md-4">
@@ -208,8 +205,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">رقم الاستمارة</span>
                                                         </div>
-                                                        <input type="number" name="manu_id" class="form-control"
-                                                            placeholder="أدخل رقم الاستمارة">
+                                                        <input type="number" name="manu_id" class="form-control" placeholder="أدخل رقم الاستمارة">
                                                     </div>
                                                 </div>
 
@@ -218,11 +214,9 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">عنوان الكتاب</span>
                                                         </div>
-                                                        <input type="text" name="book_title" class="form-control"
-                                                            placeholder="أدخل عنوان الكتاب">
+                                                        <input type="text" name="book_title" class="form-control" placeholder="أدخل عنوان الكتاب">
                                                         <div class="input-group-append">
-                                                            <button class="btn btn-primary" name="manuSearch"
-                                                                type="submit">بحث</button>
+                                                            <button class="btn btn-primary" name="manuSearch" type="submit">بحث</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -233,14 +227,11 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                 <div class="card">
                                     <div class="card-header" id="headingTwo">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                                data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
-                                                aria-controls="collapseTwo">
+                                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                 #2 بحث مخصص </button>
                                         </h2>
                                     </div>
-                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                        data-parent="#accordion1">
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion1">
                                         <div class="card-body">
                                             <div class="form-row mb-2">
                                                 <div class="col">
@@ -252,7 +243,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                         <datalist id="copiers">
                                                             <?php
                                                             for ($i = 0; $i <= $lastKey; $i++) { ?>
-                                                            <option value="<?php print_r($rows[$i]['full_name']); ?>">
+                                                                <option value="<?php print_r($rows[$i]['full_name']); ?>">
                                                                 <?php  } ?>
                                                         </datalist>
                                                     </div>
@@ -267,8 +258,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                         <datalist id="authors">
                                                             <?php
                                                             for ($i = 0; $i <= $lastAuthKey; $i++) { ?>
-                                                            <option
-                                                                value="<?php print_r($rowsAuth[$i]['auth_name']); ?>">
+                                                                <option value="<?php print_r($rowsAuth[$i]['auth_name']); ?>">
                                                                 <?php  } ?>
                                                         </datalist>
                                                     </div>
@@ -285,8 +275,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                         <datalist id="manu_types">
                                                             <?php
                                                             for ($i = 0; $i <= $lastManuTypeKey; $i++) { ?>
-                                                            <option
-                                                                value="<?php print_r($rowsManuType[$i]['type_name']); ?>">
+                                                                <option value="<?php print_r($rowsManuType[$i]['type_name']); ?>">
                                                                 <?php  } ?>
                                                         </datalist>
                                                     </div>
@@ -346,8 +335,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                         <datalist id="cities">
                                                             <?php
                                                             for ($i = 0; $i <= $lastCityKey; $i++) { ?>
-                                                            <option
-                                                                value="<?php print_r($rowsCities[$i]['city_name']); ?>">
+                                                                <option value="<?php print_r($rowsCities[$i]['city_name']); ?>">
                                                                 <?php  } ?>
                                                         </datalist>
                                                     </div>
@@ -364,8 +352,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                         <datalist id="countries">
                                                             <?php
                                                             for ($i = 0; $i <= $lastCountKey; $i++) { ?>
-                                                            <option
-                                                                value="<?php print_r($rowsCount[$i]['count_name']); ?>">
+                                                                <option value="<?php print_r($rowsCount[$i]['count_name']); ?>">
                                                                 <?php  } ?>
                                                         </datalist>
                                                     </div>
@@ -395,9 +382,9 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                         <select name="font_style" id="font_style" class="custom-select">
                                                             <option value="" selected></option>
                                                             <?php for ($i = 0; $i <= 5; $i++) { ?>
-                                                            <option value="<?php echo $w_font_styles[$i]; ?>">
-                                                                <?php echo $w_font_styles[$i]; ?>
-                                                            </option>
+                                                                <option value="<?php echo $w_font_styles[$i]; ?>">
+                                                                    <?php echo $w_font_styles[$i]; ?>
+                                                                </option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -412,8 +399,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                         <datalist id="inkColors">
                                                             <?php
                                                             for ($i = 0; $i <= $lastColorKey; $i++) { ?>
-                                                            <option
-                                                                value="<?php print_r($rowsColor[$i]['color_name']); ?>">
+                                                                <option value="<?php print_r($rowsColor[$i]['color_name']); ?>">
                                                                 <?php  } ?>
                                                         </datalist>
                                                     </div>
@@ -518,13 +504,11 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                             <span class="input-group-text">اسم
                                                                 الخزانــــــــة</span>
                                                         </div>
-                                                        <input list="cabinet_names" class="form-control"
-                                                            name="cabinet_name" id="cabinet_name">
+                                                        <input list="cabinet_names" class="form-control" name="cabinet_name" id="cabinet_name">
                                                         <datalist id="cabinet_names">
                                                             <?php
                                                             for ($i = 0; $i <= $lastCabinetKey; $i++) { ?>
-                                                            <option
-                                                                value="<?php print_r($rowsCabinet[$i]['cabinet_name']); ?>">
+                                                                <option value="<?php print_r($rowsCabinet[$i]['cabinet_name']); ?>">
                                                                 <?php  } ?>
                                                         </datalist>
                                                     </div>
@@ -562,8 +546,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                         <datalist id="subjects">
                                                             <?php
                                                             for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
-                                                            <option
-                                                                value="<?php print_r($rowsSubj[$i]['subj_name']) ?>">
+                                                                <option value="<?php print_r($rowsSubj[$i]['subj_name']) ?>">
                                                                 <?php  } ?>
                                                         </datalist>
                                                     </div>
@@ -579,10 +562,8 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                             <span class="input-group-text">فتــــرة
                                                                 النســـــخ</span>
                                                         </div>
-                                                        <input type="text" name="cop_syear" class="form-control"
-                                                            placeholder="من سنة">
-                                                        <input type="text" name="cop_eyear" class="form-control"
-                                                            placeholder="إلى سنة">
+                                                        <input type="text" name="cop_syear" class="form-control" placeholder="من سنة">
+                                                        <input type="text" name="cop_eyear" class="form-control" placeholder="إلى سنة">
 
 
                                                         <div class="input-group-prepend">
@@ -595,8 +576,7 @@ $search_num_rows = mysqli_num_rows($searchResult);
                                                         </select>
 
                                                         <div class="input-group-append">
-                                                            <button class="btn btn-primary" name="manuSearch"
-                                                                type="submit">بحث</button>
+                                                            <button class="btn btn-primary" name="manuSearch" type="submit">بحث</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -627,42 +607,32 @@ $search_num_rows = mysqli_num_rows($searchResult);
                             </thead>
                             <tbody>
                                 <?php while ($row = mysqli_fetch_array($searchResult)) { ?>
-                                <tr>
-                                    <th scope="row" class="text-center"><?php echo $row['manu_id'] ?></th>
-                                    <td><?php echo $row['book_title'] ?>
-                                    </td>
-                                    <td class="text-center">
-                                        <a class="btn btn-outline-danger"
-                                            href="previewForm.php?manu_id=<?php echo $row['manu_id'] ?>">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
-                                            </svg>
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        <a class="btn btn-outline-danger"
-                                            href="editForm.php?manu_id=<?php echo $row['manu_id'] ?>">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
-                                            </svg>
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        <a class="btn btn-outline-danger"
-                                            href="delete.php?del_manu_id=<?php echo $row['manu_id'] ?>&book_title=<?php echo $row['book_title'] ?>"
-                                            onclick="return confirm('هل أنت متأكد؟')">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                                            </svg>
-                                        </a>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <th scope="row" class="text-center"><?php echo $row['manu_id'] ?></th>
+                                        <td><?php echo $row['book_title'] ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-outline-danger" href="previewForm.php?manu_id=<?php echo $row['manu_id'] ?>">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                                                    <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
+                                                </svg>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-outline-danger" href="editForm.php?manu_id=<?php echo $row['manu_id'] ?>">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                                                </svg>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-outline-danger" href="delete.php?del_manu_id=<?php echo $row['manu_id'] ?>&book_title=<?php echo $row['book_title'] ?>" onclick="return confirm('هل أنت متأكد؟')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
                                 <?php } ?>
                             </tbody>
                         </table>
@@ -675,8 +645,8 @@ $search_num_rows = mysqli_num_rows($searchResult);
 
 <script src="js/main.js"></script>
 <script>
-storeSelectedTab();
-scrollTop();
+    storeSelectedTab();
+    scrollTop();
 </script>
 
 </html>

@@ -61,7 +61,7 @@ $cityListResult = mysqli_query($conn, $cityListQry);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insert Country & City</title>
+    <title><?php echo $ProjTitle ?></title>
 </head>
 
 <body class="my_bg">
@@ -102,7 +102,7 @@ $cityListResult = mysqli_query($conn, $cityListQry);
                                         <div class="form-row justify-content-end">
                                             <div class="form-group col-md-4">
                                                 <button type="submit" name="insertCountry"
-                                                    class="btn btn-success btn-block btn-lg rounded-pill">إضافة
+                                                    class="btn btn-success btn-block p-2 rounded-pill">إضافة
                                                     البلد</button>
                                             </div>
                                         </div>
@@ -131,7 +131,7 @@ $cityListResult = mysqli_query($conn, $cityListQry);
                                         <div class="form-row justify-content-end">
                                             <div class="form-group col-md-auto">
                                                 <button type="submit" name="insertCity"
-                                                    class="btn btn-success btn-block btn-lg rounded-pill">إضافة
+                                                    class="btn btn-success btn-block px-3 py-2 rounded-pill">إضافة
                                                     المدينة</button>
                                             </div>
                                         </div>
