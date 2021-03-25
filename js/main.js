@@ -39,7 +39,7 @@ $("#addSubject").click(function () {
         html += '<div class="form-group col-md-auto">';
         html += '<label for="subject">&nbsp;</label>';
         html +=
-            '<input list="subjects" class="form-control" name="subj_name'+c+'" id="subject" placeholder="أدخل الموضوع '+c+'">';
+            '<input list="subjects" class="form-control" name="subj_name'+c+'" id="subject" placeholder="حدد الموضوع '+c+'">';
         html += '<datalist id="subjects">';
         html += '<?php for ($i = 0; $i <= $lastSubjKey; $i++) { ?>';
         html += '<option value="<?php print_r($rowsSubj[$i][subj_id]); ?> # <?php print_r($rowsSubj[$i][subj_name]); ?>">';
@@ -77,7 +77,7 @@ $("#addAuthor").click(function () {
         var html = '';
         html += '<div class="form-group col-md-7">';
         html +=
-            '<input list="authors" class="form-control" name="auth_name'+d+'" id="author" placeholder="أدخل المؤلف '+d+'">';
+            '<input list="authors" class="form-control" name="auth_name'+d+'" id="author" placeholder="حدد المؤلف '+d+'">';
         html += '<datalist id="authors">';
         html += '<?php for ($i = 0; $i <= $lastAuthKey; $i++) { ?>';
         html += '<option value="<?php print_r($rowsAuth[$i][auth_name]); ?> # <?php print_r($rowsAuth[$i][auth_id]); ?>">';
@@ -102,7 +102,7 @@ $("#addFontMatch").click(function () {
 
         html += '<div class="form-group col-md-7">';
         html +=
-            '<input list="copFontMatch" class="form-control" name="cop_fm'+e+'" id="cop_fm" placeholder="اختر الناسخ المشابه له في الخط '+e+'">';
+            '<input list="copFontMatch" class="form-control" name="cop_fm'+e+'" id="cop_fm" placeholder="حدد الناسخ المشابه له في الخط '+e+'">';
         html += '<datalist id="copFontMatch">';
         html += '<?php for ($i = 0; $i <= $lastKey; $i++) { ?>';
         html += '<option value="<?php print_r($rows[$i][cop_id]); ?> # <?php print_r($rows[$i][full_name]); ?>">';
@@ -123,21 +123,26 @@ var f = 2;
 $("#addCopier").click(function () {
     if (f <= 4) {
         var html = '';
-        html += '<div class="form-group col-md-7">';
+        html += '<div class="form-group col-md-5">';
         html +=
-            '<input list="copiers" class="form-control" name="full_name'+f+'" id="full_name" placeholder="أدخل اسم الناسخ '+f+'">';
+            '<input list="copiers" class="form-control" name="full_name'+f+'" id="full_name" placeholder="حدد اسم الناسخ '+f+'">';
         html += '<datalist id="copiers">';
         html += '<?php for ($i = 0; $i <= $lastKey; $i++) { ?>';
         html += '<option value="<?php print_r($rows[$i][cop_id]); ?> # <?php print_r($rows[$i][full_name]); ?>">';
         html += '<?php  } ?>'
         html += '</datalist>';
         html += '</div>';
+        // name in manu
+        html+= '<div class="form-group col-md-6">';
+        html+= '<input type="text" class="form-control" name="name_in_manu'+f+'" id="name_in_manu" placeholder="أدخل اسم الناسخ '+f+' كما ورد في النسخة">';
+        html+= '</div>';
         $(html).insertBefore("#addCopier");
         $('#addCopier').css('margin-top', '5px');
         if (f == 4) $("#addCopier").remove();
         f++;
     }
 });
+
 
 // add Motif
 var g = 2;
@@ -147,7 +152,7 @@ $("#addMotif").click(function () {
         html += '<div class="form-group col-md-auto">';
         html += '<label for="motif">&nbsp;</label>';
         html +=
-            '<input list="motifs" class="form-control" name="motif'+g+'" id="motif" placeholder="أدخل الزخرفة '+g+'">';
+            '<input list="motifs" class="form-control" name="motif'+g+'" id="motif" placeholder="حدد الزخرفة '+g+'">';
         html += '<datalist id="motifs">';
         html += '<?php for ($i = 0; $i <= $lastMotifKey; $i++) { ?>';
         html += '<option value="<?php print_r($rowsMotif[$i][motif_id]); ?> # <?php print_r($rowsMotif[$i][motif_name]); ?>">';
@@ -168,7 +173,7 @@ $("#addInkColor").click(function () {
         html += '<div class="form-group col-md-auto">';
         html += '<label for="inkColor">&nbsp;</label>';
         html +=
-            '<input list="inkColors" class="form-control" name="inkColor'+h+'" id="inkColor" placeholder="أدخل اللون '+h+'">';
+            '<input list="inkColors" class="form-control" name="inkColor'+h+'" id="inkColor" placeholder="حدد اللون '+h+'">';
         html += '<datalist id="inkColors">';
         html += '<?php for ($i = 0; $i <= $lastColorKey; $i++) { ?>';
         html += '<option value="<?php print_r($rowsColor[$i][color_id]); ?> # <?php print_r($rowsColor[$i][color_name]); ?>">';
@@ -189,7 +194,7 @@ $("#addManuTypes").click(function () {
         html += '<div class="form-group col-md-auto">';
         html += '<label for="manu_type">&nbsp;</label>';
         html +=
-            '<input list="manu_types" class="form-control" name="manu_types'+i+'" id="manu_type" placeholder="أدخل العنصر '+i+'">';
+            '<input list="manu_types" class="form-control" name="manu_types'+i+'" id="manu_type" placeholder="حدد العنصر '+i+'">';
         html += '<datalist id="manu_types">';
         html += '<?php for ($i = 0; $i <= $lastManuTypeKey; $i++) { ?>';
         html += '<option value="<?php print_r($rowsManuType[$i][type_id]); ?> # <?php print_r($rowsManuType[$i][type_name]); ?>">';

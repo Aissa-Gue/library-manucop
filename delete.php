@@ -68,7 +68,8 @@ if (isset($_GET['del_manu_id'])) {
     $deleteManuQry2 = "DELETE FROM j_manuscripts_colors WHERE manu_id='$manu_id'";
     $deleteManuQry3 = "DELETE FROM j_manuscripts_manutypes WHERE manu_id='$manu_id'";
     $deleteManuQry4 = "DELETE FROM j_manuscripts_motifs WHERE manu_id='$manu_id'";
-    $deleteManuQry5 = "DELETE FROM e_manuscripts WHERE manu_id='$manu_id'";
+    $deleteManuQry5 = "DELETE FROM i_cop_fm WHERE manu_id='$manu_id'";
+    $deleteManuQry6 = "DELETE FROM e_manuscripts WHERE manu_id='$manu_id'";
 
     // START TRANSACTION 
     mysqli_query($conn, "START TRANSACTION");
@@ -77,15 +78,17 @@ if (isset($_GET['del_manu_id'])) {
     $R3 = mysqli_query($conn, $deleteManuQry3);
     $R4 = mysqli_query($conn, $deleteManuQry4);
     $R5 = mysqli_query($conn, $deleteManuQry5);
+    $R6 = mysqli_query($conn, $deleteManuQry6);
 
     // COMMIT OR ROLLBACK
-    if ($R1 and $R2 and $R3 and $R4 and $R5) {
+    if ($R1 and $R2 and $R3 and $R4 and $R5 and $R6) {
         mysqli_query($conn, "COMMIT");
         echo "<script> alert('تم حذف الاستمارة $manu_id => $book_title بنجاح') </script>";
         echo "<script> window.location.href= 'formsList.php#formsList'</script>";
     } else {
         mysqli_query($conn, "ROLLBACK");
         echo "<script> alert('حدثت مشكلة: لم يتم حذف الاستمارة!!') </script>";
+        echo mysqli_error($conn);
         echo "<script> window.location.href= 'formsList.php#formsList'</script>";
     }
 }

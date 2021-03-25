@@ -13,9 +13,6 @@ $lastManuIdKey = $rowManuId[0];
 if (isset($_POST['insertForm'])) {
     $insManuErrs = array("ERRORS >>: <br>");
 
-    // Turn autocommit off
-    //mysqli_autocommit($conn, FALSE);
-
     $manu_id = $_POST['manu_id'];
 
     $book_explode = explode(' # ', $_POST['book_title']);
@@ -25,31 +22,38 @@ if (isset($_POST['insertForm'])) {
     //********** Insert into Manuscriptions_Copiers Queries **********/
     $cop_id1_explode = explode(' # ', $_POST['full_name1']);
     $cop_id1 = $cop_id1_explode[0]; // multi
-    $insertCopQry1 = "INSERT INTO h_manuscripts_copiers Values('$manu_id','$cop_id1')";
+    $name_in_manu1 = $_POST['name_in_manu1'];
+    $insertCopQry1 = "INSERT INTO h_manuscripts_copiers Values($manu_id, $cop_id1, '$name_in_manu1')";
 
-    if (isset($_POST['full_name2']) and $_POST['full_name2'] !== "") {
+    if (isset($_POST['full_name2']) and $_POST['full_name2'] !== "" and $_POST['name_in_manu2'] != "") {
         $cop_id2_explode = explode(' # ', $_POST['full_name2']);
         $cop_id2 = $cop_id2_explode[0]; // multi
-        $insertCopQry2 = "INSERT INTO h_manuscripts_copiers Values('$manu_id','$cop_id2')";
+        $name_in_manu2 = $_POST['name_in_manu2'];
+        $insertCopQry2 = "INSERT INTO h_manuscripts_copiers Values($manu_id, $cop_id2, '$name_in_manu2')";
     } else $insertCopQry2 = "SELECT 1";
 
-    if (isset($_POST['full_name3']) and $_POST['full_name3'] !== "") {
+    if (isset($_POST['full_name3']) and $_POST['full_name3'] !== "" and $_POST['name_in_manu3'] != "") {
         $cop_id3_explode = explode(' # ', $_POST['full_name3']);
         $cop_id3 = $cop_id3_explode[0]; // multi
-        $insertCopQry3 = "INSERT INTO h_manuscripts_copiers Values('$manu_id','$cop_id3')";
+        $name_in_manu3 = $_POST['name_in_manu3'];
+        $insertCopQry3 = "INSERT INTO h_manuscripts_copiers Values($manu_id, $cop_id3, '$name_in_manu3')";
     } else $insertCopQry3 = "SELECT 1";
 
-    if (isset($_POST['full_name4']) and $_POST['full_name4'] !== "") {
+    if (isset($_POST['full_name4']) and $_POST['full_name4'] !== "" and $_POST['name_in_manu4'] != "") {
         $cop_id4_explode = explode(' # ', $_POST['full_name4']);
         $cop_id4 = $cop_id4_explode[0]; // multi
-        $insertCopQry4 = "INSERT INTO h_manuscripts_copiers Values('$manu_id','$cop_id4')";
+        $name_in_manu4 = $_POST['name_in_manu4'];
+        $insertCopQry4 = "INSERT INTO h_manuscripts_copiers Values($manu_id, $cop_id4, '$name_in_manu4')";
     } else $insertCopQry4 = "SELECT 1";
 
 
+
     //********** Insert into Manuscriptions **********/
-    $cop_name = $_POST['cop_name'];
     if (isset($_POST['cop_day'])) $cop_day = $_POST['cop_day'];
     else $cop_day = "";
+
+    if (isset($_POST['cop_day_nbr']) and $_POST['cop_day_nbr'] != "") $cop_day_nbr = $_POST['cop_day_nbr'];
+    else $cop_day_nbr = "NULL";
 
     if (isset($_POST['cop_month'])) $cop_month = $_POST['cop_month'];
     else $cop_month = "";
@@ -133,109 +137,109 @@ if (isset($_POST['insertForm'])) {
     $creation_date = $date;
     $last_edit_date = $date;
 
-    $insertManuQry = "INSERT INTO e_manuscripts values('$manu_id', '$book_id', '$cop_name', '$cop_day', '$cop_month', $cop_syear, $cop_eyear, $date_type, '$cop_place', $signing, $cabinet_id, $cabinet_nbr,'$manu_type', $index_nbr, '$font', '$font_style', $regular_lines, '$lines_notes', $paper_size, '$copied_from', '$copied_to', '$manu_level', '$cop_level', $rost_completion, $count_id, $city_id, '$notes','$creation_date','$last_edit_date')";
+    $insertManuQry = "INSERT INTO e_manuscripts values('$manu_id', '$book_id', '$cop_day', $cop_day_nbr, '$cop_month', $cop_syear, $cop_eyear, $date_type, '$cop_place', $signing, $cabinet_id, $cabinet_nbr,'$manu_type', $index_nbr, '$font', '$font_style', $regular_lines, '$lines_notes', $paper_size, '$copied_from', '$copied_to', '$manu_level', '$cop_level', $rost_completion, $count_id, $city_id, '$notes','$creation_date','$last_edit_date')";
 
     //********** Insert into j_manuscripts_motifs **********/
-    if (isset($_POST['motif1']) and $_POST['motif1'] !== "") {
+    if (isset($_POST['motif1']) and $_POST['motif1'] != "") {
         $motif_id1_explode = explode(' # ', $_POST['motif1']);
         $motif_id1 = $motif_id1_explode[0]; // multi
-        $insertMotifQry1 = "INSERT INTO j_manuscripts_motifs VALUES($manu_id, $motif_id1);";
+        $insertMotifQry1 = "INSERT INTO j_manuscripts_motifs VALUES($manu_id, $motif_id1)";
     } else $insertMotifQry1 = "SELECT 1";
 
-    if (isset($_POST['motif2']) and $_POST['motif2'] !== "") {
+    if (isset($_POST['motif2']) and $_POST['motif2'] != "") {
         $motif_id2_explode = explode(' # ', $_POST['motif2']);
         $motif_id2 = $motif_id2_explode[0]; // multi
-        $insertMotifQry2 = "INSERT INTO j_manuscripts_motifs VALUES($manu_id, $motif_id2);";
+        $insertMotifQry2 = "INSERT INTO j_manuscripts_motifs VALUES($manu_id, $motif_id2)";
     } else $insertMotifQry2 = "SELECT 1";
 
-    if (isset($_POST['motif3']) and $_POST['motif3'] !== "") {
+    if (isset($_POST['motif3']) and $_POST['motif3'] != "") {
         $motif_id3_explode = explode(' # ', $_POST['motif3']);
         $motif_id3 = $motif_id3_explode[0]; // multi
-        $insertMotifQry3 = "INSERT INTO j_manuscripts_motifs VALUES($manu_id, $motif_id3);";
+        $insertMotifQry3 = "INSERT INTO j_manuscripts_motifs VALUES($manu_id, $motif_id3)";
     } else $insertMotifQry3 = "SELECT 1";
 
-    if (isset($_POST['motif4']) and $_POST['motif4'] !== "") {
+    if (isset($_POST['motif4']) and $_POST['motif4'] != "") {
         $motif_id4_explode = explode(' # ', $_POST['motif4']);
         $motif_id4 = $motif_id4_explode[0]; // multi
-        $insertMotifQry4 = "INSERT INTO j_manuscripts_motifs VALUES($manu_id, $motif_id4);";
+        $insertMotifQry4 = "INSERT INTO j_manuscripts_motifs VALUES($manu_id, $motif_id4)";
     } else $insertMotifQry4 = "SELECT 1";
 
 
     //********** Insert into j_manuscripts_colors **********/
-    if (isset($_POST['inkColor1']) and $_POST['inkColor1'] !== "") {
+    if (isset($_POST['inkColor1']) and $_POST['inkColor1'] != "") {
         $color_id1_explode = explode(' # ', $_POST['inkColor1']);
         $color_id1 = $color_id1_explode[0]; // multi
-        $insertInkColorQry1 = "INSERT INTO j_manuscripts_colors VALUES($manu_id, $color_id1);";
+        $insertInkColorQry1 = "INSERT INTO j_manuscripts_colors VALUES($manu_id, $color_id1)";
     } else $insertInkColorQry1 = "SELECT 1";
 
-    if (isset($_POST['inkColor2']) and $_POST['inkColor2'] !== "") {
+    if (isset($_POST['inkColor2']) and $_POST['inkColor2'] != "") {
         $color_id2_explode = explode(' # ', $_POST['inkColor2']);
         $color_id2 = $color_id2_explode[0]; // multi
-        $insertInkColorQry2 = "INSERT INTO j_manuscripts_colors VALUES($manu_id, $color_id2);";
+        $insertInkColorQry2 = "INSERT INTO j_manuscripts_colors VALUES($manu_id, $color_id2)";
     } else $insertInkColorQry2 = "SELECT 1";
 
-    if (isset($_POST['inkColor3']) and $_POST['inkColor3'] !== "") {
+    if (isset($_POST['inkColor3']) and $_POST['inkColor3'] != "") {
         $color_id3_explode = explode(' # ', $_POST['inkColor3']);
         $color_id3 = $color_id3_explode[0]; // multi
-        $insertInkColorQry3 = "INSERT INTO j_manuscripts_colors VALUES($manu_id, $color_id3);";
+        $insertInkColorQry3 = "INSERT INTO j_manuscripts_colors VALUES($manu_id, $color_id3)";
     } else $insertInkColorQry3 = "SELECT 1";
 
-    if (isset($_POST['inkColor4']) and $_POST['inkColor4'] !== "") {
+    if (isset($_POST['inkColor4']) and $_POST['inkColor4'] != "") {
         $color_id4_explode = explode(' # ', $_POST['inkColor4']);
         $color_id4 = $color_id4_explode[0]; // multi
-        $insertInkColorQry4 = "INSERT INTO j_manuscripts_colors VALUES($manu_id, $color_id4);";
+        $insertInkColorQry4 = "INSERT INTO j_manuscripts_colors VALUES($manu_id, $color_id4)";
     } else $insertInkColorQry4 = "SELECT 1";
 
 
     //********** Insert into j_manuscripts_manuTypes **********/
-    if (isset($_POST['manu_types1']) and $_POST['manu_types1'] !== "") {
+    if (isset($_POST['manu_types1']) and $_POST['manu_types1'] != "") {
         $type_id1_explode = explode(' # ', $_POST['manu_types1']);
         $type_id1 = $type_id1_explode[0]; // multi
-        $insertManuTypeQry1 = "INSERT INTO j_manuscripts_manuTypes VALUES($manu_id, $type_id1);";
+        $insertManuTypeQry1 = "INSERT INTO j_manuscripts_manuTypes VALUES($manu_id, $type_id1)";
     } else $insertManuTypeQry1 = "SELECT 1";
 
-    if (isset($_POST['manu_types2']) and $_POST['manu_types2'] !== "") {
+    if (isset($_POST['manu_types2']) and $_POST['manu_types2'] != "") {
         $type_id2_explode = explode(' # ', $_POST['manu_types2']);
         $type_id2 = $type_id2_explode[0]; // multi
-        $insertManuTypeQry2 = "INSERT INTO j_manuscripts_manuTypes VALUES($manu_id, $type_id2);";
+        $insertManuTypeQry2 = "INSERT INTO j_manuscripts_manuTypes VALUES($manu_id, $type_id2)";
     } else $insertManuTypeQry2 = "SELECT 1";
 
-    if (isset($_POST['manu_types3']) and $_POST['manu_types3'] !== "") {
+    if (isset($_POST['manu_types3']) and $_POST['manu_types3'] != "") {
         $type_id3_explode = explode(' # ', $_POST['manu_types3']);
         $type_id3 = $type_id3_explode[0]; // multi
-        $insertManuTypeQry3 = "INSERT INTO j_manuscripts_manuTypes VALUES($manu_id, $type_id3);";
+        $insertManuTypeQry3 = "INSERT INTO j_manuscripts_manuTypes VALUES($manu_id, $type_id3)";
     } else $insertManuTypeQry3 = "SELECT 1";
 
-    if (isset($_POST['manu_types4']) and $_POST['manu_types4'] !== "") {
+    if (isset($_POST['manu_types4']) and $_POST['manu_types4'] != "") {
         $type_id4_explode = explode(' # ', $_POST['manu_types4']);
         $type_id4 = $type_id4_explode[0]; // multi
-        $insertManuTypeQry4 = "INSERT INTO j_manuscripts_manuTypes VALUES($manu_id, $type_id4);";
+        $insertManuTypeQry4 = "INSERT INTO j_manuscripts_manuTypes VALUES($manu_id, $type_id4)";
     } else $insertManuTypeQry4 = "SELECT 1";
 
 
     //********** Insert into i_cop_fm Queries **********/
-    if (isset($_POST['cop_fm1']) and isset($_POST['cop_match1']) and $_POST['cop_fm1'] !== "" and $_POST['cop_match1'] !== "") {
+    if (isset($_POST['cop_fm1']) and isset($_POST['cop_match1']) and $_POST['cop_fm1'] != "" and $_POST['cop_match1'] != "") {
         $cop_match1 = $_POST['cop_match1'];
         $cop_fm1_explode = explode(' # ', $_POST['cop_fm1']);
         $cop_fm1 = $cop_fm1_explode[0]; // multi
         $insertCopFMQry1 = "INSERT INTO i_cop_fm VALUES('$cop_match1','$cop_fm1','$manu_id')";
     } else $insertCopFMQry1 = "SELECT 1";
 
-    if (isset($_POST['cop_fm2']) and isset($_POST['cop_match2']) and $_POST['cop_fm2'] !== "" and $_POST['cop_match2'] !== "") {
+    if (isset($_POST['cop_fm2']) and isset($_POST['cop_match2']) and $_POST['cop_fm2'] != "" and $_POST['cop_match2'] != "") {
         $cop_match2 = $_POST['cop_match2'];
         $cop_fm2_explode = explode(' # ', $_POST['cop_fm2']);
         $cop_fm2 = $cop_fm2_explode[0]; // multi
         $insertCopFMQry2 = "INSERT INTO i_cop_fm VALUES('$cop_match2','$cop_fm2','$manu_id')";
     } else $insertCopFMQry2 = "SELECT 1";
 
-    if (isset($_POST['cop_fm3']) and isset($_POST['cop_match3']) and $_POST['cop_fm3'] !== "" and $_POST['cop_match3'] !== "") {
+    if (isset($_POST['cop_fm3']) and isset($_POST['cop_match3']) and $_POST['cop_fm3'] != "" and $_POST['cop_match3'] != "") {
         $cop_match3 = $_POST['cop_match3'];
         $cop_fm3_explode = explode(' # ', $_POST['cop_fm3']);
         $cop_fm3 = $cop_fm3_explode[0]; // multi
         $insertCopFMQry3 = "INSERT INTO i_cop_fm VALUES('$cop_match3','$cop_fm3','$manu_id')";
     } else $insertCopFMQry3 = "SELECT 1";
 
-    if (isset($_POST['cop_fm4']) and isset($_POST['cop_match4']) and $_POST['cop_fm4'] !== "" and $_POST['cop_match4'] !== "") {
+    if (isset($_POST['cop_fm4']) and isset($_POST['cop_match4']) and $_POST['cop_fm4'] != "" and $_POST['cop_match4'] != "") {
         $cop_match4 = $_POST['cop_match4'];
         $cop_fm4_explode = explode(' # ', $_POST['cop_fm4']);
         $cop_fm4 = $cop_fm4_explode[0]; // multi
@@ -243,75 +247,78 @@ if (isset($_POST['insertForm'])) {
     } else $insertCopFMQry4 = "SELECT 1";
 
 
-    // START TRANSACTION 
-    mysqli_query($conn, "START TRANSACTION");
+    /* Tell mysqli to throw an exception if an error occurs */
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-    //********** Insert into e_manuscripts **********/
-    $R = mysqli_query($conn, $insertManuQry);
-    if ($R == false) array_push($insManuErrs, "<br> e_manuscripts >> " . mysqli_error($conn));
+    /* Start transaction */
+    mysqli_begin_transaction($conn);
 
-    //********** Insert into Manuscriptions_Copiers **********/
-    $R1 = mysqli_query($conn, $insertCopQry1);
-    $R2 = mysqli_query($conn, $insertCopQry2);
-    $R3 = mysqli_query($conn, $insertCopQry3);
-    $R4 = mysqli_query($conn, $insertCopQry4);
+    try {
+        //********** Insert into e_manuscripts **********/
+        $R = mysqli_query($conn, $insertManuQry);
+        if ($R == false) array_push($insManuErrs, "<br> e_manuscripts >> " . mysqli_error($conn));
 
-    if ($R1 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#1 >> " . mysqli_error($conn));
-    if ($R2 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#2 >> " . mysqli_error($conn));
-    if ($R3 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#3 >> " . mysqli_error($conn));
-    if ($R4 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#4 >> " . mysqli_error($conn));
+        //********** Insert into Manuscriptions_Copiers **********/
+        $R1 = mysqli_query($conn, $insertCopQry1);
+        $R2 = mysqli_query($conn, $insertCopQry2);
+        $R3 = mysqli_query($conn, $insertCopQry3);
+        $R4 = mysqli_query($conn, $insertCopQry4);
 
-    //********** Insert into j_manuscripts_motifs **********/
-    $R5 = mysqli_query($conn, $insertMotifQry1);
-    $R6 = mysqli_query($conn, $insertMotifQry2);
-    $R7 = mysqli_query($conn, $insertMotifQry3);
-    $R8 = mysqli_query($conn, $insertMotifQry4);
+        if ($R1 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#1 >> " . mysqli_error($conn));
+        if ($R2 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#2 >> " . mysqli_error($conn));
+        if ($R3 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#3 >> " . mysqli_error($conn));
+        if ($R4 == false) array_push($insManuErrs, "<br> Manuscriptions_Copiers#4 >> " . mysqli_error($conn));
 
-    if ($R5 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#1 >> " . mysqli_error($conn));
-    if ($R6 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#2 >> " . mysqli_error($conn));
-    if ($R7 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#3 >> " . mysqli_error($conn));
-    if ($R8 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#4 >> " . mysqli_error($conn));
+        //********** Insert into j_manuscripts_motifs **********/
+        $R5 = mysqli_query($conn, $insertMotifQry1);
+        $R6 = mysqli_query($conn, $insertMotifQry2);
+        $R7 = mysqli_query($conn, $insertMotifQry3);
+        $R8 = mysqli_query($conn, $insertMotifQry4);
 
-    //********** Insert into j_manuscripts_colors **********/
-    $R9 = mysqli_query($conn, $insertInkColorQry1);
-    $R10 = mysqli_query($conn, $insertInkColorQry2);
-    $R11 = mysqli_query($conn, $insertInkColorQry3);
-    $R12 = mysqli_query($conn, $insertInkColorQry4);
+        if ($R5 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#1 >> " . mysqli_error($conn));
+        if ($R6 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#2 >> " . mysqli_error($conn));
+        if ($R7 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#3 >> " . mysqli_error($conn));
+        if ($R8 == false) array_push($insManuErrs, "<br> j_manuscripts_motifs#4 >> " . mysqli_error($conn));
 
-    if ($R9 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#1 >> " . mysqli_error($conn));
-    if ($R10 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#2 >> " . mysqli_error($conn));
-    if ($R11 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#3 >> " . mysqli_error($conn));
-    if ($R12 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#4 >> " . mysqli_error($conn));
+        //********** Insert into j_manuscripts_colors **********/
+        $R9 = mysqli_query($conn, $insertInkColorQry1);
+        $R10 = mysqli_query($conn, $insertInkColorQry2);
+        $R11 = mysqli_query($conn, $insertInkColorQry3);
+        $R12 = mysqli_query($conn, $insertInkColorQry4);
 
-    //********** Insert into j_manuscripts_manuTypes **********/
-    $R13 = mysqli_query($conn, $insertManuTypeQry1);
-    $R14 = mysqli_query($conn, $insertManuTypeQry2);
-    $R15 = mysqli_query($conn, $insertManuTypeQry3);
-    $R16 = mysqli_query($conn, $insertManuTypeQry4);
+        if ($R9 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#1 >> " . mysqli_error($conn));
+        if ($R10 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#2 >> " . mysqli_error($conn));
+        if ($R11 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#3 >> " . mysqli_error($conn));
+        if ($R12 = false) array_push($insManuErrs, "<br> j_manuscripts_colors#4 >> " . mysqli_error($conn));
 
-    if ($R13 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#1 >> " . mysqli_error($conn));
-    if ($R14 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#2 >> " . mysqli_error($conn));
-    if ($R15 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#3 >> " . mysqli_error($conn));
-    if ($R16 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#4 >> " . mysqli_error($conn));
+        //********** Insert into j_manuscripts_manuTypes **********/
+        $R13 = mysqli_query($conn, $insertManuTypeQry1);
+        $R14 = mysqli_query($conn, $insertManuTypeQry2);
+        $R15 = mysqli_query($conn, $insertManuTypeQry3);
+        $R16 = mysqli_query($conn, $insertManuTypeQry4);
 
-    //********** Insert into i_cop_fm **********/
-    $R17 = mysqli_query($conn, $insertCopFMQry1);
-    $R18 = mysqli_query($conn, $insertCopFMQry2);
-    $R19 = mysqli_query($conn, $insertCopFMQry3);
-    $R20 = mysqli_query($conn, $insertCopFMQry4);
+        if ($R13 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#1 >> " . mysqli_error($conn));
+        if ($R14 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#2 >> " . mysqli_error($conn));
+        if ($R15 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#3 >> " . mysqli_error($conn));
+        if ($R16 = false) array_push($insManuErrs, "<br> j_manuscripts_manuTypes#4 >> " . mysqli_error($conn));
 
-    if ($R17 = false) array_push($insManuErrs, "<br> i_cop_fm#1 >> " . mysqli_error($conn));
-    if ($R18 = false) array_push($insManuErrs, "<br> i_cop_fm#2 >> " . mysqli_error($conn));
-    if ($R19 = false) array_push($insManuErrs, "<br> i_cop_fm#3 >> " . mysqli_error($conn));
-    if ($R20 = false) array_push($insManuErrs, "<br> i_cop_fm#4 >> " . mysqli_error($conn));
+        //********** Insert into i_cop_fm **********/
+        $R17 = mysqli_query($conn, $insertCopFMQry1);
+        $R18 = mysqli_query($conn, $insertCopFMQry2);
+        $R19 = mysqli_query($conn, $insertCopFMQry3);
+        $R20 = mysqli_query($conn, $insertCopFMQry4);
 
-    // COMMIT OR ROLLBACK QUERIES
-    if ($R and $R1 and $R2 and $R3 and $R4 and $R5 and $R6 and $R7 and $R8 and $R9 and $R10 and $R11 and $R12 and $R13 and $R14 and $R15 and $R16 and $R17 and $R18 and $R19 and $R20) {
-        mysqli_query($conn, "COMMIT");
+        if ($R17 = false) array_push($insManuErrs, "<br> i_cop_fm#1 >> " . mysqli_error($conn));
+        if ($R18 = false) array_push($insManuErrs, "<br> i_cop_fm#2 >> " . mysqli_error($conn));
+        if ($R19 = false) array_push($insManuErrs, "<br> i_cop_fm#3 >> " . mysqli_error($conn));
+        if ($R20 = false) array_push($insManuErrs, "<br> i_cop_fm#4 >> " . mysqli_error($conn));
+
+        mysqli_commit($conn);
         echo "<script>alert('تم إضافة الاستمارة رقم: $manu_id بنجاح')</script>";
         echo '<script>window.location.href = "insertForm.php#insertForm"</script>';
-    } else {
-        mysqli_query($conn, "ROLLBACK");
+    } catch (mysqli_sql_exception $exception) {
+        mysqli_rollback($conn);
+        //throw $exception;
         echo "<script>alert('فشلت عملية إضافة الاستمارة')</script>";
         echo print_r($insManuErrs);
         echo '<script>window.location.href = "insertForm.php#insertForm"</script>';
@@ -348,10 +355,10 @@ if (isset($_POST['insertForm'])) {
                             <fieldset class="scheduler-border">
                                 <legend class="scheduler-border">معلومات الناسخ</legend>
                                 <div class="form-row">
-                                    <div class="form-group col-md-7">
-                                        <label for="full_name">اسم الناسخ</label>
+                                    <div class="form-group col-md-5">
+                                        <label for="full_name">اسم الناسخ (من القائمة)</label>
                                         <input list="copiers" class="form-control" name="full_name1" id="full_name"
-                                            placeholder="أدخل اسم الناسخ 1" required>
+                                            placeholder="حدد اسم الناسخ 1" required>
                                         <datalist id="copiers">
                                             <?php
                                             for ($i = 0; $i <= $lastKey; $i++) { ?>
@@ -359,6 +366,11 @@ if (isset($_POST['insertForm'])) {
                                                 value="<?php print_r($rows[$i]['cop_id']); ?> # <?php print_r($rows[$i]['full_name']); ?>">
                                                 <?php  } ?>
                                         </datalist>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="name_in_manu">اسم الناسخ الوارد في النسخة</label>
+                                        <input type="text" class="form-control" name="name_in_manu1" id="name_in_manu"
+                                            placeholder="أدخل اسم الناسخ 1 كما ورد في النسخة" required>
                                     </div>
                                     <!-- add input dinamically -->
                                     <div id="addCopier" class="form-group col-md-auto"
@@ -386,13 +398,6 @@ if (isset($_POST['insertForm'])) {
 
                                 <div class="form-row">
                                     <div class="form-group col-md-9">
-                                        <label for="cop_name">اسم الناسخ الوارد في النسخة</label>
-                                        <input type="text" class="form-control" name="cop_name" id="cop_name"
-                                            placeholder="أدخل اسم الناسخ كما ورد في النسخة" required>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-9">
                                         <label for="title">عنوان الكتاب</label>
                                         <input list="books" class="form-control" name="book_title" id="title"
                                             placeholder="أدخل عنوان الكتاب" required>
@@ -413,6 +418,16 @@ if (isset($_POST['insertForm'])) {
                                             <option value="" selected>-أدخل اليوم-</option>
                                             <?php for ($i = 0; $i <= 6; $i++) { ?>
                                             <option value="<?php echo $days[$i]; ?>"><?php echo $days[$i]; ?>
+                                            </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="cop_day_nbr">&nbsp;</label>
+                                        <select name="cop_day_nbr" id="cop_day_nbr" class="custom-select">
+                                            <option value="" selected>- أدخل اليوم -</option>
+                                            <?php for ($i = 1; $i <= 31; $i++) { ?>
+                                            <option value="<?php echo $i ?>"><?php echo $i ?>
                                             </option>
                                             <?php } ?>
                                         </select>
@@ -727,7 +742,7 @@ if (isset($_POST['insertForm'])) {
                                     <div class="form-group col-md-7">
                                         <label for="cop_fm">تشابه خط الناسخ بغيره من الناسخين</label>
                                         <input list="copFontMatch" class="form-control" name="cop_fm1" id="cop_fm"
-                                            placeholder="اختر الناسخ المشابه له في الخط 1">
+                                            placeholder="حدد الناسخ المشابه له في الخط 1">
                                         <datalist id="copFontMatch">
                                             <?php
                                             for ($i = 0; $i <= $lastKey; $i++) { ?>
