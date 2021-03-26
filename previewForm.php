@@ -106,14 +106,6 @@ WHERE book_id = '$book_id'";
 
 $manuSubQry4Result = mysqli_query($conn, $manuSubQry4);
 
-// select copiers fm
-$manuSubQry5 = "SELECT i_cop_fm.cop_id, cop_fm, full_name
-FROM i_cop_fm
-INNER JOIN d_copiers ON i_cop_fm.cop_fm = d_copiers.cop_id
-WHERE manu_id = $manu_id_get";
-
-$manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
-
 // select manu motifs
 $manuSubQry6 = "SELECT motif_name
 FROM e_manuscripts
@@ -178,7 +170,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                                 <h5 class="text-danger">الرقم: </h5>
                             </div>
                             <div class="col-md-1">
-                                <p><?php echo $row['cop_id'] ?></p>
+                                <p><?php echo $cop_id = $row['cop_id'] ?></p>
                             </div>
                             <div class="col-md-auto">
                                 <h5 class="text-danger">الاسم الكامل: </h5>
@@ -301,7 +293,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         </div>
 
                         <?php if ($row['other_name1'] != "") { ?>
-                        <div class="row mb-2">
+                        <div class="row">
                             <div class="col-md-3">
                                 <h5 class="text-danger">صيغ أخرى لاسم الناسخ: </h5>
                             </div>
@@ -312,7 +304,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         <?php } ?>
 
                         <?php if ($row['other_name2'] != "") { ?>
-                        <div class="row mb-2">
+                        <div class="row">
                             <div class="col-md-3">
                                 <h5 class="text-danger"></h5>
                             </div>
@@ -323,7 +315,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         <?php } ?>
 
                         <?php if ($row['other_name3'] != "") { ?>
-                        <div class="row mb-2">
+                        <div class="row">
                             <div class="col-md-3">
                                 <h5 class="text-danger"></h5>
                             </div>
@@ -334,7 +326,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         <?php } ?>
 
                         <?php if ($row['other_name4'] != "") { ?>
-                        <div class="row mb-2">
+                        <div class="row">
                             <div class="col-md-3">
                                 <h5 class="text-danger"></h5>
                             </div>
@@ -343,9 +335,37 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
                         <?php } ?>
+
+                        <?php
+                            // select copiers fm
+                            $manuSubQry5 = "SELECT i_cop_fm.cop_id, cop_fm, full_name
+                            FROM i_cop_fm
+                            INNER JOIN d_copiers ON i_cop_fm.cop_fm = d_copiers.cop_id
+                            WHERE manu_id = $manu_id_get and i_cop_fm.cop_id = $cop_id";
+                            $manuSubQry5Result = mysqli_query($conn, $manuSubQry5);
+
+                            if (mysqli_num_rows($manuSubQry5Result) > 0) {
+                                $cop_fmI = 0;
+                                while ($row = mysqli_fetch_array($manuSubQry5Result)) {
+                                    $cop_fmI++;
+                                    $cop_fm = $row['cop_fm'];
+                                    $fm_full_name = $row['full_name'];
+                            ?>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <?php if ($cop_fmI == 1) { ?>
+                                <h5 class="text-danger"> النساخ المشابهين في الخط: </h5>
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-auto">
+                                <p><?php echo '[ ' . $cop_fm . ' ] ' . $fm_full_name ?></p>
+                            </div>
+                        </div>
+                        <?php }
+                            } // END select copiers fm 
+                            ?>
                     </fieldset>
                     <?php } ?>
-
 
                     <fieldset class="scheduler-border">
                         <legend class="scheduler-border">معلومات النسخة</legend>
@@ -511,7 +531,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                                 <p class="text-success">/ / /</p>
                                 <?php } ?>
                             </div>
-                            <div class="col-md-auto">
+                            <div class="col-md-auto mt-2">
                                 <h5 class="text-danger">الرقم في الفهرس: </h5>
                             </div>
                             <div class="col-md-auto">
@@ -686,35 +706,6 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                             </div>
                         </div>
 
-                        <?php
-                        if (mysqli_num_rows($manuSubQry5Result) > 0) {
-
-                            while ($row = mysqli_fetch_array($manuSubQry5Result)) {
-                                $cop_id = $row['cop_id'];
-                                $cop_fm = $row['cop_fm'];
-                                $fm_full_name = $row['full_name'];
-                        ?>
-                        <div class="row mb-2">
-                            <div class="col-md-auto">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" class="text-danger text-center">رقم الناسخ (من الاستمارة
-                                                أعلاه): </th>
-                                            <th scope="col" class="text-danger">الناسخ المشابه له في الخط:</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row" class="text-center"><?php echo $cop_id ?></th>
-                                            <td><?php echo '[ ' . $cop_fm . ' ] => ' . $fm_full_name ?></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <?php }
-                        } ?>
 
                         <div class="row mb-2">
                             <div class="col-md-auto">

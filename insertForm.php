@@ -337,7 +337,7 @@ if (isset($_POST['insertForm'])) {
 
         mysqli_commit($conn);
         echo "<script>alert('تم إضافة الاستمارة رقم: $manu_id بنجاح')</script>";
-        echo '<script>window.location.href = "insertForm.php#insertForm"</script>';
+        echo '<script>window.location.href = "previewForm.php?manu_id=' . $manu_id . '"</script>';
     } catch (mysqli_sql_exception $exception) {
         mysqli_rollback($conn);
         //throw $exception;
@@ -409,8 +409,8 @@ if (isset($_POST['insertForm'])) {
                                 <div class="form-row">
                                     <div class="form-group col-md-2">
                                         <label for="cop_match">رقم الناسخ</label>
-                                        <input type="number" class="form-control" name="cop_match1" id="cop_match"
-                                            placeholder="أدخل رقم الناسخ 1">
+                                        <input type="number" class="form-control text-center" name="cop_match1"
+                                            id="cop_match" placeholder="أدخل رقم الناسخ">
                                     </div>
 
                                     <div class="form-group col-md-9">
@@ -589,7 +589,7 @@ if (isset($_POST['insertForm'])) {
                                         <input type="number" class="form-control" name="cabinet_nbr" id="cabinet_nbr"
                                             placeholder="أدخل الرقم في الخزانة">
                                     </div>
-                                    <div class="form-group col-md-auto">
+                                    <div class="form-group col-md-2">
                                         <label for="manu_type">نوع النسخة</label>
                                         <select name="manu_type" id="manu_type" class="custom-select">
                                             <option value="" selected>-اختر نوع النسخة-</option>
@@ -733,8 +733,6 @@ if (isset($_POST['insertForm'])) {
                                     <!-- END add input dinamically -->
                                 </div>
 
-                                <!-- <h5 class="my_line"><span>مستوى النسخة من حيث الجودة والضبط</span></h5> -->
-
                                 <div class="form-row mt-3">
                                     <div class="form-group col-md-auto">
                                         <label for="manu_level">مستوى النسخة من حيث الجودة والضبط</label>
@@ -746,27 +744,6 @@ if (isset($_POST['insertForm'])) {
                                             <option value="رديء">رديء</option>
                                         </select>
                                     </div>
-
-                                    <!-- <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="manu_level" id="excelent"
-                                            value="جيد">
-                                        <label class="form-check-label" for="excelent">جيد</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="manu_level" id="good"
-                                            value="حسن">
-                                        <label class="form-check-label" for="good">حسن</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="manu_level" id="moyenne"
-                                            value="متوسط">
-                                        <label class="form-check-label" for="moyenne">متوسط</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="manu_level" id="bad"
-                                            value="رديء">
-                                        <label class="form-check-label" for="bad">رديء (مبتدئ)</label>
-                                    </div> -->
                                 </div>
 
                                 <h5 class="my_line"><span>الملاحظات</span></h5>

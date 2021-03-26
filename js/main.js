@@ -91,33 +91,6 @@ $("#addAuthor").click(function () {
     }
 });
 
-// add cop font match
-var e = 2;
-$("#addFontMatch").click(function () {
-    if (e <= 5) {
-        var html = '';
-        html += '<div class="form-group col-md-2">';
-        html += '<input type="number" class="form-control" name="cop_match'+e+'" id="cop_match" placeholder="أدخل رقم الناسخ">';
-        html += '</div>';
-
-        html += '<div class="form-group col-md-9">';
-        html +=
-            '<input list="copFontMatch" class="form-control" name="cop_fm'+e+'" id="cop_fm" placeholder="حدد الناسخ المشابه له في الخط '+e+'">';
-        html += '<datalist id="copFontMatch">';
-        html += '<?php for ($i = 0; $i <= $lastKey; $i++) { ?>';
-        html += '<option value="<?php print_r($rows[$i][cop_id]); ?> # <?php print_r($rows[$i][full_name]); ?>">';
-        html += '<?php  } ?>'
-        html += '</datalist>';
-        html += '</div>';
-
-        $(html).insertBefore("#addFontMatch");
-        $('#addFontMatch').css('margin-top', '5px');
-        if (e == 5) $("#addFontMatch").remove();
-        e++;
-    }
-});
-
-
 // add copier - insertForm.php
 var f = 2;
 $("#addCopier").click(function () {
@@ -143,6 +116,31 @@ $("#addCopier").click(function () {
     }
 });
 
+// add cop font match
+var e = 2;
+$("#addFontMatch").click(function () {
+    if (e <= 5) {
+        var html = '';
+        html += '<div class="form-group col-md-2">';
+        html += '<input type="number" class="form-control text-center" name="cop_match'+e+'" id="cop_match" placeholder="أدخل رقم الناسخ">';
+        html += '</div>';
+
+        html += '<div class="form-group col-md-9">';
+        html +=
+            '<input list="copFontMatch" class="form-control" name="cop_fm'+e+'" id="cop_fm" placeholder="حدد الناسخ المشابه له في الخط '+e+'">';
+        html += '<datalist id="copFontMatch">';
+        html += '<?php for ($i = 0; $i <= $lastKey; $i++) { ?>';
+        html += '<option value="<?php print_r($rows[$i][cop_id]); ?> # <?php print_r($rows[$i][full_name]); ?>">';
+        html += '<?php  } ?>'
+        html += '</datalist>';
+        html += '</div>';
+
+        $(html).insertBefore("#addFontMatch");
+        $('#addFontMatch').css('margin-top', '5px');
+        if (e == 5) $("#addFontMatch").remove();
+        e++;
+    }
+});
 
 // add Motif
 var g = 2;
@@ -221,4 +219,3 @@ function scrollWin() {
 //$(document).on('click', '#removeRow', function () {
 //    $(this).closest('#inputFormRow').remove();
 //});
-
