@@ -96,11 +96,11 @@ var e = 2;
 $("#addFontMatch").click(function () {
     if (e <= 5) {
         var html = '';
-        html += '<div class="form-group col-md-3">';
+        html += '<div class="form-group col-md-2">';
         html += '<input type="number" class="form-control" name="cop_match'+e+'" id="cop_match" placeholder="أدخل رقم الناسخ">';
         html += '</div>';
 
-        html += '<div class="form-group col-md-7">';
+        html += '<div class="form-group col-md-9">';
         html +=
             '<input list="copFontMatch" class="form-control" name="cop_fm'+e+'" id="cop_fm" placeholder="حدد الناسخ المشابه له في الخط '+e+'">';
         html += '<datalist id="copFontMatch">';
