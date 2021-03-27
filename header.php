@@ -15,7 +15,7 @@ header('Cache-Control: no cache');
 
     <!-- FONTS -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Mirza&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/fonts.css">
     <!-- my styles -->
     <link rel="stylesheet" href="css/style.css">
 </head>

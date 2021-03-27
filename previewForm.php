@@ -154,7 +154,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
             <div class="col-10 my_mr_sidebar pt-3">
 
                 <div class="alert alert-primary text-center" role="alert">
-                    <h4>معلومات الاستمارة</h4>
+                    <h4>معلومات الاستمارة [ <?php echo $manu_id ?> ]</h4>
                 </div>
                 <form action="" method="post">
 
@@ -164,7 +164,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         $ci++;
                     ?>
                     <fieldset class="scheduler-border">
-                        <legend class="scheduler-border">معلومات الناسخ <?php if ($ci > 1) echo $ci ?></legend>
+                        <legend class="scheduler-border mb-3">معلومات الناسخ <?php if ($ci > 1) echo $ci ?></legend>
                         <div class="row mb-2">
                             <div class="col-md-auto">
                                 <h5 class="text-danger">الرقم: </h5>

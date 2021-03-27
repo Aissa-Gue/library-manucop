@@ -334,28 +334,48 @@ if (isset($_POST['editForm'])) {
         $cop_match1 = $_POST['cop_match1'];
         $cop_fm1_explode = explode(' # ', $_POST['cop_fm1']);
         $cop_fm1 = $cop_fm1_explode[0]; // multi
-        $editCopFMQry1 = "INSERT INTO i_cop_fm VALUES('$cop_match1','$cop_fm1','$manu_id') ON DUPLICATE KEY UPDATE cop_id = '$cop_match1', cop_fm= '$cop_fm1', manu_id= '$manu_id'";
+        $editCopFMQry1 = "INSERT INTO i_cop_fm(cop_id, cop_fm, manu_id)
+        SELECT $cop_match1, $cop_fm1, $manu_id
+        FROM i_cop_fm
+        WHERE EXISTS (SELECT 1 FROM h_manuscripts_copiers 
+        WHERE (h_manuscripts_copiers.cop_id = $cop_match1 AND h_manuscripts_copiers.manu_id= $manu_id)) LIMIT 1
+        ON DUPLICATE KEY UPDATE cop_id = '$cop_match1', cop_fm= '$cop_fm1', manu_id= '$manu_id'";
     } else $editCopFMQry1 = "SELECT 1";
 
     if (isset($_POST['cop_fm2']) and isset($_POST['cop_match2']) and $_POST['cop_fm2'] != "" and $_POST['cop_match2'] != "") {
         $cop_match2 = $_POST['cop_match2'];
         $cop_fm2_explode = explode(' # ', $_POST['cop_fm2']);
         $cop_fm2 = $cop_fm2_explode[0]; // multi
-        $editCopFMQry2 = "INSERT INTO i_cop_fm VALUES('$cop_match2','$cop_fm2','$manu_id') ON DUPLICATE KEY UPDATE cop_id = '$cop_match2', cop_fm= '$cop_fm2', manu_id= '$manu_id'";
+        $editCopFMQry2 = "INSERT INTO i_cop_fm(cop_id, cop_fm, manu_id)
+        SELECT $cop_match2, $cop_fm2, $manu_id
+        FROM i_cop_fm
+        WHERE EXISTS (SELECT 1 FROM h_manuscripts_copiers 
+        WHERE (h_manuscripts_copiers.cop_id = $cop_match2 AND h_manuscripts_copiers.manu_id= $manu_id)) LIMIT 1
+        ON DUPLICATE KEY UPDATE cop_id = '$cop_match2', cop_fm= '$cop_fm2', manu_id= '$manu_id'";
     } else $editCopFMQry2 = "SELECT 1";
 
     if (isset($_POST['cop_fm3']) and isset($_POST['cop_match3']) and $_POST['cop_fm3'] != "" and $_POST['cop_match3'] != "") {
         $cop_match3 = $_POST['cop_match3'];
         $cop_fm3_explode = explode(' # ', $_POST['cop_fm3']);
         $cop_fm3 = $cop_fm3_explode[0]; // multi
-        $editCopFMQry3 = "INSERT INTO i_cop_fm VALUES('$cop_match3','$cop_fm3','$manu_id') ON DUPLICATE KEY UPDATE cop_id = '$cop_match3', cop_fm= '$cop_fm3', manu_id= '$manu_id'";
+        $editCopFMQry3 = "INSERT INTO i_cop_fm(cop_id, cop_fm, manu_id)
+        SELECT $cop_match3, $cop_fm3, $manu_id
+        FROM i_cop_fm
+        WHERE EXISTS (SELECT 1 FROM h_manuscripts_copiers 
+        WHERE (h_manuscripts_copiers.cop_id = $cop_match3 AND h_manuscripts_copiers.manu_id= $manu_id)) LIMIT 1
+        ON DUPLICATE KEY UPDATE cop_id = '$cop_match3', cop_fm= '$cop_fm3', manu_id= '$manu_id'";
     } else $editCopFMQry3 = "SELECT 1";
 
     if (isset($_POST['cop_fm4']) and isset($_POST['cop_match4']) and $_POST['cop_fm4'] != "" and $_POST['cop_match4'] != "") {
         $cop_match4 = $_POST['cop_match4'];
         $cop_fm4_explode = explode(' # ', $_POST['cop_fm4']);
         $cop_fm4 = $cop_fm4_explode[0]; // multi
-        $editCopFMQry4 = "INSERT INTO i_cop_fm VALUES('$cop_match4','$cop_fm4','$manu_id') ON DUPLICATE KEY UPDATE cop_id = '$cop_match4', cop_fm= '$cop_fm4', manu_id= '$manu_id'";
+        $editCopFMQry4 = "INSERT INTO i_cop_fm(cop_id, cop_fm, manu_id)
+        SELECT $cop_match4, $cop_fm4, $manu_id
+        FROM i_cop_fm
+        WHERE EXISTS (SELECT 1 FROM h_manuscripts_copiers 
+        WHERE (h_manuscripts_copiers.cop_id = $cop_match4 AND h_manuscripts_copiers.manu_id= $manu_id)) LIMIT 1
+        ON DUPLICATE KEY UPDATE cop_id = '$cop_match4', cop_fm= '$cop_fm4', manu_id= '$manu_id'";
     } else $editCopFMQry4 = "SELECT 1";
 
     //START TRANSACTION 

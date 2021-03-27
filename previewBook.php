@@ -35,14 +35,23 @@ if (isset($_GET['book_id'])) {
     WHERE f_books_subjects.book_id = '$book_id'";
     $subjectsResult = mysqli_query($conn, $subjectsQry);
 
-    // Book manuscripts & Copiers List
-    $bookManuListQry = "SELECT e_manuscripts.manu_id, d_copiers.cop_id, full_name
+    // Book manuscripts List
+    $bookManuListQry = "SELECT e_manuscripts.manu_id, count(h_manuscripts_copiers.cop_id) as cop_nbr
     FROM e_manuscripts
-    INNER JOIN h_manuscripts_copiers
+    LEFT JOIN h_manuscripts_copiers
+    ON h_manuscripts_copiers.manu_id = e_manuscripts.manu_id
+    WHERE e_manuscripts.book_id = $book_id
+    GROUP BY h_manuscripts_copiers.manu_id";
+
+    // Book copiers List
+    $bookCopListQry = "SELECT d_copiers.cop_id, full_name, count(h_manuscripts_copiers.manu_id) as manu_nbr
+    FROM e_manuscripts
+    LEFT JOIN h_manuscripts_copiers
     ON h_manuscripts_copiers.manu_id = e_manuscripts.manu_id
     INNER JOIN d_copiers
-    ON d_copiers.cop_id = h_manuscripts_copiers.cop_id
-    WHERE e_manuscripts.book_id = $book_id";
+    ON h_manuscripts_copiers.cop_id = d_copiers.cop_id
+    WHERE e_manuscripts.book_id = $book_id
+    GROUP BY d_copiers.cop_id";
 }
 ?>
 <!DOCTYPE html>
@@ -118,19 +127,21 @@ if (isset($_GET['book_id'])) {
                             id="last_edit_date" readonly>
                     </div>
                 </div>
+                <button type="submit" name="manuList" class="btn btn-info mt-3 mb-3">عرض قائمة
+                    الاستمارات </button>
                 <button type="submit" name="copList" class="btn btn-info mt-3 mb-3">عرض قائمة
-                    النساخ / الاستمارات </button>
+                    النساخ </button>
             </form>
 
-            <!-- Copier manuscripts LIST -->
-            <?php if (isset($_POST['copList'])) { ?>
+            <!-- manuscripts LIST -->
+            <?php if (isset($_POST['manuList'])) { ?>
             <div class="row">
                 <table class="table table-striped col-md-10">
                     <thead>
                         <tr>
-                            <th scope="col" class="text-center">رقم الناسخ</th>
-                            <th scope="col">اسم الناسخ</th>
                             <th scope="col" class="text-center">رقم الاستمارة</th>
+                            <th scope="col">عنوان الكتاب</th>
+                            <th scope="col" class="text-center">عدد النساخ</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,24 +151,60 @@ if (isset($_GET['book_id'])) {
                                 while ($row = mysqli_fetch_array($bookManuListResult)) {
                             ?>
                         <tr>
-                            <td scope="row" class="text-center"><?php echo $row['cop_id'] ?></td>
-                            <td>
-                                <a
-                                    href="previewCopier.php?cop_id=<?php echo $row['cop_id'] ?>"><?php echo $row['full_name'] ?></a>
-                            </td>
                             <th scope="row" class="text-center">
                                 <a
                                     href="previewForm.php?manu_id=<?php echo $row['manu_id'] ?>"><?php echo $row['manu_id'] ?></a>
                             </th>
+                            <td>
+                                <a
+                                    href="previewForm.php?manu_id=<?php echo $row['manu_id'] ?>"><?php echo $book_title ?></a>
+                            </td>
+                            <th scope="row" class="text-center"><?php echo $row['cop_nbr'] ?></th>
                         </tr>
                         <?php }
                             } else {
-                                echo '<th scope="row"></th><td>لا توجد نساخ / منسوخات لهذا الكتاب</td>';
+                                echo '<th scope="row"></th><td>لا توجد منسوخات لهذا الكتاب</td><td></td>';
                             } ?>
                     </tbody>
                 </table>
             </div>
             <?php } ?>
+
+            <!-- copiers LIST -->
+            <?php if (isset($_POST['copList'])) { ?>
+            <div class="row">
+                <table class="table table-striped col-md-10">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">رقم الناسخ</th>
+                            <th scope="col">اسم الناسخ</th>
+                            <th scope="col" class="text-center">عدد المنسوخات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            $bookCopListResult = mysqli_query($conn, $bookCopListQry);
+                            if (mysqli_num_rows($bookCopListResult) > 0) {
+                                while ($row = mysqli_fetch_array($bookCopListResult)) {
+                            ?>
+                        <tr>
+                            <th scope="row" class="text-center"><?php echo $row['cop_id'] ?></th>
+
+                            <td>
+                                <a
+                                    href="previewCopier.php?cop_id=<?php echo $row['cop_id'] ?>"><?php echo $row['full_name'] ?></a>
+                            </td>
+                            <th scope="row" class="text-center"><?php echo $row['manu_nbr'] ?></th>
+                        </tr>
+                        <?php }
+                            } else {
+                                echo '<th scope="row"></th><td>لا يوجد نساخ لهذا الناسخ</td>';
+                            } ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php } ?>
+            <!-- END cpiers LIST -->
             <button type="button" class="my_fixed_button1 my_col_btn btn btn-danger btn-lg rounded-pill"
                 onclick="window.history.go(-1);">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
