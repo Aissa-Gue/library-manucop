@@ -1,3 +1,6 @@
+<?php
+include 'config.php';
+?>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -30,11 +33,13 @@
                             <strong>تسجيل الدخول</strong>
                         </h4>
                         <label for="username" class="form-label">اسم المستخدم</label>
-                        <input type="text" name="username" class="form-control" id="username" placeholder="أدخل اسم المستخدم">
+                        <input type="text" name="username" class="form-control" id="username"
+                            placeholder="أدخل اسم المستخدم">
                     </div>
                     <div class="mb-4">
                         <label for="password" class="form-label">كلمة المرور</label>
-                        <input type="password" name="password" class="form-control" id="password" placeholder="أدخل كلمة المرور">
+                        <input type="password" name="password" class="form-control" id="password"
+                            placeholder="أدخل كلمة المرور">
                     </div>
                     <div class="mb-4 text-center mt-5">
                         <input type="submit" name="login" value="تسجيل الدخول" class="btn btn-danger">

@@ -49,31 +49,42 @@ if (isset($_POST['insertForm'])) {
 
 
     //********** Insert into Manuscriptions **********/
-    if (isset($_POST['cop_day'])) $cop_day = $_POST['cop_day'];
-    else $cop_day = "";
+    if ($_POST['cop_syear_range'] != NULL and $_POST['cop_eyear_range'] != NULL) {
+        //==> range
+        $cop_day = "";
+        $cop_day_nbr = "NULL";
+        $cop_month = "";
+        $cop_syear = $_POST['cop_syear_range'];
+        $cop_eyear = $_POST['cop_eyear_range'];
+        if ($_POST['cop_syear_range'] == NULL and $_POST['cop_eyear_range'] == NULL) {
+            $date_type = "NULL";
+        } else {
+            $date_type = $_POST['date_type_range'];
+        }
+    } else {
+        // Exact date
+        $cop_day = $_POST['cop_day'];
 
-    if (isset($_POST['cop_day_nbr']) and $_POST['cop_day_nbr'] != "") $cop_day_nbr = $_POST['cop_day_nbr'];
-    else $cop_day_nbr = "NULL";
+        if ($_POST['cop_day_nbr'] != "") $cop_day_nbr = $_POST['cop_day_nbr'];
+        else $cop_day_nbr = "NULL";
 
-    if (isset($_POST['cop_month'])) $cop_month = $_POST['cop_month'];
-    else $cop_month = "";
+        $cop_month = $_POST['cop_month'];
 
-    if (isset($_POST['cop_eyear']) and $_POST['cop_eyear'] != NULL) $cop_eyear = $_POST['cop_eyear'];
-    else $cop_eyear = "NULL";
+        if ($_POST['cop_syear'] != NULL) {
+            $cop_syear = $_POST['cop_syear'];
+            $cop_eyear = $cop_syear;
+        } else {
+            $cop_syear = "NULL";
+            $cop_eyear = $cop_syear;
+        }
 
-    if (isset($_POST['cop_syear']) and $_POST['cop_syear'] != NULL) {
-        $cop_syear = $_POST['cop_syear'];
-        if (!isset($_POST['cop_eyear'])) $cop_eyear = $cop_syear;
-    } else $cop_syear = "NULL";
-
-    if (isset($_POST['date_type']) and $_POST['date_type'] != NULL) $date_type = $_POST['date_type'];
-
-    //set null value to date_type if date not added
-    if ((!isset($_POST['cop_eyear']) and $_POST['cop_syear'] == NULL and $_POST['cop_month'] == NULL  and $_POST['cop_day'] == NULL)
-        or (isset($_POST['cop_eyear'])  and $_POST['cop_eyear'] == NULL and $_POST['cop_syear'] == NULL)
-    ) {
-        $date_type = "NULL";
+        if ($_POST['cop_day'] == NULL and  $_POST['cop_day_nbr'] == NULL and $_POST['cop_month'] == NULL and $_POST['cop_syear'] == NULL) {
+            $date_type = "NULL";
+        } else {
+            $date_type = $_POST['date_type'];
+        }
     }
+
 
     if (isset($_POST['cop_place'])) $cop_place = $_POST['cop_place'];
     else $cop_place = "";
@@ -218,8 +229,6 @@ if (isset($_POST['insertForm'])) {
 
 
     //********** Insert into i_cop_fm Queries **********/
-
-
     if (isset($_POST['cop_fm1']) and isset($_POST['cop_match1']) and $_POST['cop_fm1'] != "" and $_POST['cop_match1'] != "") {
         $cop_match1 = $_POST['cop_match1'];
         $cop_fm1_explode = explode(' # ', $_POST['cop_fm1']);
@@ -466,7 +475,7 @@ if (isset($_POST['insertForm'])) {
                                     </div>
                                 </div>
 
-                                <div class="form-row" id="cop_date">
+                                <div class="form-row" id="copDate_exact">
                                     <div class="form-group col-md-2">
                                         <label for="cop_day">تاريخ النسخ</label>
                                         <select name="cop_day" id="cop_day" class="custom-select">
@@ -510,19 +519,34 @@ if (isset($_POST['insertForm'])) {
                                             <option value="0" selected>هجري</option>
                                         </select>
                                     </div>
-                                    <!-- add input dinamically -->
-                                    <div id="replaceCopDate" class="form-group col-md-auto"
-                                        style="cursor: pointer; margin-top: 37px;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-                                            fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                                            <path
-                                                d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
-                                            <path fill-rule="evenodd"
-                                                d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                                        </svg>
-                                        غير معروف؟
+                                </div>
+
+
+                                <div class="form-row" id="copDate_range">
+                                    <div class="form-group col-md-auto">
+                                        <label for="cop_date">تاريخ النسخ [أدخل نطاق]</label>
+                                        <input type="number" class="form-control" name="cop_syear_range" id="cop_date"
+                                            placeholder="من سنة">
                                     </div>
-                                    <!-- END add input dinamically -->
+                                    <div class="form-group col-md-auto">
+                                        <label for="cop_date">&nbsp;</label>
+                                        <input type="number" class="form-control" name="cop_eyear_range" id="cop_date"
+                                            placeholder="إلى سنة">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="date_type">نوع التقويم</label>
+                                        <select name="date_type_range" id="date_type" class="custom-select">
+                                            <option value="1">ميلادي</option>
+                                            <option value="0" selected>هجري</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-2">
+                                    <button type="button" class="btn btn-info rounded-pill" id="hide_Exact">تاريخ
+                                        محدد</button>
+                                    <button type="button" class="btn btn-info rounded-pill" id="hide_range">فترة
+                                        زمنية</button>
                                 </div>
 
                                 <div class="form-row">

@@ -198,7 +198,7 @@ if (isset($_GET['book_id'])) {
                         </tr>
                         <?php }
                             } else {
-                                echo '<th scope="row"></th><td>لا يوجد نساخ لهذا الناسخ</td><th></th>';
+                                echo '<th scope="row"></th><td>لا يوجد نساخ لهذا الكتاب</td><th></th>';
                             } ?>
                     </tbody>
                 </table>

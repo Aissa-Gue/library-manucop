@@ -684,26 +684,39 @@ if (isset($_POST['editForm'])) {
                             </div>
                         </div>
 
-                        <div class="form-row" id="cop_date">
-                            <?php if ($cop_syear == $cop_eyear) { ?>
+                        <?php if ($cop_syear == $cop_eyear) { ?>
+                        <script>
+                        $(document).ready(function() {
+                            $("#copDate_range").hide();
+                            $("#copDate_exact").show();
+                        });
+                        </script>
+                        <?php } else { ?>
+                        <script>
+                        $(document).ready(function() {
+                            $("#copDate_exact").hide();
+                            $("#copDate_range").show();
+                        });
+                        </script>
+                        <?php } ?>
+
+                        <div class="form-row" id="copDate_exact">
                             <div class="form-group col-md-2">
                                 <label for="cop_day">تاريخ النسخ</label>
                                 <select name="cop_day" id="cop_day" class="custom-select">
-                                    <option value="">-أدخل اليوم-</option>
-                                    <?php
-                                        for ($i = 0; $i <= 6; $i++) { ?>
-                                    <option value="<?php echo $days[$i]; ?>"
-                                        <?php if ($cop_day == $days[$i]) echo "selected"; ?>>
+                                    <option value="" selected>-أدخل اليوم-</option>
+                                    <?php for ($i = 0; $i <= 6; $i++) { ?>
+                                    <option value="<?php echo $days[$i] ?>"
+                                        <?php if ($cop_day == $days[$i]) echo "selected" ?>>
                                         <?php echo $days[$i]; ?>
                                     </option>
                                     <?php } ?>
                                 </select>
                             </div>
-
                             <div class="form-group col-md-2">
                                 <label for="cop_day_nbr">&nbsp;</label>
                                 <select name="cop_day_nbr" id="cop_day_nbr" class="custom-select">
-                                    <option value="">- أدخل اليوم -</option>
+                                    <option value="" selected>- أدخل اليوم -</option>
                                     <?php for ($i = 1; $i <= 31; $i++) { ?>
                                     <option value="<?php echo $i ?>" <?php if ($cop_day_nbr == $i) echo "selected" ?>>
                                         <?php echo $i ?>
@@ -711,14 +724,13 @@ if (isset($_POST['editForm'])) {
                                     <?php } ?>
                                 </select>
                             </div>
-
                             <div class="form-group col-md-2">
                                 <label for="cop_month">&nbsp;</label>
                                 <select name="cop_month" id="cop_month" class="custom-select">
-                                    <option value="">-أدخل الشهر-</option>
+                                    <option value="" selected>-أدخل الشهر-</option>
                                     <?php for ($i = 0; $i <= 23; $i++) { ?>
-                                    <option value="<?php echo $months[$i]; ?>"
-                                        <?php if ($cop_month == $months[$i]) echo "selected"; ?>>
+                                    <option value="<?php echo $months[$i] ?>"
+                                        <?php if ($cop_month == $months[$i]) echo "selected" ?>>
                                         <?php echo $months[$i]; ?>
                                     </option>
                                     <?php if ($i == 11) echo "<option disabled>──────────</option>" ?>
@@ -727,66 +739,47 @@ if (isset($_POST['editForm'])) {
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="cop_syear">&nbsp;</label>
-                                <input type="number" class="form-control" name="cop_syear" id="cop_syear"
-                                    placeholder="أدخل السنة" value="<?php echo $cop_syear ?>">
+                                <input type="number" class="form-control" name="cop_syear"
+                                    value="<?php if ($cop_syear == $cop_eyear) echo $cop_syear ?>" id="cop_syear"
+                                    placeholder="أدخل السنة">
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="date_type">نوع التقويم</label>
                                 <select name="date_type" id="date_type" class="custom-select">
-                                    <option value="1" <?php if ($date_type == 1) echo "selected" ?>>ميلادي
+                                    <option value="1" <?php if ($date_type == 1) echo "selected" ?>>
+                                        ميلادي</option>
+                                    <option value="0" <?php if ($date_type == 0) echo "selected" ?>>هجري
                                     </option>
-                                    <option value="0" <?php if ($date_type == 0) echo "selected" ?>>هجري</option>
                                 </select>
                             </div>
+                        </div>
 
-                            <!-- add input dinamically -->
-                            <div id="replaceCopDate" class="form-group col-md-auto"
-                                style="cursor: pointer; margin-top: 37px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                                    class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
-                                    <path fill-rule="evenodd"
-                                        d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                                </svg>
-                                غير معروف؟
-                            </div>
-                            <!-- END add input dinamically -->
 
-                            <?php } else { ?>
-                            <div class="form-group col-md-2">
+                        <div class="form-row" id="copDate_range">
+                            <div class="form-group col-md-auto">
                                 <label for="cop_date">تاريخ النسخ [أدخل نطاق]</label>
-                                <input type="text" class="form-control" name="cop_syear" id="cop_date"
-                                    value="<?php echo $cop_syear ?>" placeholder="من السنة">
+                                <input type="number" class="form-control" name="cop_syear_range" id="cop_date"
+                                    value="<?php echo $cop_syear ?>" placeholder="من سنة">
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-auto">
                                 <label for="cop_date">&nbsp;</label>
-                                <input type="text" class="form-control" name="cop_eyear" id="cop_date"
-                                    value="<?php echo $cop_eyear ?>" placeholder="إلى السنة">
+                                <input type="number" class="form-control" name="cop_eyear_range" id="cop_date"
+                                    value="<?php echo $cop_eyear ?>" placeholder="إلى سنة">
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="date_type">نوع التقويم</label>
-                                <select name="date_type" id="date_type" class="custom-select">
-                                    <option value="1" <?php if ($date_type == 1) echo "selected" ?>>ميلادي
-                                    </option>
+                                <select name="date_type_range" id="date_type" class="custom-select">
+                                    <option value="1" <?php if ($date_type == 1) echo "selected" ?>>ميلادي</option>
                                     <option value="0" <?php if ($date_type == 0) echo "selected" ?>>هجري</option>
                                 </select>
                             </div>
+                        </div>
 
-                            <!-- add input dinamically -->
-                            <div id="replaceCopDate_range" class="form-group col-md-auto"
-                                style="cursor: pointer; margin-top: 37px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                                    class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
-                                    <path fill-rule="evenodd"
-                                        d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                                </svg>
-                                تاريخ محدد؟
-                            </div>
-                            <!-- END add input dinamically -->
-                            <?php } ?>
+                        <div class="mb-2">
+                            <button type="button" class="btn btn-info rounded-pill" id="hide_Exact">تاريخ
+                                محدد</button>
+                            <button type="button" class="btn btn-info rounded-pill" id="hide_range">فترة
+                                زمنية</button>
                         </div>
 
                         <div class="form-row">
