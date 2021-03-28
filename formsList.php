@@ -195,12 +195,14 @@ $number_of_page = ceil($search_num_rows / $results_per_page);
 if (!isset($_POST['next_page'])) {
     $page = 1;
 } else {
-    $page = $_POST['page'];
+    $pageExplode = explode(' / ', $_POST['page']);
+    $page = $pageExplode[0];
     if ($page < $number_of_page) $page++;
     $page_first_result = ($page - 1) * $results_per_page;
 }
 if (isset($_POST['prev_page'])) {
-    $page = $_POST['page'];
+    $pageExplode = explode(' / ', $_POST['page']);
+    $page = $pageExplode[0];
     if ($page > 1) $page--;
     $page_first_result = ($page - 1) * $results_per_page;
 }
@@ -361,24 +363,20 @@ $searchResult = mysqli_query($conn, $searchQry);
                                                         </datalist>
                                                     </div>
                                                 </div>
-
                                                 <div class="col">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text">نوع النسخة</span>
+                                                            <span class="input-group-text">الموضوع</span>
                                                         </div>
-                                                        <select name="manu_type" class="custom-select">
-                                                            <option value=""></option>
-                                                            <option value="مج"
-                                                                <?php if ($_SESSION['manu_type'] == 'مج') echo 'Selected' ?>>
-                                                                مجلد</option>
-                                                            <option value="مص"
-                                                                <?php if ($_SESSION['manu_type'] == 'مص') echo 'Selected' ?>>
-                                                                مصحف</option>
-                                                            <option value="دغ"
-                                                                <?php if ($_SESSION['manu_type'] == 'دغ') echo 'Selected' ?>>
-                                                                دون غلاف</option>
-                                                        </select>
+                                                        <input list="subjects" name="subj_name" class="form-control"
+                                                            value="<?php echo $_SESSION['subj_name'] ?>">
+                                                        <datalist id="subjects">
+                                                            <?php
+                                                            for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
+                                                            <option
+                                                                value="<?php print_r($rowsSubj[$i]['subj_name']) ?>">
+                                                                <?php  } ?>
+                                                        </datalist>
                                                     </div>
                                                 </div>
                                             </div>
@@ -680,17 +678,20 @@ $searchResult = mysqli_query($conn, $searchQry);
                                                 <div class="col">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text">الموضوع</span>
+                                                            <span class="input-group-text">نوع النسخة</span>
                                                         </div>
-                                                        <input list="subjects" name="subj_name" class="form-control"
-                                                            value="<?php echo $_SESSION['subj_name'] ?>">
-                                                        <datalist id="subjects">
-                                                            <?php
-                                                            for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
-                                                            <option
-                                                                value="<?php print_r($rowsSubj[$i]['subj_name']) ?>">
-                                                                <?php  } ?>
-                                                        </datalist>
+                                                        <select name="manu_type" class="custom-select">
+                                                            <option value=""></option>
+                                                            <option value="مج"
+                                                                <?php if ($_SESSION['manu_type'] == 'مج') echo 'Selected' ?>>
+                                                                مجلد</option>
+                                                            <option value="مص"
+                                                                <?php if ($_SESSION['manu_type'] == 'مص') echo 'Selected' ?>>
+                                                                مصحف</option>
+                                                            <option value="دغ"
+                                                                <?php if ($_SESSION['manu_type'] == 'دغ') echo 'Selected' ?>>
+                                                                دون غلاف</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -805,19 +806,17 @@ $searchResult = mysqli_query($conn, $searchQry);
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item">
                                         <button type="submit" name="prev_page" onclick="submitPrev_page()"
-                                            class="btn btn-success">الصفحة
+                                            class="btn btn-info">الصفحة
                                             السابقة</button>
                                     </li>
                                     <li class="page-item">
-                                        <input type="text" name="page"
-                                            class="page-link text-center bg-light text-danger" aria-disabled="true"
-                                            value="<?php echo $page ?>" readonly>
-                                    </li>
-                                    <li class="page-item"><a class="page-link"><?php echo ' / ' . $number_of_page ?></a>
+                                        <input type="text" name="page" class="page-link text-center bg-light text-info"
+                                            aria-disabled="true" value="<?php echo $page . ' / ' . $number_of_page ?>"
+                                            readonly>
                                     </li>
                                     <li class="page-item">
                                         <button type="submit" name="next_page" onclick="submitNext_page()"
-                                            class="btn btn-success">الصفحة
+                                            class="btn btn-info">الصفحة
                                             التالية</button>
                                     </li>
                                 </ul>

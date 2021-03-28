@@ -216,7 +216,7 @@ if (isset($_POST['insertAuthor'])) {
                                             <?php
                                             for ($i = 0; $i <= $lastAuthKey; $i++) { ?>
                                             <option
-                                                value="<?php print_r($rowsAuth[$i]['auth_id']) ?> # <?php print_r($rowsAuth[$i]['auth_name']); ?>">
+                                                value="<?php print_r($rowsAuth[$i]['auth_id']) ?> # <?php print_r($rowsAuth[$i]['auth_name']) ?>">
                                                 <?php  } ?>
                                         </datalist>
                                     </div>
@@ -241,7 +241,7 @@ if (isset($_POST['insertAuthor'])) {
                                             <?php
                                             for ($i = 0; $i <= $lastSubjKey; $i++) { ?>
                                             <option
-                                                value="<?php print_r($rowsSubj[$i]['subj_id']); ?> # <?php print_r($rowsSubj[$i]['subj_name']); ?>">
+                                                value="<?php print_r($rowsSubj[$i]['subj_id']) ?> # <?php print_r($rowsSubj[$i]['subj_name']) ?>">
                                                 <?php  } ?>
                                         </datalist>
                                     </div>

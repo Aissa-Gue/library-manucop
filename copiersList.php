@@ -94,12 +94,14 @@ $number_of_page = ceil($search_num_rows / $results_per_page);
 if (!isset($_POST['next_page'])) {
     $page = 1;
 } else {
-    $page = $_POST['page'];
+    $pageExplode = explode(' / ', $_POST['page']);
+    $page = $pageExplode[0];
     if ($page < $number_of_page) $page++;
     $page_first_result = ($page - 1) * $results_per_page;
 }
 if (isset($_POST['prev_page'])) {
-    $page = $_POST['page'];
+    $pageExplode = explode(' / ', $_POST['page']);
+    $page = $pageExplode[0];
     if ($page > 1) $page--;
     $page_first_result = ($page - 1) * $results_per_page;
 }
@@ -293,19 +295,17 @@ $searchResult = mysqli_query($conn, $searchQry);
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item">
                                         <button type="submit" name="prev_page" onclick="submitPrev_page()"
-                                            class="btn btn-success">الصفحة
+                                            class="btn btn-info">الصفحة
                                             السابقة</button>
                                     </li>
                                     <li class="page-item">
-                                        <input type="text" name="page"
-                                            class="page-link text-center bg-light text-danger" aria-disabled="true"
-                                            value="<?php echo $page ?>" readonly>
-                                    </li>
-                                    <li class="page-item"><a class="page-link"><?php echo ' / ' . $number_of_page ?></a>
+                                        <input type="text" name="page" class="page-link text-center bg-light text-info"
+                                            aria-disabled="true" value="<?php echo $page . ' / ' . $number_of_page ?>"
+                                            readonly>
                                     </li>
                                     <li class="page-item">
                                         <button type="submit" name="next_page" onclick="submitNext_page()"
-                                            class="btn btn-success">الصفحة
+                                            class="btn btn-info">الصفحة
                                             التالية</button>
                                     </li>
                                 </ul>
