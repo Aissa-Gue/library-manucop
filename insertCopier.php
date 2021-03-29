@@ -103,8 +103,14 @@ if (isset($_POST['insertCopier'])) {
                                 </div>
                                 <div class="form-group col-md-7">
                                     <label for="full_name">اسم الناسخ</label>
-                                    <input type="text" class="form-control" name="full_name" id="full_name"
+                                    <input list="copiers" class="form-control" name="full_name" id="full_name"
                                         placeholder="أدخل اسم الناسخ" required>
+                                    <datalist id="copiers">
+                                        <?php
+                                        for ($i = 0; $i <= $lastKey; $i++) { ?>
+                                        <option value="<?php print_r($rows[$i]['full_name']) ?>">
+                                            <?php  } ?>
+                                    </datalist>
                                 </div>
                             </div>
 
@@ -140,7 +146,7 @@ if (isset($_POST['insertCopier'])) {
                                 <div class="form-group col-md-3">
                                     <label for="city_name">مدينة الناسخ</label>
                                     <input list="cities" class="form-control" name="city_name" id="city_name"
-                                        placeholder="أدخل مدينة الناسخ">
+                                        placeholder="حدد مدينة الناسخ">
                                     <datalist id="cities">
                                         <?php
                                         for ($i = 0; $i <= $lastCityKey; $i++) { ?>
@@ -153,7 +159,7 @@ if (isset($_POST['insertCopier'])) {
                                 <div class="form-group col-md-3">
                                     <label for="count_name">بلد الناسخ</label>
                                     <input list="countries" class="form-control" name="count_name" id="count_name"
-                                        placeholder="أدخل بلد النسخ">
+                                        placeholder="حدد بلد الناسخ">
                                     <datalist id="countries">
                                         <?php
                                         for ($i = 0; $i <= $lastCountKey; $i++) { ?>

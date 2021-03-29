@@ -396,7 +396,7 @@ if (isset($_POST['insertForm'])) {
                                         <?php
                                         for ($i = 0; $i <= $lastKey; $i++) { ?>
                                         <option
-                                            value="<?php print_r($rows[$i]['cop_id']); ?> # <?php print_r($rows[$i]['full_name']); ?>">
+                                            value="<?php print_r($rows[$i]['cop_id']) ?> # <?php print_r($rows[$i]['full_name']) ?>">
                                             <?php  } ?>
                                     </datalist>
                                 </div>
@@ -470,7 +470,7 @@ if (isset($_POST['insertForm'])) {
                                         <?php
                                         for ($i = 0; $i <= $lastBookKey; $i++) { ?>
                                         <option
-                                            value="<?php print_r($rowsBooks[$i]['book_id']); ?> # <?php print_r($rowsBooks[$i]['book_title']); ?>">
+                                            value="<?php print_r($rowsBooks[$i]['book_id']) ?> # <?php print_r($rowsBooks[$i]['book_title']) ?>">
                                             <?php  } ?>
                                     </datalist>
                                 </div>

@@ -175,8 +175,14 @@ if (isset($_POST['insertAuthor'])) {
                                 </div>
                                 <div class="form-group col-md-8">
                                     <label for="auth_name">اسم المؤلف</label>
-                                    <input type="text" class="form-control" name="auth_name" id="auth_name"
+                                    <input list="authors1" class="form-control" name="auth_name" id="auth_name"
                                         placeholder="أدخل اسم المؤلف" required>
+                                    <datalist id="authors1">
+                                        <?php
+                                        for ($i = 0; $i <= $lastAuthKey; $i++) { ?>
+                                        <option value="<?php print_r($rowsAuth[$i]['auth_name']) ?>">
+                                            <?php  } ?>
+                                    </datalist>
                                 </div>
                             </div>
 
@@ -201,8 +207,14 @@ if (isset($_POST['insertAuthor'])) {
                                 </div>
                                 <div class="form-group col-md-8">
                                     <label for="book_title">عنوان الكتاب</label>
-                                    <input type="text" class="form-control" name="book_title" id="book_title"
+                                    <input list="books" class="form-control" name="book_title" id="book_title"
                                         placeholder="أدخل عنوان الكتاب" required>
+                                    <datalist id="books">
+                                        <?php
+                                        for ($i = 0; $i <= $lastBookKey; $i++) { ?>
+                                        <option value="<?php print_r($rowsBooks[$i]['book_title']); ?>">
+                                            <?php  } ?>
+                                    </datalist>
                                 </div>
                             </div>
 
@@ -210,7 +222,7 @@ if (isset($_POST['insertAuthor'])) {
                                 <div id="authors_row" class="form-group col-md-7">
                                     <label for="author">المؤلف</label>
                                     <input list="authors" class="form-control" name="auth_name1" id="author"
-                                        placeholder="أدخل المؤلف 1" required>
+                                        placeholder="حدد المؤلف 1" required>
                                     <datalist id="authors">
                                         <?php
                                         for ($i = 0; $i <= $lastAuthKey; $i++) { ?>
@@ -235,7 +247,7 @@ if (isset($_POST['insertAuthor'])) {
                                 <div id="subjects_row" class="form-group col-md-auto">
                                     <label for="subject">موضوع الكتاب</label>
                                     <input list="subjects" class="form-control" name="subj_name1" id="subject"
-                                        placeholder="أدخل الموضوع 1">
+                                        placeholder="حدد الموضوع 1">
                                     <datalist id="subjects">
                                         <?php
                                         for ($i = 0; $i <= $lastSubjKey; $i++) { ?>

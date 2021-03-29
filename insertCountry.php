@@ -93,8 +93,14 @@ $cityListResult = mysqli_query($conn, $cityListQry);
                                         </div>
                                         <div class="form-group col-md-8">
                                             <label for="count_name">اسم البلد</label>
-                                            <input type="text" class="form-control" name="count_name" id="count_name"
-                                                placeholder="أدخل اسم البلد" required>
+                                            <input list="countries" class="form-control" name="count_name"
+                                                id="count_name" placeholder="أدخل اسم البلد" required>
+                                            <datalist id="countries">
+                                                <?php
+                                                for ($i = 0; $i <= $lastCountKey; $i++) { ?>
+                                                <option value="<?php print_r($rowsCount[$i]['count_name']) ?>">
+                                                    <?php  } ?>
+                                            </datalist>
                                         </div>
                                     </div>
 
@@ -122,8 +128,14 @@ $cityListResult = mysqli_query($conn, $cityListQry);
                                         </div>
                                         <div class="form-group col-md-8">
                                             <label for="city_name">اسم المدينة</label>
-                                            <input type="text" class="form-control" name="city_name" id="city_name"
+                                            <input list="cities" class="form-control" name="city_name" id="city_name"
                                                 placeholder="أدخل اسم المدينة" required>
+                                            <datalist id="cities">
+                                                <?php
+                                                for ($i = 0; $i <= $lastCityKey; $i++) { ?>
+                                                <option value="<?php print_r($rowsCities[$i]['city_name']) ?>">
+                                                    <?php  } ?>
+                                            </datalist>
                                         </div>
                                     </div>
 
