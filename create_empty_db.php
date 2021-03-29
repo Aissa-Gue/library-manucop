@@ -1,26 +1,26 @@
 <?php
 
 // a_books table
-$a_booksQry = "CREATE TABLE `a_books` (
-  `book_id` int(11) NOT NULL,
-  `book_title` varchar(50) NOT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_edit_date` datetime NOT NULL,
-  PRIMARY KEY (`book_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+$a_booksQry = "CREATE TABLE IF NOT EXISTS `a_books` (
+	`book_id` int(11) NOT NULL,
+	`book_title` varchar(150) NOT NULL,
+	`creation_date` datetime NOT NULL,
+	`last_edit_date` datetime NOT NULL,
+	PRIMARY KEY (`book_id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 
 // b_subjects table
-$b_subjectsQry = "CREATE TABLE `b_subjects` (
+$b_subjectsQry = "CREATE TABLE IF NOT EXISTS `b_subjects` (
 	`subj_id` int(11) NOT NULL,
-	`subj_name` varchar(25) NOT NULL,
+	`subj_name` varchar(40) NOT NULL,
 	PRIMARY KEY (`subj_id`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // c_authors table
-$c_authorsQry = "CREATE TABLE `c_authors` (
+$c_authorsQry = "CREATE TABLE IF NOT EXISTS `c_authors` (
 	`auth_id` int(11) NOT NULL,
-	`auth_name` varchar(35) NOT NULL,
+	`auth_name` varchar(90) NOT NULL,
 	`creation_date` datetime NOT NULL,
 	`last_edit_date` datetime NOT NULL,
 	PRIMARY KEY (`auth_id`),
@@ -28,14 +28,14 @@ $c_authorsQry = "CREATE TABLE `c_authors` (
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // cabinets table
-$cabinetsQry = "CREATE TABLE `cabinets` (
+$cabinetsQry = "CREATE TABLE IF NOT EXISTS `cabinets` (
 	`cabinet_id` int(11) NOT NULL,
 	`cabinet_name` varchar(120) NOT NULL,
 	PRIMARY KEY (`cabinet_id`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // cities table
-$citiesQry = "CREATE TABLE `cities` (
+$citiesQry = "CREATE TABLE IF NOT EXISTS `cities` (
 	`city_id` int(11) NOT NULL AUTO_INCREMENT,
 	`city_name` varchar(25) NOT NULL,
 	PRIMARY KEY (`city_id`),
@@ -44,7 +44,7 @@ $citiesQry = "CREATE TABLE `cities` (
   ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8";
 
 // countries table
-$countriesQry = "CREATE TABLE `countries` (
+$countriesQry = "CREATE TABLE IF NOT EXISTS `countries` (
 	`count_id` int(11) NOT NULL AUTO_INCREMENT,
 	`count_name` varchar(25) NOT NULL,
 	PRIMARY KEY (`count_id`),
@@ -53,16 +53,16 @@ $countriesQry = "CREATE TABLE `countries` (
   ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8";
 
 // d_colors table
-$d_colorsQry = "CREATE TABLE `d_colors` (
+$d_colorsQry = "CREATE TABLE IF NOT EXISTS `d_colors` (
 	`color_id` int(11) NOT NULL,
 	`color_name` varchar(10) NOT NULL,
 	PRIMARY KEY (`color_id`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // d_copiers table
-$d_copiersQry = "CREATE TABLE `d_copiers` (
+$d_copiersQry = "CREATE TABLE IF NOT EXISTS `d_copiers` (
 	`cop_id` int(11) NOT NULL,
-	`full_name` varchar(50) NOT NULL,
+	`full_name` varchar(90) NOT NULL,
 	`descent1` varchar(15) NOT NULL,
 	`descent2` varchar(15) NOT NULL,
 	`descent3` varchar(15) NOT NULL,
@@ -86,25 +86,25 @@ $d_copiersQry = "CREATE TABLE `d_copiers` (
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // d_manutypes table
-$d_manutypesQry = "CREATE TABLE `d_manutypes` (
+$d_manutypesQry = "CREATE TABLE IF NOT EXISTS `d_manutypes` (
 	`type_id` int(11) NOT NULL,
 	`type_name` varchar(10) NOT NULL,
 	PRIMARY KEY (`type_id`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // d_motifs table
-$d_motifsQry = "CREATE TABLE `d_motifs` (
+$d_motifsQry = "CREATE TABLE IF NOT EXISTS `d_motifs` (
 	`motif_id` int(11) NOT NULL,
 	`motif_name` varchar(15) NOT NULL,
 	PRIMARY KEY (`motif_id`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // e_manuscripts table
-$e_manuscriptsQry = "CREATE TABLE `e_manuscripts` (
+$e_manuscriptsQry = "CREATE TABLE IF NOT EXISTS `e_manuscripts` (
 	`manu_id` int(11) NOT NULL,
 	`book_id` int(11) NOT NULL,
-	`cop_name` varchar(50) NOT NULL,
 	`cop_day` varchar(8) NOT NULL,
+	`cop_day_nbr` int(11) DEFAULT NULL,
 	`cop_month` varchar(15) NOT NULL,
 	`cop_syear` int(11) DEFAULT NULL,
 	`cop_eyear` int(11) DEFAULT NULL,
@@ -142,7 +142,7 @@ $e_manuscriptsQry = "CREATE TABLE `e_manuscripts` (
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // f_books_subjects table
-$f_books_subjectsQry = "CREATE TABLE `f_books_subjects` (
+$f_books_subjectsQry = "CREATE TABLE IF NOT EXISTS `f_books_subjects` (
 	`book_id` int(11) NOT NULL,
 	`subj_id` int(11) NOT NULL,
 	PRIMARY KEY (`book_id`,`subj_id`),
@@ -152,7 +152,7 @@ $f_books_subjectsQry = "CREATE TABLE `f_books_subjects` (
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // g_books_authors table
-$g_books_authorsQry = "CREATE TABLE `g_books_authors` (
+$g_books_authorsQry = "CREATE TABLE IF NOT EXISTS `g_books_authors` (
 	`book_id` int(11) NOT NULL,
 	`auth_id` int(11) NOT NULL,
 	PRIMARY KEY (`book_id`,`auth_id`),
@@ -162,9 +162,10 @@ $g_books_authorsQry = "CREATE TABLE `g_books_authors` (
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // h_manuscripts_copiers table
-$h_manuscripts_copiersQry = "CREATE TABLE `h_manuscripts_copiers` (
+$h_manuscripts_copiersQry = "CREATE TABLE IF NOT EXISTS `h_manuscripts_copiers` (
 	`manu_id` int(11) NOT NULL,
 	`cop_id` int(11) NOT NULL,
+	`name_in_manu` varchar(90) NOT NULL,
 	PRIMARY KEY (`manu_id`,`cop_id`),
 	KEY `cop_id` (`cop_id`),
 	CONSTRAINT `h_manuscripts_copiers_ibfk_1` FOREIGN KEY (`cop_id`) REFERENCES `d_copiers` (`cop_id`) ON UPDATE CASCADE,
@@ -172,7 +173,7 @@ $h_manuscripts_copiersQry = "CREATE TABLE `h_manuscripts_copiers` (
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // i_cop_fm table
-$i_cop_fmQry = "CREATE TABLE `i_cop_fm` (
+$i_cop_fmQry = "CREATE TABLE IF NOT EXISTS `i_cop_fm` (
 	`cop_id` int(11) NOT NULL,
 	`cop_fm` int(11) NOT NULL,
 	`manu_id` int(11) NOT NULL,
@@ -185,7 +186,7 @@ $i_cop_fmQry = "CREATE TABLE `i_cop_fm` (
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // j_manuscripts_colors table
-$j_manuscripts_colorsQry = "CREATE TABLE `j_manuscripts_colors` (
+$j_manuscripts_colorsQry = "CREATE TABLE IF NOT EXISTS `j_manuscripts_colors` (
 	`manu_id` int(11) NOT NULL,
 	`color_id` int(11) NOT NULL,
 	PRIMARY KEY (`manu_id`,`color_id`),
@@ -196,7 +197,7 @@ $j_manuscripts_colorsQry = "CREATE TABLE `j_manuscripts_colors` (
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // j_manuscripts_manutypes table
-$j_manuscripts_manutypesQry = "CREATE TABLE `j_manuscripts_manutypes` (
+$j_manuscripts_manutypesQry = "CREATE TABLE IF NOT EXISTS `j_manuscripts_manutypes` (
 	`manu_id` int(11) NOT NULL,
 	`type_id` int(11) NOT NULL,
 	PRIMARY KEY (`manu_id`,`type_id`),
@@ -207,7 +208,7 @@ $j_manuscripts_manutypesQry = "CREATE TABLE `j_manuscripts_manutypes` (
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // j_manuscripts_motifs table
-$j_manuscripts_motifsQry = "CREATE TABLE `j_manuscripts_motifs` (
+$j_manuscripts_motifsQry = "CREATE TABLE IF NOT EXISTS `j_manuscripts_motifs` (
 	`manu_id` int(11) NOT NULL,
 	`motif_id` int(11) NOT NULL,
 	PRIMARY KEY (`manu_id`,`motif_id`),
@@ -218,7 +219,7 @@ $j_manuscripts_motifsQry = "CREATE TABLE `j_manuscripts_motifs` (
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 // Users table
-$usersQry = "CREATE TABLE `users` (
+$usersQry = "CREATE TABLE IF NOT EXISTS `users` (
 	`id` int(11) NOT NULL,
 	`username` varchar(32) NOT NULL,
 	`password` varchar(32) NOT NULL,
