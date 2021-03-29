@@ -56,7 +56,7 @@ $cityListResult = mysqli_query($conn, $cityListQry);
 
 ?>
 <!DOCTYPE html>
-<html lang="ar">
+<html dir="rtl" lang="ar">
 
 <head>
     <meta charset="UTF-8">
