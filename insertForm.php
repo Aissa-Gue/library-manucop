@@ -277,6 +277,9 @@ if (isset($_POST['insertForm'])) {
         WHERE (h_manuscripts_copiers.cop_id = $cop_match4 AND h_manuscripts_copiers.manu_id= $manu_id)) LIMIT 1";
     } else $insertCopFMQry4 = "SELECT 1";
 
+    //******** TEST ********/
+    include 'test_insert-edit_form.php';
+    //******** END TEST ********/
 
     /* Tell mysqli to throw an exception if an error occurs */
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);

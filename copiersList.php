@@ -126,193 +126,190 @@ $searchResult = mysqli_query($conn, $searchQry);
 
 <body class="my_bg">
     <!-- START row -->
-    <div class="container-fluid mt-5">
-        <div class="row">
+    <div class="container-fluid py-2 mt-5">
 
-            <?php include "sideBar.php" ?>
+        <?php include "sideBar.php" ?>
 
-            <div class="col-10 my_mr_sidebar">
-                <div class="tab-content" id="tabContent">
-                    <!-- clients list -->
-                    <div class="tab-pane fade mt-3" id="copiersList">
+        <div class="col-10 my_mr_sidebar">
+            <div class="tab-content" id="tabContent">
+                <!-- clients list -->
+                <div class="tab-pane fade mt-3" id="copiersList">
 
-                        <a href="copiersList.php?initSessions=true">
-                            <div class="alert alert-primary text-center" role="alert">
-                                <h4>قائمة النساخ</h4>
+                    <a href="copiersList.php?initSessions=true">
+                        <div class="alert alert-primary text-center" role="alert">
+                            <h4>قائمة النساخ</h4>
+                        </div>
+                    </a>
+
+                    <form action="" method="post">
+                        <div class="form-row justify-content-md-center mb-1">
+                            <div class="input-group col-md-10">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">رقم الناسخ</span>
+                                </div>
+                                <input type="number" name="cop_id" class="form-control col-md-3 text-center"
+                                    placeholder="أدخل رقم الناسخ" value="<?php echo $_SESSION['cop_id'] ?>">
+
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">اسم الناسخ</span>
+                                </div>
+                                <input list="copiers" name="full_name" class="form-control"
+                                    placeholder="أدخل اسم الناسخ ، نسبته ، لقبه ، كنيته ..."
+                                    value="<?php echo $_SESSION['full_name'] ?>">
+                                <datalist id="copiers">
+                                    <?php
+                                    for ($i = 0; $i <= $lastKey; $i++) { ?>
+                                    <option value="<?php print_r($rows[$i]['full_name']); ?>">
+                                        <?php  } ?>
+                                </datalist>
+
                             </div>
-                        </a>
+                        </div>
 
-                        <form action="" method="post">
-                            <div class="form-row justify-content-md-center mb-1">
-                                <div class="input-group col-md-10">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">رقم الناسخ</span>
-                                    </div>
-                                    <input type="number" name="cop_id" class="form-control col-md-3 text-center"
-                                        placeholder="أدخل رقم الناسخ" value="<?php echo $_SESSION['cop_id'] ?>">
+                        <div class="form-row justify-content-md-center mb-2">
+                            <div class="input-group col-md-10">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">المديـنـــــة</span>
+                                </div>
+                                <input list="cities" name="city_name" class="form-control col-md-3"
+                                    placeholder="أدخل مدينة الناسخ" value="<?php echo $_SESSION['city_name'] ?>">
+                                <datalist id="cities">
+                                    <?php
+                                    for ($i = 0; $i <= $lastCityKey; $i++) { ?>
+                                    <option value="<?php print_r($rowsCities[$i]['city_name']); ?>">
+                                        <?php  } ?>
+                                </datalist>
 
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">بلد النــاسخ</span>
+                                </div>
+                                <input list="countries" name="count_name" class="form-control"
+                                    placeholder="أدخل بلد الناسخ" value="<?php echo $_SESSION['count_name'] ?>">
+                                <datalist id="countries">
+                                    <?php
+                                    for ($i = 0; $i <= $lastCountKey; $i++) { ?>
+                                    <option value="<?php print_r($rowsCount[$i]['count_name']); ?>">
+                                        <?php  } ?>
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="form-row justify-content-md-center mb-4">
+                            <div class="input-group col-md-8">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">فترة النسخ</span>
+                                </div>
+                                <input type="number" name="from_year" class="form-control" placeholder="من سنة ..."
+                                    value="<?php echo $_SESSION['from_year'] ?>">
+                                <input type="number" name="to_year" class="form-control" placeholder="إلى سنة ..."
+                                    value="<?php echo $_SESSION['to_year'] ?>">
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">اسم الناسخ</span>
-                                    </div>
-                                    <input list="copiers" name="full_name" class="form-control"
-                                        placeholder="أدخل اسم الناسخ ، نسبته ، لقبه ، كنيته ..."
-                                        value="<?php echo $_SESSION['full_name'] ?>">
-                                    <datalist id="copiers">
-                                        <?php
-                                        for ($i = 0; $i <= $lastKey; $i++) { ?>
-                                        <option value="<?php print_r($rows[$i]['full_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="date_type">نوع التقويم</label>
+                                </div>
+                                <select class="custom-select" name="date_type" id="date_type">
+                                    <option value="">- اختر نوع التقويم -</option>
+                                    <option value="1" <?php if ($_SESSION['date_type'] == 1) echo 'Selected' ?>>
+                                        ميلادي
+                                    </option>
+                                    <option value="0"
+                                        <?php if ($_SESSION['date_type'] == 0 and $_SESSION['date_type'] != null) echo 'Selected' ?>>
+                                        هجري</option>
+                                </select>
 
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" name="clientSearch" type="submit">بحث</button>
                                 </div>
                             </div>
+                        </div>
+                        <!-- </form> -->
 
-                            <div class="form-row justify-content-md-center mb-2">
-                                <div class="input-group col-md-10">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">المديـنـــــة</span>
-                                    </div>
-                                    <input list="cities" name="city_name" class="form-control col-md-3"
-                                        placeholder="أدخل مدينة الناسخ" value="<?php echo $_SESSION['city_name'] ?>">
-                                    <datalist id="cities">
-                                        <?php
-                                        for ($i = 0; $i <= $lastCityKey; $i++) { ?>
-                                        <option value="<?php print_r($rowsCities[$i]['city_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
+                        <div class="alert alert-warning text-center" role="alert">
+                            <strong> عدد النتائج = </strong>
+                            <?php echo $search_num_rows ?>
+                        </div>
 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">بلد النــاسخ</span>
-                                    </div>
-                                    <input list="countries" name="count_name" class="form-control"
-                                        placeholder="أدخل بلد الناسخ" value="<?php echo $_SESSION['count_name'] ?>">
-                                    <datalist id="countries">
-                                        <?php
-                                        for ($i = 0; $i <= $lastCountKey; $i++) { ?>
-                                        <option value="<?php print_r($rowsCount[$i]['count_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
-                                </div>
-                            </div>
-                            <div class="form-row justify-content-md-center mb-4">
-                                <div class="input-group col-md-8">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">فترة النسخ</span>
-                                    </div>
-                                    <input type="number" name="from_year" class="form-control" placeholder="من سنة ..."
-                                        value="<?php echo $_SESSION['from_year'] ?>">
-                                    <input type="number" name="to_year" class="form-control" placeholder="إلى سنة ..."
-                                        value="<?php echo $_SESSION['to_year'] ?>">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-center">رقم الناسخ</th>
+                                    <th scope="col">اسم الناسخ</th>
+                                    <th scope="col">اللقب</th>
+                                    <th scope="col" class="text-center">عدد المنسوخات</th>
+                                    <th scope="col" class="text-center">تفاصيل</th>
+                                    <th scope="col" class="text-center">تعديل</th>
+                                    <th scope="col" class="text-center">حذف</th>
 
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="date_type">نوع التقويم</label>
-                                    </div>
-                                    <select class="custom-select" name="date_type" id="date_type">
-                                        <option value="">- اختر نوع التقويم -</option>
-                                        <option value="1" <?php if ($_SESSION['date_type'] == 1) echo 'Selected' ?>>
-                                            ميلادي
-                                        </option>
-                                        <option value="0"
-                                            <?php if ($_SESSION['date_type'] == 0 and $_SESSION['date_type'] != null) echo 'Selected' ?>>
-                                            هجري</option>
-                                    </select>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = mysqli_fetch_array($searchResult)) { ?>
+                                <tr>
+                                    <th scope="row" class="text-center"><?php echo $row['cop_id'] ?></th>
+                                    <td><?php echo $row['full_name'] ?>
+                                    </td>
+                                    <td><?php echo $row['last_name'] ?></td>
+                                    <td class="text-center"><?php echo $row['manu_nbr'] ?></td>
+                                    <td class="text-center">
+                                        <a class="btn btn-outline-danger"
+                                            href="previewCopier.php?cop_id=<?php echo $row['cop_id'] ?>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
+                                            </svg>
+                                        </a>
+                                    </td>
 
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" name="clientSearch" type="submit">بحث</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- </form> -->
+                                    <td class="text-center">
+                                        <a class="btn btn-outline-danger"
+                                            href="editCopier.php?cop_id=<?php echo $row['cop_id'] ?>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                                            </svg>
+                                        </a>
+                                    </td>
 
-                            <div class="alert alert-warning text-center" role="alert">
-                                <strong> عدد النتائج = </strong>
-                                <?php echo $search_num_rows ?>
-                            </div>
-
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="text-center">رقم الناسخ</th>
-                                        <th scope="col">اسم الناسخ</th>
-                                        <th scope="col">اللقب</th>
-                                        <th scope="col" class="text-center">عدد المنسوخات</th>
-                                        <th scope="col" class="text-center">تفاصيل</th>
-                                        <th scope="col" class="text-center">تعديل</th>
-                                        <th scope="col" class="text-center">حذف</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php while ($row = mysqli_fetch_array($searchResult)) { ?>
-                                    <tr>
-                                        <th scope="row" class="text-center"><?php echo $row['cop_id'] ?></th>
-                                        <td><?php echo $row['full_name'] ?>
-                                        </td>
-                                        <td><?php echo $row['last_name'] ?></td>
-                                        <td class="text-center"><?php echo $row['manu_nbr'] ?></td>
-                                        <td class="text-center">
-                                            <a class="btn btn-outline-danger"
-                                                href="previewCopier.php?cop_id=<?php echo $row['cop_id'] ?>">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-person-lines-fill"
-                                                    viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
-                                                </svg>
-                                            </a>
-                                        </td>
-
-                                        <td class="text-center">
-                                            <a class="btn btn-outline-danger"
-                                                href="editCopier.php?cop_id=<?php echo $row['cop_id'] ?>">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
-                                                </svg>
-                                            </a>
-                                        </td>
-
-                                        <td class="text-center">
-                                            <a class="btn btn-outline-danger"
-                                                href="delete.php?del_cop_id=<?php echo $row['cop_id'] ?>&full_name=<?php echo $row['full_name'] ?>&last_name=<?php echo $row['last_name'] ?>"
-                                                onclick="return confirm('هل أنت متأكد؟')">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                                                </svg>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                            <!-- START pagination -->
-                            <!-- <form action="" method="post" id="prev_pageForm"> -->
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item">
-                                        <button type="submit" name="prev_page" onclick="submitPrev_page()"
-                                            class="btn btn-info">الصفحة
-                                            السابقة</button>
-                                    </li>
-                                    <li class="page-item">
-                                        <input type="text" name="page" class="page-link text-center bg-light text-info"
-                                            aria-disabled="true" value="<?php echo $page . ' / ' . $number_of_page ?>"
-                                            readonly>
-                                    </li>
-                                    <li class="page-item">
-                                        <button type="submit" name="next_page" onclick="submitNext_page()"
-                                            class="btn btn-info">الصفحة
-                                            التالية</button>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </form>
-                        <!-- END pagination -->
-                    </div>
+                                    <td class="text-center">
+                                        <a class="btn btn-outline-danger"
+                                            href="delete.php?del_cop_id=<?php echo $row['cop_id'] ?>&full_name=<?php echo $row['full_name'] ?>&last_name=<?php echo $row['last_name'] ?>"
+                                            onclick="return confirm('هل أنت متأكد؟')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                        <!-- START pagination -->
+                        <!-- <form action="" method="post" id="prev_pageForm"> -->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item">
+                                    <button type="submit" name="prev_page" onclick="submitPrev_page()"
+                                        class="btn btn-info">الصفحة
+                                        السابقة</button>
+                                </li>
+                                <li class="page-item">
+                                    <input type="text" name="page" class="page-link text-center bg-light text-info"
+                                        aria-disabled="true" value="<?php echo $page . ' / ' . $number_of_page ?>"
+                                        readonly>
+                                </li>
+                                <li class="page-item">
+                                    <button type="submit" name="next_page" onclick="submitNext_page()"
+                                        class="btn btn-info">الصفحة
+                                        التالية</button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </form>
+                    <!-- END pagination -->
                 </div>
             </div>
         </div>

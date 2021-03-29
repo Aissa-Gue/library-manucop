@@ -162,30 +162,40 @@ if (isset($_POST['editForm'])) {
     } else $editCopQry4 = "SELECT 1";
 
     //********** Insert into Manuscriptions **********/
-    if (isset($_POST['cop_day'])) $cop_day = $_POST['cop_day'];
-    else $cop_day = "";
+    if ($_POST['cop_syear_range'] != NULL and $_POST['cop_eyear_range'] != NULL) {
+        //==> range
+        $cop_day = "";
+        $cop_day_nbr = "NULL";
+        $cop_month = "";
+        $cop_syear = $_POST['cop_syear_range'];
+        $cop_eyear = $_POST['cop_eyear_range'];
+        if ($_POST['cop_syear_range'] == NULL and $_POST['cop_eyear_range'] == NULL) {
+            $date_type = "NULL";
+        } else {
+            $date_type = $_POST['date_type_range'];
+        }
+    } else {
+        // Exact date
+        $cop_day = $_POST['cop_day'];
 
-    if (isset($_POST['cop_day_nbr']) and $_POST['cop_day_nbr'] != NULL) $cop_day_nbr = $_POST['cop_day_nbr'];
-    else $cop_day_nbr = "NULL";
+        if ($_POST['cop_day_nbr'] != "") $cop_day_nbr = $_POST['cop_day_nbr'];
+        else $cop_day_nbr = "NULL";
 
-    if (isset($_POST['cop_month'])) $cop_month = $_POST['cop_month'];
-    else $cop_month = "";
+        $cop_month = $_POST['cop_month'];
 
-    if (isset($_POST['cop_eyear']) and $_POST['cop_eyear'] != NULL) $cop_eyear = $_POST['cop_eyear'];
-    else $cop_eyear = "NULL";
+        if ($_POST['cop_syear'] != NULL) {
+            $cop_syear = $_POST['cop_syear'];
+            $cop_eyear = $cop_syear;
+        } else {
+            $cop_syear = "NULL";
+            $cop_eyear = $cop_syear;
+        }
 
-    if (isset($_POST['cop_syear']) and $_POST['cop_syear'] != NULL) {
-        $cop_syear = $_POST['cop_syear'];
-        if (!isset($_POST['cop_eyear'])) $cop_eyear = $cop_syear;
-    } else $cop_syear = "NULL";
-
-    if (isset($_POST['date_type']) and $_POST['date_type'] != NULL) $date_type = $_POST['date_type'];
-
-    //set null value to date_type if date not added
-    if ((!isset($_POST['cop_eyear']) and $_POST['cop_syear'] == NULL and $_POST['cop_month'] == NULL  and $_POST['cop_day'] == NULL)
-        or (isset($_POST['cop_eyear'])  and $_POST['cop_eyear'] == NULL and $_POST['cop_syear'] == NULL)
-    ) {
-        $date_type = "NULL";
+        if ($_POST['cop_day'] == NULL and  $_POST['cop_day_nbr'] == NULL and $_POST['cop_month'] == NULL and $_POST['cop_syear'] == NULL) {
+            $date_type = "NULL";
+        } else {
+            $date_type = $_POST['date_type'];
+        }
     }
 
     if (isset($_POST['cop_place'])) $cop_place = $_POST['cop_place'];
@@ -378,6 +388,11 @@ if (isset($_POST['editForm'])) {
         ON DUPLICATE KEY UPDATE cop_id = '$cop_match4', cop_fm= '$cop_fm4', manu_id= '$manu_id'";
     } else $editCopFMQry4 = "SELECT 1";
 
+
+    //******** TEST ********/
+    include 'test_insert-edit_form.php';
+    //******** END TEST ********/
+
     //START TRANSACTION 
     mysqli_query($conn, "START TRANSACTION");
 
@@ -467,85 +482,177 @@ if (isset($_POST['editForm'])) {
 <body class="my_bg">
 
     <!-- START row -->
-    <div class="container-fluid mt-5">
-        <div class="row">
+    <div class="container-fluid mt-5 pb-3">
 
-            <?php include "sideBar.php" ?>
+        <?php include "sideBar.php" ?>
 
-            <div class="col-10 my_mr_sidebar pt-3">
+        <div class="col-10 my_mr_sidebar pt-3">
 
-                <div class="alert alert-primary text-center" role="alert">
-                    <h4>تعديل الاستمارة</h4>
-                </div>
-                <form action="" method="post">
-                    <fieldset class="scheduler-border">
-                        <legend class="scheduler-border">معلومات الناسخ</legend>
+            <div class="alert alert-primary text-center" role="alert">
+                <h4>تعديل الاستمارة</h4>
+            </div>
+            <form action="" method="post">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">معلومات الناسخ</legend>
 
-                        <!-- ************ START COP NAME / name in manu -->
-                        <div class="form-row">
-                            <div class="form-group col-md-5">
-                                <label for="full_name">اسم الناسخ</label>
+                    <!-- ************ START COP NAME / name in manu -->
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <label for="full_name">اسم الناسخ</label>
+                        </div>
+                        <div class="form-group col-md-7">
+                            <label for="name_in_manu">اسم الناسخ الوارد في النسخة</label>
+                        </div>
+                    </div>
+                    <?php
+                    $a = 1;
+                    while ($row = mysqli_fetch_array($manuSubQry2Result)) {
+                        $cop_id = $row['cop_id'];
+                        $full_name = $row['full_name'];
+                        $name_in_manu = $row['name_in_manu'];
+                    ?>
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span>
+                                        <a class="btn btn-outline-danger"
+                                            href="deleteManuCop.php?manu_id=<?php echo $manu_id ?>&cop_id=<?php echo $row['cop_id']  ?>"
+                                            onclick="return confirm('هل أنت متأكد من حذف الناسخ من النسخة؟')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                            </svg>
+                                        </a>
+                                    </span>
+                                </div>
+
+                                <input list="copiers" class="form-control mb-2" name="full_name<?php echo $a ?>"
+                                    value="<?php echo $cop_id . ' # ' . $full_name ?>" id="full_name"
+                                    placeholder="حدد ناسخ">
+                                <datalist id="copiers">
+                                    <?php
+                                        for ($i = 0; $i <= $lastKey; $i++) { ?>
+                                    <option
+                                        value="<?php print_r($rows[$i]['cop_id']) ?> # <?php print_r($rows[$i]['full_name']); ?>">
+                                        <?php  } ?>
+                                </datalist>
                             </div>
-                            <div class="form-group col-md-7">
-                                <label for="name_in_manu">اسم الناسخ الوارد في النسخة</label>
+                        </div><!-- form-group col-md-5 -->
+
+                        <div class="form-group col-md-7">
+                            <input type="text" class="form-control" name="name_in_manu<?php echo $a ?>"
+                                id="name_in_manu" value="<?php echo $name_in_manu ?>"
+                                placeholder="أدخل اسم الناسخ كما ورد في النسخة" required>
+                        </div><!-- form-group col-md-7 -->
+                    </div><!-- END form-row -->
+                    <?php $a++;
+                    } ?>
+
+                    <!-- add input if nbr of copiers under 4  -->
+                    <?php if ($a < 5) {
+                        for ($a; $a < 5; $a++) {
+                    ?>
+                    <div class="form-row">
+                        <div class="col-md-5">
+                            <input list="copiers" class="form-control mb-2" name="full_name<?php echo $a ?>"
+                                id="full_name" placeholder="حدد ناسخ">
+                            <datalist id="copiers">
+                                <?php
+                                        for ($i = 0; $i <= $lastKey; $i++) { ?>
+                                <option
+                                    value="<?php print_r($rows[$i]['cop_id']) ?> # <?php print_r($rows[$i]['full_name']); ?>">
+                                    <?php  } ?>
+                            </datalist>
+                        </div><!-- col-md-5 -->
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" name="name_in_manu<?php echo $a ?>"
+                                id="name_in_manu" placeholder="أدخل اسم الناسخ كما ورد في النسخة">
+                        </div><!-- col-md-7 -->
+                    </div><!-- form-row -->
+                    <?php
+                        }
+                    } ?>
+                    <!-- ************ END COP_NAME & NAME_IN_MANU -->
+
+                    <!-- ************ START COP_FM  -->
+                    <div class="form-row mt-4">
+                        <div class="form-group col-md-auto">
+                            <label for="cop_match">رقم الناسخ (من الاستمارة أعلاه)</label>
+                        </div>
+
+                        <div class="form-group col-md-9">
+                            <label for="cop_fm">تشابه خط الناسخ بغيره من الناسخين</label>
+                        </div>
+                    </div>
+
+
+                    <?php
+                    $c = 1;
+                    while ($row = mysqli_fetch_array($manuSubQry5Result)) {
+                        $cop_id = $row['cop_id'];
+                        $cop_fm = $row['cop_fm'];
+                        $fm_full_name = $row['full_name'];
+                    ?>
+                    <div class="form-row">
+                        <div class="form-group col-md-auto">
+                            <input type="text" class="form-control text-center" name="cop_match<?php echo $c ?>"
+                                value="<?php echo $cop_id ?>" id="cop_match" placeholder="أدخل رقم الناسخ">
+                        </div>
+                        =>
+                        <div class="form-group col-md-9">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span>
+                                        <a class="btn btn-outline-danger"
+                                            href="deleteManuFmCop.php?manu_id=<?php echo $manu_id ?>&cop_id=<?php echo $cop_id  ?>&cop_fm=<?php echo $cop_fm  ?>"
+                                            onclick="return confirm('هل أنت متأكد من حذف الناسخ المشابه من النسخة؟')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                            </svg>
+                                        </a>
+                                    </span>
+                                </div>
+
+                                <input list="copiers" class="form-control" name="cop_fm<?php echo $c ?>"
+                                    value="<?php echo $cop_fm . ' # ' . $fm_full_name ?>" id="cop_fm"
+                                    placeholder="أدخل الناسخ المشابه">
+                                <datalist id="copiers">
+                                    <?php
+                                        for ($i = 0; $i <= $lastKey; $i++) { ?>
+                                    <option
+                                        value="<?php print_r($rows[$i]['cop_id']) ?> # <?php print_r($rows[$i]['full_name']); ?>">
+                                        <?php  } ?>
+                                </datalist>
                             </div>
                         </div>
-                        <?php
-                        $a = 1;
-                        while ($row = mysqli_fetch_array($manuSubQry2Result)) {
-                            $cop_id = $row['cop_id'];
-                            $full_name = $row['full_name'];
-                            $name_in_manu = $row['name_in_manu'];
-                        ?>
-                        <div class="form-row">
-                            <div class="form-group col-md-5">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span>
-                                            <a class="btn btn-outline-danger"
-                                                href="deleteManuCop.php?manu_id=<?php echo $manu_id ?>&cop_id=<?php echo $row['cop_id']  ?>"
-                                                onclick="return confirm('هل أنت متأكد من حذف الناسخ من النسخة؟')">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                    <path fill-rule="evenodd"
-                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                                </svg>
-                                            </a>
-                                        </span>
-                                    </div>
+                    </div>
+                    <?php
+                        $c++;
+                    } ?>
 
-                                    <input list="copiers" class="form-control mb-2" name="full_name<?php echo $a ?>"
-                                        value="<?php echo $cop_id . ' # ' . $full_name ?>" id="full_name"
-                                        placeholder="حدد ناسخ">
-                                    <datalist id="copiers">
-                                        <?php
-                                            for ($i = 0; $i <= $lastKey; $i++) { ?>
-                                        <option
-                                            value="<?php print_r($rows[$i]['cop_id']) ?> # <?php print_r($rows[$i]['full_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
-                                </div>
-                            </div><!-- form-group col-md-5 -->
 
-                            <div class="form-group col-md-7">
-                                <input type="text" class="form-control" name="name_in_manu<?php echo $a ?>"
-                                    id="name_in_manu" value="<?php echo $name_in_manu ?>"
-                                    placeholder="أدخل اسم الناسخ كما ورد في النسخة" required>
-                            </div><!-- form-group col-md-7 -->
-                        </div><!-- END form-row -->
-                        <?php $a++;
-                        } ?>
-
-                        <!-- add input if nbr of copiers under 4  -->
-                        <?php if ($a < 5) {
-                            for ($a; $a < 5; $a++) {
-                        ?>
-                        <div class="form-row">
-                            <div class="col-md-5">
-                                <input list="copiers" class="form-control mb-2" name="full_name<?php echo $a ?>"
-                                    id="full_name" placeholder="حدد ناسخ">
+                    <!-- add input if nbr of copiers under 4  -->
+                    <?php if ($c < 6) {
+                        for ($c; $c < 6; $c++) {
+                    ?>
+                    <div class="form-row">
+                        <div class="form-group col-md-auto">
+                            <input type="text" class="form-control text-center" name="cop_match<?php echo $c ?>"
+                                id="cop_match" placeholder="أدخل رقم الناسخ">
+                        </div>
+                        =>
+                        <div class="form-group col-md-9">
+                            <div class="input-group">
+                                <input list="copiers" class="form-control" name="cop_fm<?php echo $c ?>" id="cop_fm"
+                                    placeholder="أدخل الناسخ المشابه">
                                 <datalist id="copiers">
                                     <?php
                                             for ($i = 0; $i <= $lastKey; $i++) { ?>
@@ -553,638 +660,547 @@ if (isset($_POST['editForm'])) {
                                         value="<?php print_r($rows[$i]['cop_id']) ?> # <?php print_r($rows[$i]['full_name']); ?>">
                                         <?php  } ?>
                                 </datalist>
-                            </div><!-- col-md-5 -->
-                            <div class="col-md-7">
-                                <input type="text" class="form-control" name="name_in_manu<?php echo $a ?>"
-                                    id="name_in_manu" placeholder="أدخل اسم الناسخ كما ورد في النسخة">
-                            </div><!-- col-md-7 -->
-                        </div><!-- form-row -->
-                        <?php
-                            }
-                        } ?>
-                        <!-- ************ END COP_NAME & NAME_IN_MANU -->
-
-                        <!-- ************ START COP_FM  -->
-                        <div class="form-row mt-4">
-                            <div class="form-group col-md-auto">
-                                <label for="cop_match">رقم الناسخ (من الاستمارة أعلاه)</label>
-                            </div>
-
-                            <div class="form-group col-md-9">
-                                <label for="cop_fm">تشابه خط الناسخ بغيره من الناسخين</label>
                             </div>
                         </div>
+                    </div>
+                    <?php
+                        }
+                    } ?>
+                    <!-- ************ END COP_FM -->
+
+                </fieldset>
+
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">معلومات النسخة</legend>
+                    <div class="form-row">
+                        <div class="form-group col-md-auto">
+                            <label for="manu_id">رقم الاستمارة</label>
+                            <input type="number" class="form-control text-center" name="manu_id"
+                                value="<?php echo $manu_id ?>" id="manu_id" placeholder="أدخل رقم الاستمارة" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-9">
+                            <label for="title">عنوان الكتاب</label>
+
+                            <input list="books" class="form-control mb-2" name="book_title"
+                                value="<?php echo $book_id . ' # ' . $book_title ?>" id="title"
+                                placeholder="حدد عنوان الكتاب" required>
+                            <datalist id="books">
+                                <?php
+                                for ($i = 0; $i <= $lastBookKey; $i++) { ?>
+                                <option
+                                    value="<?php print_r($rowsBooks[$i]['book_id']) ?> # <?php print_r($rowsBooks[$i]['book_title']); ?>">
+                                    <?php  } ?>
+                            </datalist>
+                        </div>
+                    </div>
 
 
+                    <div class="form-row" id="copDate_exact">
+                        <div class="form-group col-md-2">
+                            <label for="cop_day">تاريخ النسخ</label>
+                            <select name="cop_day" id="cop_day" class="custom-select">
+                                <option value="" selected>-أدخل اليوم-</option>
+                                <?php for ($i = 0; $i <= 6; $i++) { ?>
+                                <option value="<?php echo $days[$i] ?>"
+                                    <?php if ($cop_day == $days[$i]) echo "selected" ?>>
+                                    <?php echo $days[$i]; ?>
+                                </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="cop_day_nbr">&nbsp;</label>
+                            <select name="cop_day_nbr" id="cop_day_nbr" class="custom-select">
+                                <option value="" selected>- أدخل اليوم -</option>
+                                <?php for ($i = 1; $i <= 31; $i++) { ?>
+                                <option value="<?php echo $i ?>" <?php if ($cop_day_nbr == $i) echo "selected" ?>>
+                                    <?php echo $i ?>
+                                </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="cop_month">&nbsp;</label>
+                            <select name="cop_month" id="cop_month" class="custom-select">
+                                <option value="" selected>-أدخل الشهر-</option>
+                                <?php for ($i = 0; $i <= 23; $i++) { ?>
+                                <option value="<?php echo $months[$i] ?>"
+                                    <?php if ($cop_month == $months[$i]) echo "selected" ?>>
+                                    <?php echo $months[$i]; ?>
+                                </option>
+                                <?php if ($i == 11) echo "<option disabled>──────────</option>" ?>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="cop_syear">&nbsp;</label>
+                            <input type="number" class="form-control" name="cop_syear"
+                                value="<?php if ($cop_syear == $cop_eyear) echo $cop_syear ?>" id="cop_syear"
+                                placeholder="أدخل السنة">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="date_type">نوع التقويم</label>
+                            <select name="date_type" id="date_type" class="custom-select">
+                                <option value="1" <?php if ($date_type == 1) echo "selected" ?>>
+                                    ميلادي</option>
+                                <option value="0" <?php if ($date_type == 0) echo "selected" ?>>هجري
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-row" id="copDate_range">
+                        <div class="form-group col-md-auto">
+                            <label for="cop_date">تاريخ النسخ [أدخل نطاق]</label>
+                            <input type="number" class="form-control" name="cop_syear_range" id="cop_date"
+                                value="<?php if ($cop_syear !== $cop_eyear) echo $cop_syear ?>" placeholder="من سنة">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="cop_date">&nbsp;</label>
+                            <input type="number" class="form-control" name="cop_eyear_range" id="cop_date"
+                                value="<?php if ($cop_syear !== $cop_eyear) echo $cop_eyear ?>" placeholder="إلى سنة">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="date_type">نوع التقويم</label>
+                            <select name="date_type_range" id="date_type" class="custom-select">
+                                <option value="1" <?php if ($date_type == 1) echo "selected" ?>>ميلادي</option>
+                                <option value="0" <?php if ($date_type == 0) echo "selected" ?>>هجري</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <script>
+                    $("#copDate_range").hide();
+                    $("#copDate_exact").hide();
+                    </script>
+                    <?php if ($cop_syear == $cop_eyear) { ?>
+                    <script>
+                    $(document).ready(function() {
+                        $("#copDate_exact").show();
+                    });
+                    </script>
+                    <?php } else { ?>
+                    <script>
+                    $(document).ready(function() {
+                        $("#copDate_range").show();
+                    });
+                    </script>
+                    <?php } ?>
+
+                    <div class="mb-2">
+                        <button type="button" class="btn btn-info rounded-pill" id="hide_Exact">تاريخ
+                            محدد</button>
+                        <button type="button" class="btn btn-info rounded-pill" id="hide_range">فترة
+                            زمنية</button>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="cop_place">مكان النسخ</label>
+                            <input type="text" class="form-control" name="cop_place" id="cop_place"
+                                placeholder="أدخل مكان النسخ" value="<?php echo $cop_place ?>">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="city_name">المدينة</label>
+                            <input list="cities" class="form-control" name="city_name"
+                                value="<?php if ($city_id != '') echo $city_id . ' # ' . $city_name ?>" id="city_name"
+                                placeholder="أدخل مدينة النسخ">
+                            <datalist id="cities">
+                                <?php
+                                for ($i = 0; $i <= $lastCityKey; $i++) { ?>
+                                <option
+                                    value="<?php print_r($rowsCities[$i]['city_id']) ?> # <?php print_r($rowsCities[$i]['city_name']); ?>">
+                                    <?php  } ?>
+                            </datalist>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="count_name">البلد حاليا</label>
+                            <input list="countries" class="form-control" name="count_name"
+                                value="<?php if ($count_id != '') echo $count_id . ' # ' . $count_name ?>"
+                                id="count_name" placeholder="أدخل بلد النسخ">
+                            <datalist id="countries">
+                                <?php
+                                for ($i = 0; $i <= $lastCountKey; $i++) { ?>
+                                <option
+                                    value="<?php print_r($rowsCount[$i]['count_id']) ?> # <?php print_r($rowsCount[$i]['count_name']); ?>">
+                                    <?php  } ?>
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="signing">موقعة أو بالمقارنة</label>
+                            <select name="signing" id="signing" class="custom-select">
+                                <option value="">- اختر نوع النسخة -</option>
+                                <option value="1" <?php if ($signing == 1) echo "selected" ?>>موقعة</option>
+                                <option value="0" <?php if ($signing == 0 and $signing != null) echo "selected" ?>>
+                                    بالمقارنة</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-7">
+                            <label for="cabinet_name">اسم الخزانة</label>
+                            <input list="cabinet_names" class="form-control" name="cabinet_name"
+                                value="<?php if ($cabinet_id != '') echo $cabinet_id . ' # ' . $cabinet_name ?>"
+                                id="cabinet_name" placeholder="أدخل اسم الخزانة">
+                            <datalist id="cabinet_names">
+                                <?php
+                                for ($i = 0; $i <= $lastCabinetKey; $i++) { ?>
+                                <option
+                                    value="<?php print_r($rowsCabinet[$i]['cabinet_id']) ?> # <?php print_r($rowsCabinet[$i]['cabinet_name']); ?>">
+                                    <?php  } ?>
+                            </datalist>
+                        </div>
+
+                        <div class="form-group col-md-auto">
+                            <label for="cabinet_nbr">الرقم في الخزانة</label>
+                            <input type="number" class="form-control" name="cabinet_nbr" id="cabinet_nbr"
+                                placeholder="أدخل الرقم في الخزانة" value="<?php echo $cabinet_nbr ?>">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="manu_type">نوع النسخة</label>
+                            <select name="manu_type" id="manu_type" class="custom-select">
+                                <option value="">-أدخل نوع النسخة-</option>
+                                <option value="مج" <?php if ($manu_type == 'مج') echo "selected"; ?>>مجلد</option>
+                                <option value="مص" <?php if ($manu_type == 'مص') echo "selected"; ?>>مصحف</option>
+                                <option value="دغ" <?php if ($manu_type == 'دغ') echo "selected"; ?>>دون غلاف
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="index_nbr">الرقم في الفهرس</label>
+                            <input type="number" class="form-control" name="index_nbr" id="index_nbr"
+                                placeholder="أدخل الرقم في الفهرس" value="<?php echo $index_nbr ?>">
+                        </div>
+                    </div>
+
+                    <h5 class="my_line"><span>تفاصيل النسخة</span></h5>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="font">الخط</label>
+                            <select name="font" id="font" class="custom-select">
+                                <option value="">- اختر خط -</option>
+                                <option value="مغربي" <?php if ($font == 'مغربي') echo "selected"; ?>>مغربي</option>
+                                <option value="مشرقي" <?php if ($font == 'مشرقي') echo "selected"; ?>>مشرقي</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="font_style">نوع الخط</label>
+                            <select name="font_style" id="font_style" class="custom-select">
+                                <option value="">- اختر نوع الخط -</option>
+                                <?php for ($i = 0; $i <= 5; $i++) { ?>
+                                <option value="<?php echo $w_font_styles[$i]; ?>"
+                                    <?php if ($font_style == $w_font_styles[$i]) echo "selected"; ?>>
+                                    <?php echo $w_font_styles[$i]; ?>
+                                </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="regular_lines">نوع المسطرة</label>
+                            <select name="regular_lines" id="regular_lines" class="custom-select">
+                                <option value="">- اختر نوع المسطرة -</option>
+                                <option value="1" <?php if ($regular_lines == 1) echo "selected"; ?>>
+                                    منتظمة
+                                </option>
+                                <option value="0"
+                                    <?php if ($regular_lines == 0 and $regular_lines != null) echo "selected"; ?>>
+                                    غير منتظمة
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="lines_notes">ملاحظات على المسطرة</label>
+                            <input type="text" class="form-control" name="lines_notes" id="lines_notes"
+                                value="<?php echo $lines_notes ?>" placeholder="أدخل ملاحظات المسطرة">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="paper_size">مقاس الورق</label>
+                            <select name="paper_size" id="paper_size" class="custom-select">
+                                <option value="">- اختر مقاس الورق -</option>
+                                <option value="1" <?php if ($paper_size == 1) echo "selected"; ?>>القطع الكبير
+                                </option>
+                                <option value="2" <?php if ($paper_size == 2) echo "selected"; ?>>القطع المتوسط
+                                </option>
+                                <option value="3" <?php if ($paper_size == 3) echo "selected"; ?>>القطع الصغير
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <label for="motifs">الزخارف</label><br>
+                    <div class="form-row">
                         <?php
-                        $c = 1;
-                        while ($row = mysqli_fetch_array($manuSubQry5Result)) {
-                            $cop_id = $row['cop_id'];
-                            $cop_fm = $row['cop_fm'];
-                            $fm_full_name = $row['full_name'];
-                        ?>
-                        <div class="form-row">
-                            <div class="form-group col-md-auto">
-                                <input type="text" class="form-control text-center" name="cop_match<?php echo $c ?>"
-                                    value="<?php echo $cop_id ?>" id="cop_match" placeholder="أدخل رقم الناسخ">
-                            </div>
-                            =>
-                            <div class="form-group col-md-9">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span>
-                                            <a class="btn btn-outline-danger"
-                                                href="deleteManuFmCop.php?manu_id=<?php echo $manu_id ?>&cop_id=<?php echo $cop_id  ?>&cop_fm=<?php echo $cop_fm  ?>"
-                                                onclick="return confirm('هل أنت متأكد من حذف الناسخ المشابه من النسخة؟')">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                    <path fill-rule="evenodd"
-                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                                </svg>
-                                            </a>
-                                        </span>
-                                    </div>
+                        $b = 1;
+                        while ($row = mysqli_fetch_array($manuSubQry6Result)) {  ?>
+                        <div class="form-group col-md-auto">
 
-                                    <input list="copiers" class="form-control" name="cop_fm<?php echo $c ?>"
-                                        value="<?php echo $cop_fm . ' # ' . $fm_full_name ?>" id="cop_fm"
-                                        placeholder="أدخل الناسخ المشابه">
-                                    <datalist id="copiers">
-                                        <?php
-                                            for ($i = 0; $i <= $lastKey; $i++) { ?>
-                                        <option
-                                            value="<?php print_r($rows[$i]['cop_id']) ?> # <?php print_r($rows[$i]['full_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span>
+                                        <a class="btn btn-outline-danger"
+                                            href="deleteMotif.php?manu_id=<?php echo $manu_id ?>&motif_id=<?php echo $row['motif_id']  ?>"
+                                            onclick="return confirm('هل أنت متأكد من حذف الزخرفة؟')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                            </svg>
+                                        </a>
+                                    </span>
                                 </div>
-                            </div>
-                        </div>
-                        <?php
-                            $c++;
-                        } ?>
 
-
-                        <!-- add input if nbr of copiers under 4  -->
-                        <?php if ($c < 6) {
-                            for ($c; $c < 6; $c++) {
-                        ?>
-                        <div class="form-row">
-                            <div class="form-group col-md-auto">
-                                <input type="text" class="form-control text-center" name="cop_match<?php echo $c ?>"
-                                    id="cop_match" placeholder="أدخل رقم الناسخ">
-                            </div>
-                            =>
-                            <div class="form-group col-md-9">
-                                <div class="input-group">
-                                    <input list="copiers" class="form-control" name="cop_fm<?php echo $c ?>" id="cop_fm"
-                                        placeholder="أدخل الناسخ المشابه">
-                                    <datalist id="copiers">
-                                        <?php
-                                                for ($i = 0; $i <= $lastKey; $i++) { ?>
-                                        <option
-                                            value="<?php print_r($rows[$i]['cop_id']) ?> # <?php print_r($rows[$i]['full_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
-                                </div>
-                            </div>
-                        </div>
-                        <?php
-                            }
-                        } ?>
-                        <!-- ************ END COP_FM -->
-
-                    </fieldset>
-
-                    <fieldset class="scheduler-border">
-                        <legend class="scheduler-border">معلومات النسخة</legend>
-                        <div class="form-row">
-                            <div class="form-group col-md-auto">
-                                <label for="manu_id">رقم الاستمارة</label>
-                                <input type="number" class="form-control text-center" name="manu_id"
-                                    value="<?php echo $manu_id ?>" id="manu_id" placeholder="أدخل رقم الاستمارة"
-                                    required>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-9">
-                                <label for="title">عنوان الكتاب</label>
-
-                                <input list="books" class="form-control mb-2" name="book_title"
-                                    value="<?php echo $book_id . ' # ' . $book_title ?>" id="title"
-                                    placeholder="حدد عنوان الكتاب" required>
-                                <datalist id="books">
-                                    <?php
-                                    for ($i = 0; $i <= $lastBookKey; $i++) { ?>
-                                    <option
-                                        value="<?php print_r($rowsBooks[$i]['book_id']) ?> # <?php print_r($rowsBooks[$i]['book_title']); ?>">
-                                        <?php  } ?>
-                                </datalist>
-                            </div>
-                        </div>
-
-                        <?php if ($cop_syear == $cop_eyear) { ?>
-                        <script>
-                        $(document).ready(function() {
-                            $("#copDate_range").hide();
-                            $("#copDate_exact").show();
-                        });
-                        </script>
-                        <?php } else { ?>
-                        <script>
-                        $(document).ready(function() {
-                            $("#copDate_exact").hide();
-                            $("#copDate_range").show();
-                        });
-                        </script>
-                        <?php } ?>
-
-                        <div class="form-row" id="copDate_exact">
-                            <div class="form-group col-md-2">
-                                <label for="cop_day">تاريخ النسخ</label>
-                                <select name="cop_day" id="cop_day" class="custom-select">
-                                    <option value="" selected>-أدخل اليوم-</option>
-                                    <?php for ($i = 0; $i <= 6; $i++) { ?>
-                                    <option value="<?php echo $days[$i] ?>"
-                                        <?php if ($cop_day == $days[$i]) echo "selected" ?>>
-                                        <?php echo $days[$i]; ?>
-                                    </option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="cop_day_nbr">&nbsp;</label>
-                                <select name="cop_day_nbr" id="cop_day_nbr" class="custom-select">
-                                    <option value="" selected>- أدخل اليوم -</option>
-                                    <?php for ($i = 1; $i <= 31; $i++) { ?>
-                                    <option value="<?php echo $i ?>" <?php if ($cop_day_nbr == $i) echo "selected" ?>>
-                                        <?php echo $i ?>
-                                    </option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="cop_month">&nbsp;</label>
-                                <select name="cop_month" id="cop_month" class="custom-select">
-                                    <option value="" selected>-أدخل الشهر-</option>
-                                    <?php for ($i = 0; $i <= 23; $i++) { ?>
-                                    <option value="<?php echo $months[$i] ?>"
-                                        <?php if ($cop_month == $months[$i]) echo "selected" ?>>
-                                        <?php echo $months[$i]; ?>
-                                    </option>
-                                    <?php if ($i == 11) echo "<option disabled>──────────</option>" ?>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="cop_syear">&nbsp;</label>
-                                <input type="number" class="form-control" name="cop_syear"
-                                    value="<?php if ($cop_syear == $cop_eyear) echo $cop_syear ?>" id="cop_syear"
-                                    placeholder="أدخل السنة">
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="date_type">نوع التقويم</label>
-                                <select name="date_type" id="date_type" class="custom-select">
-                                    <option value="1" <?php if ($date_type == 1) echo "selected" ?>>
-                                        ميلادي</option>
-                                    <option value="0" <?php if ($date_type == 0) echo "selected" ?>>هجري
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-
-
-                        <div class="form-row" id="copDate_range">
-                            <div class="form-group col-md-auto">
-                                <label for="cop_date">تاريخ النسخ [أدخل نطاق]</label>
-                                <input type="number" class="form-control" name="cop_syear_range" id="cop_date"
-                                    value="<?php echo $cop_syear ?>" placeholder="من سنة">
-                            </div>
-                            <div class="form-group col-md-auto">
-                                <label for="cop_date">&nbsp;</label>
-                                <input type="number" class="form-control" name="cop_eyear_range" id="cop_date"
-                                    value="<?php echo $cop_eyear ?>" placeholder="إلى سنة">
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="date_type">نوع التقويم</label>
-                                <select name="date_type_range" id="date_type" class="custom-select">
-                                    <option value="1" <?php if ($date_type == 1) echo "selected" ?>>ميلادي</option>
-                                    <option value="0" <?php if ($date_type == 0) echo "selected" ?>>هجري</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="mb-2">
-                            <button type="button" class="btn btn-info rounded-pill" id="hide_Exact">تاريخ
-                                محدد</button>
-                            <button type="button" class="btn btn-info rounded-pill" id="hide_range">فترة
-                                زمنية</button>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label for="cop_place">مكان النسخ</label>
-                                <input type="text" class="form-control" name="cop_place" id="cop_place"
-                                    placeholder="أدخل مكان النسخ" value="<?php echo $cop_place ?>">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="city_name">المدينة</label>
-                                <input list="cities" class="form-control" name="city_name"
-                                    value="<?php if ($city_id != '') echo $city_id . ' # ' . $city_name ?>"
-                                    id="city_name" placeholder="أدخل مدينة النسخ">
-                                <datalist id="cities">
-                                    <?php
-                                    for ($i = 0; $i <= $lastCityKey; $i++) { ?>
-                                    <option
-                                        value="<?php print_r($rowsCities[$i]['city_id']) ?> # <?php print_r($rowsCities[$i]['city_name']); ?>">
-                                        <?php  } ?>
-                                </datalist>
-                            </div>
-
-                            <div class="form-group col-md-3">
-                                <label for="count_name">البلد حاليا</label>
-                                <input list="countries" class="form-control" name="count_name"
-                                    value="<?php if ($count_id != '') echo $count_id . ' # ' . $count_name ?>"
-                                    id="count_name" placeholder="أدخل بلد النسخ">
-                                <datalist id="countries">
-                                    <?php
-                                    for ($i = 0; $i <= $lastCountKey; $i++) { ?>
-                                    <option
-                                        value="<?php print_r($rowsCount[$i]['count_id']) ?> # <?php print_r($rowsCount[$i]['count_name']); ?>">
-                                        <?php  } ?>
-                                </datalist>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label for="signing">موقعة أو بالمقارنة</label>
-                                <select name="signing" id="signing" class="custom-select">
-                                    <option value="">- اختر نوع النسخة -</option>
-                                    <option value="1" <?php if ($signing == 1) echo "selected" ?>>موقعة</option>
-                                    <option value="0" <?php if ($signing == 0 and $signing != null) echo "selected" ?>>
-                                        بالمقارنة</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-7">
-                                <label for="cabinet_name">اسم الخزانة</label>
-                                <input list="cabinet_names" class="form-control" name="cabinet_name"
-                                    value="<?php if ($cabinet_id != '') echo $cabinet_id . ' # ' . $cabinet_name ?>"
-                                    id="cabinet_name" placeholder="أدخل اسم الخزانة">
-                                <datalist id="cabinet_names">
-                                    <?php
-                                    for ($i = 0; $i <= $lastCabinetKey; $i++) { ?>
-                                    <option
-                                        value="<?php print_r($rowsCabinet[$i]['cabinet_id']) ?> # <?php print_r($rowsCabinet[$i]['cabinet_name']); ?>">
-                                        <?php  } ?>
-                                </datalist>
-                            </div>
-
-                            <div class="form-group col-md-auto">
-                                <label for="cabinet_nbr">الرقم في الخزانة</label>
-                                <input type="number" class="form-control" name="cabinet_nbr" id="cabinet_nbr"
-                                    placeholder="أدخل الرقم في الخزانة" value="<?php echo $cabinet_nbr ?>">
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="manu_type">نوع النسخة</label>
-                                <select name="manu_type" id="manu_type" class="custom-select">
-                                    <option value="">-أدخل نوع النسخة-</option>
-                                    <option value="مج" <?php if ($manu_type == 'مج') echo "selected"; ?>>مجلد</option>
-                                    <option value="مص" <?php if ($manu_type == 'مص') echo "selected"; ?>>مصحف</option>
-                                    <option value="دغ" <?php if ($manu_type == 'دغ') echo "selected"; ?>>دون غلاف
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="index_nbr">الرقم في الفهرس</label>
-                                <input type="number" class="form-control" name="index_nbr" id="index_nbr"
-                                    placeholder="أدخل الرقم في الفهرس" value="<?php echo $index_nbr ?>">
-                            </div>
-                        </div>
-
-                        <h5 class="my_line"><span>تفاصيل النسخة</span></h5>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-2">
-                                <label for="font">الخط</label>
-                                <select name="font" id="font" class="custom-select">
-                                    <option value="">- اختر خط -</option>
-                                    <option value="مغربي" <?php if ($font == 'مغربي') echo "selected"; ?>>مغربي</option>
-                                    <option value="مشرقي" <?php if ($font == 'مشرقي') echo "selected"; ?>>مشرقي</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="font_style">نوع الخط</label>
-                                <select name="font_style" id="font_style" class="custom-select">
-                                    <option value="">- اختر نوع الخط -</option>
-                                    <?php for ($i = 0; $i <= 5; $i++) { ?>
-                                    <option value="<?php echo $w_font_styles[$i]; ?>"
-                                        <?php if ($font_style == $w_font_styles[$i]) echo "selected"; ?>>
-                                        <?php echo $w_font_styles[$i]; ?>
-                                    </option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="regular_lines">نوع المسطرة</label>
-                                <select name="regular_lines" id="regular_lines" class="custom-select">
-                                    <option value="">- اختر نوع المسطرة -</option>
-                                    <option value="1" <?php if ($regular_lines == 1) echo "selected"; ?>>
-                                        منتظمة
-                                    </option>
-                                    <option value="0"
-                                        <?php if ($regular_lines == 0 and $regular_lines != null) echo "selected"; ?>>
-                                        غير منتظمة
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="lines_notes">ملاحظات على المسطرة</label>
-                                <input type="text" class="form-control" name="lines_notes" id="lines_notes"
-                                    value="<?php echo $lines_notes ?>" placeholder="أدخل ملاحظات المسطرة">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label for="paper_size">مقاس الورق</label>
-                                <select name="paper_size" id="paper_size" class="custom-select">
-                                    <option value="">- اختر مقاس الورق -</option>
-                                    <option value="1" <?php if ($paper_size == 1) echo "selected"; ?>>القطع الكبير
-                                    </option>
-                                    <option value="2" <?php if ($paper_size == 2) echo "selected"; ?>>القطع المتوسط
-                                    </option>
-                                    <option value="3" <?php if ($paper_size == 3) echo "selected"; ?>>القطع الصغير
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <label for="motifs">الزخارف</label><br>
-                        <div class="form-row">
-                            <?php
-                            $b = 1;
-                            while ($row = mysqli_fetch_array($manuSubQry6Result)) {  ?>
-                            <div class="form-group col-md-auto">
-
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span>
-                                            <a class="btn btn-outline-danger"
-                                                href="deleteMotif.php?manu_id=<?php echo $manu_id ?>&motif_id=<?php echo $row['motif_id']  ?>"
-                                                onclick="return confirm('هل أنت متأكد من حذف الزخرفة؟')">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                    <path fill-rule="evenodd"
-                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                                </svg>
-                                            </a>
-                                        </span>
-                                    </div>
-
-                                    <input list="motifs" class="form-control" name="motif<?php echo $b ?>"
-                                        value="<?php echo  $row['motif_id'] . ' # ' . $row['motif_name']; ?>" id="motif"
-                                        placeholder="أدخل زخرفة">
-                                    <datalist id="motifs">
-                                        <?php
-                                            for ($i = 0; $i <= $lastMotifKey; $i++) { ?>
-                                        <option
-                                            value="<?php print_r($rowsMotif[$i]['motif_id']); ?> # <?php print_r($rowsMotif[$i]['motif_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
-                                </div>
-                            </div>
-                            <?php
-                                $b++;
-                            } ?>
-
-                            <!-- add input if nbr of motifs under 4  -->
-                            <?php if ($b < 5) {
-                                for ($b; $b < 5; $b++) {
-                            ?>
-                            <div class="col-md-3">
-                                <input list="motifs" class="form-control" name="motif<?php echo $b ?>" id="motif"
+                                <input list="motifs" class="form-control" name="motif<?php echo $b ?>"
+                                    value="<?php echo  $row['motif_id'] . ' # ' . $row['motif_name']; ?>" id="motif"
                                     placeholder="أدخل زخرفة">
                                 <datalist id="motifs">
                                     <?php
-                                            for ($i = 0; $i <= $lastMotifKey; $i++) { ?>
+                                        for ($i = 0; $i <= $lastMotifKey; $i++) { ?>
                                     <option
                                         value="<?php print_r($rowsMotif[$i]['motif_id']); ?> # <?php print_r($rowsMotif[$i]['motif_name']); ?>">
                                         <?php  } ?>
                                 </datalist>
                             </div>
-                            <?php
-                                } // END add input if nbr of motifs under 4
-                            } ?>
                         </div>
+                        <?php
+                            $b++;
+                        } ?>
 
-                        <label for="ink_colors">ألوان الحبر</label><br>
-                        <div class="form-row">
-                            <?php
-                            $d = 1;
-                            while ($row = mysqli_fetch_array($manuSubQry7Result)) {
-                            ?>
-                            <div class="form-group col-md-2">
+                        <!-- add input if nbr of motifs under 4  -->
+                        <?php if ($b < 5) {
+                            for ($b; $b < 5; $b++) {
+                        ?>
+                        <div class="col-md-3">
+                            <input list="motifs" class="form-control" name="motif<?php echo $b ?>" id="motif"
+                                placeholder="أدخل زخرفة">
+                            <datalist id="motifs">
+                                <?php
+                                        for ($i = 0; $i <= $lastMotifKey; $i++) { ?>
+                                <option
+                                    value="<?php print_r($rowsMotif[$i]['motif_id']); ?> # <?php print_r($rowsMotif[$i]['motif_name']); ?>">
+                                    <?php  } ?>
+                            </datalist>
+                        </div>
+                        <?php
+                            } // END add input if nbr of motifs under 4
+                        } ?>
+                    </div>
 
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span>
-                                            <a class="btn btn-outline-danger"
-                                                href="deleteInkColor.php?manu_id=<?php echo $manu_id ?>&color_id=<?php echo $row['color_id']  ?>"
-                                                onclick="return confirm('هل أنت متأكد من حذف اللون؟')">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                    <path fill-rule="evenodd"
-                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                                </svg>
-                                            </a>
-                                        </span>
-                                    </div>
+                    <label for="ink_colors">ألوان الحبر</label><br>
+                    <div class="form-row">
+                        <?php
+                        $d = 1;
+                        while ($row = mysqli_fetch_array($manuSubQry7Result)) {
+                        ?>
+                        <div class="form-group col-md-2">
 
-                                    <input list="inkColors" class="form-control" name="inkColor<?php echo $d ?>"
-                                        value="<?php echo  $row['color_id'] . ' # ' . $row['color_name']; ?>"
-                                        id="inkColor" placeholder="أدخل لون">
-                                    <datalist id="inkColors">
-                                        <?php
-                                            for ($i = 0; $i <= $lastColorKey; $i++) { ?>
-                                        <option
-                                            value="<?php print_r($rowsColor[$i]['color_id']); ?> # <?php print_r($rowsColor[$i]['color_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span>
+                                        <a class="btn btn-outline-danger"
+                                            href="deleteInkColor.php?manu_id=<?php echo $manu_id ?>&color_id=<?php echo $row['color_id']  ?>"
+                                            onclick="return confirm('هل أنت متأكد من حذف اللون؟')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                            </svg>
+                                        </a>
+                                    </span>
                                 </div>
-                            </div>
-                            <?php $d++;
-                            } ?>
 
-                            <!-- add input if nbr of colors under 4  -->
-                            <?php if ($d < 5) {
-                                for ($d; $d < 5; $d++) {
-                            ?>
-                            <div class="col-md-3">
                                 <input list="inkColors" class="form-control" name="inkColor<?php echo $d ?>"
-                                    id="inkColor" placeholder="أدخل لون">
+                                    value="<?php echo  $row['color_id'] . ' # ' . $row['color_name']; ?>" id="inkColor"
+                                    placeholder="أدخل لون">
                                 <datalist id="inkColors">
                                     <?php
-                                            for ($i = 0; $i <= $lastColorKey; $i++) { ?>
+                                        for ($i = 0; $i <= $lastColorKey; $i++) { ?>
                                     <option
                                         value="<?php print_r($rowsColor[$i]['color_id']); ?> # <?php print_r($rowsColor[$i]['color_name']); ?>">
                                         <?php  } ?>
                                 </datalist>
                             </div>
-                            <?php
-                                } // END add input if nbr of colors under 4
-                            } ?>
                         </div>
+                        <?php $d++;
+                        } ?>
+
+                        <!-- add input if nbr of colors under 4  -->
+                        <?php if ($d < 5) {
+                            for ($d; $d < 5; $d++) {
+                        ?>
+                        <div class="col-md-3">
+                            <input list="inkColors" class="form-control" name="inkColor<?php echo $d ?>" id="inkColor"
+                                placeholder="أدخل لون">
+                            <datalist id="inkColors">
+                                <?php
+                                        for ($i = 0; $i <= $lastColorKey; $i++) { ?>
+                                <option
+                                    value="<?php print_r($rowsColor[$i]['color_id']); ?> # <?php print_r($rowsColor[$i]['color_name']); ?>">
+                                    <?php  } ?>
+                            </datalist>
+                        </div>
+                        <?php
+                            } // END add input if nbr of colors under 4
+                        } ?>
+                    </div>
 
 
-                        <h5 class="my_line"><span>محتوى النسخة</span></h5>
+                    <h5 class="my_line"><span>محتوى النسخة</span></h5>
 
-                        <label for="manu_types">عمل الناسخ عدا نقل المحتوى</label><br>
-                        <div class="form-row">
-                            <?php
-                            $e = 1;
-                            while ($row = mysqli_fetch_array($manuSubQry8Result)) {
-                            ?>
-                            <div class="form-group col-md-2">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span>
-                                            <a class="btn btn-outline-danger"
-                                                href="deleteManuTypes.php?manu_id=<?php echo $manu_id ?>&type_id=<?php echo $row['type_id']  ?>"
-                                                onclick="return confirm('هل أنت متأكد من حذف العنصر')">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                    <path fill-rule="evenodd"
-                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                                </svg>
-                                            </a>
-                                        </span>
-                                    </div>
-
-                                    <input list="manu_types" class="form-control" name="manu_types<?php echo $e ?>"
-                                        value="<?php echo  $row['type_id'] . ' # ' . $row['type_name']; ?>"
-                                        id="manu_type" placeholder="أدخل عنصر">
-                                    <datalist id="manu_types">
-                                        <?php
-                                            for ($i = 0; $i <= $lastManuTypeKey; $i++) { ?>
-                                        <option
-                                            value="<?php print_r($rowsManuType[$i]['type_id']); ?> # <?php print_r($rowsManuType[$i]['type_name']); ?>">
-                                            <?php  } ?>
-                                    </datalist>
+                    <label for="manu_types">عمل الناسخ عدا نقل المحتوى</label><br>
+                    <div class="form-row">
+                        <?php
+                        $e = 1;
+                        while ($row = mysqli_fetch_array($manuSubQry8Result)) {
+                        ?>
+                        <div class="form-group col-md-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span>
+                                        <a class="btn btn-outline-danger"
+                                            href="deleteManuTypes.php?manu_id=<?php echo $manu_id ?>&type_id=<?php echo $row['type_id']  ?>"
+                                            onclick="return confirm('هل أنت متأكد من حذف العنصر')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                            </svg>
+                                        </a>
+                                    </span>
                                 </div>
-                            </div>
-                            <?php $e++;
-                            } ?>
 
-                            <!-- add input if nbr of ManuTypes under 4  -->
-                            <?php if ($e < 5) {
-                                for ($e; $e < 5; $e++) {
-                            ?>
-                            <div class="col-md-3">
                                 <input list="manu_types" class="form-control" name="manu_types<?php echo $e ?>"
-                                    id="manu_type" placeholder="أدخل عنصر">
+                                    value="<?php echo  $row['type_id'] . ' # ' . $row['type_name']; ?>" id="manu_type"
+                                    placeholder="أدخل عنصر">
                                 <datalist id="manu_types">
                                     <?php
-                                            for ($i = 0; $i <= $lastManuTypeKey; $i++) { ?>
+                                        for ($i = 0; $i <= $lastManuTypeKey; $i++) { ?>
                                     <option
                                         value="<?php print_r($rowsManuType[$i]['type_id']); ?> # <?php print_r($rowsManuType[$i]['type_name']); ?>">
                                         <?php  } ?>
                                 </datalist>
                             </div>
-                            <?php
-                                } // END add input if nbr of ManuTypes under 4
-                            } ?>
+                        </div>
+                        <?php $e++;
+                        } ?>
+
+                        <!-- add input if nbr of ManuTypes under 4  -->
+                        <?php if ($e < 5) {
+                            for ($e; $e < 5; $e++) {
+                        ?>
+                        <div class="col-md-3">
+                            <input list="manu_types" class="form-control" name="manu_types<?php echo $e ?>"
+                                id="manu_type" placeholder="أدخل عنصر">
+                            <datalist id="manu_types">
+                                <?php
+                                        for ($i = 0; $i <= $lastManuTypeKey; $i++) { ?>
+                                <option
+                                    value="<?php print_r($rowsManuType[$i]['type_id']); ?> # <?php print_r($rowsManuType[$i]['type_name']); ?>">
+                                    <?php  } ?>
+                            </datalist>
+                        </div>
+                        <?php
+                            } // END add input if nbr of ManuTypes under 4
+                        } ?>
+                    </div>
+
+                    <div class="form-row mt-4">
+                        <div class="form-group col-md-auto">
+                            <label for="manu_level">مستوى النسخة من حيث الجودة والضبط</label>
+                            <select name="manu_level" id="manu_level" class="custom-select mt-2">
+                                <option value="">- اختر مستوى -</option>
+                                <option value="جيد" <?php if ($manu_level == 'جيد') echo "selected"; ?>>جيد</option>
+                                <option value="حسن" <?php if ($manu_level == 'حسن') echo "selected"; ?>>حسن</option>
+                                <option value="متوسط" <?php if ($manu_level == 'متوسط') echo "selected"; ?>>متوسط
+                                </option>
+                                <option value="رديء" <?php if ($manu_level == 'رديء') echo "selected"; ?>>رديء
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h5 class="my_line"><span>الملاحظات</span></h5>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="copied_from">الأصل المنسوخ منه</label>
+                            <input type="text" class="form-control" name="copied_from" id="copied_from"
+                                value="<?php echo $copied_from ?>" placeholder="أدخل الأصل المنسوخ منه">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="copied_to">المنسوخ له</label>
+                            <input type="text" class="form-control" name="copied_to" id="copied_to"
+                                value="<?php echo $copied_to ?>" placeholder="أدخل المنسوخ له بأوصافه">
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="cop_level">مستوى ضبط الناسخ</label>
+                            <select name="cop_level" id="cop_level" class="custom-select">
+                                <option value="">- اختر مستوى -</option>
+                                <option value="جيد" <?php if ($cop_level == 'جيد') echo "selected"; ?>>جيد</option>
+                                <option value="حسن" <?php if ($cop_level == 'حسن') echo "selected"; ?>>حسن</option>
+                                <option value="متوسط" <?php if ($cop_level == 'متوسط') echo "selected"; ?>>متوسط
+                                </option>
+                                <option value="رديء" <?php if ($cop_level == 'رديء') echo "selected"; ?>>رديء
+                                </option>
+                            </select>
                         </div>
 
-                        <div class="form-row mt-4">
-                            <div class="form-group col-md-auto">
-                                <label for="manu_level">مستوى النسخة من حيث الجودة والضبط</label>
-                                <select name="manu_level" id="manu_level" class="custom-select mt-2">
-                                    <option value="">- اختر مستوى -</option>
-                                    <option value="جيد" <?php if ($manu_level == 'جيد') echo "selected"; ?>>جيد</option>
-                                    <option value="حسن" <?php if ($manu_level == 'حسن') echo "selected"; ?>>حسن</option>
-                                    <option value="متوسط" <?php if ($manu_level == 'متوسط') echo "selected"; ?>>متوسط
-                                    </option>
-                                    <option value="رديء" <?php if ($manu_level == 'رديء') echo "selected"; ?>>رديء
-                                    </option>
-                                </select>
-                            </div>
+                        <div class="form-group col-md-2">
+                            <label for="rost_completion">ترميم وإتمام</label>
+                            <select name="rost_completion" id="rost_completion" class="custom-select">
+                                <option value="">- اختر خيار -</option>
+                                <option value="1" <?php if ($rost_completion == 1) echo "selected"; ?>>نعم
+                                </option>
+                                <option value="0"
+                                    <?php if ($rost_completion == 0 and $rost_completion != null) echo "selected"; ?>>
+                                    لا
+                                </option>
+                            </select>
                         </div>
+                    </div>
 
-                        <h5 class="my_line"><span>الملاحظات</span></h5>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-8">
-                                <label for="copied_from">الأصل المنسوخ منه</label>
-                                <input type="text" class="form-control" name="copied_from" id="copied_from"
-                                    value="<?php echo $copied_from ?>" placeholder="أدخل الأصل المنسوخ منه">
-                            </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-7">
+                            <label for="notes">ملاحظات أخرى</label>
+                            <textarea class="form-control" name="notes" id="notes" rows="3"
+                                placeholder="أدخل ملاحظات أخرى"><?php echo $notes ?></textarea>
                         </div>
+                    </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-8">
-                                <label for="copied_to">المنسوخ له</label>
-                                <input type="text" class="form-control" name="copied_to" id="copied_to"
-                                    value="<?php echo $copied_to ?>" placeholder="أدخل المنسوخ له بأوصافه">
-                            </div>
+                    <div class="form-row justify-content-end">
+                        <div class="form-group col-md-2">
+                            <button type="submit" name="editForm"
+                                class="btn btn-success btn-block btn-lg rounded-pill">تعديل</button>
                         </div>
-
-
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label for="cop_level">مستوى ضبط الناسخ</label>
-                                <select name="cop_level" id="cop_level" class="custom-select">
-                                    <option value="">- اختر مستوى -</option>
-                                    <option value="جيد" <?php if ($cop_level == 'جيد') echo "selected"; ?>>جيد</option>
-                                    <option value="حسن" <?php if ($cop_level == 'حسن') echo "selected"; ?>>حسن</option>
-                                    <option value="متوسط" <?php if ($cop_level == 'متوسط') echo "selected"; ?>>متوسط
-                                    </option>
-                                    <option value="رديء" <?php if ($cop_level == 'رديء') echo "selected"; ?>>رديء
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="form-group col-md-2">
-                                <label for="rost_completion">ترميم وإتمام</label>
-                                <select name="rost_completion" id="rost_completion" class="custom-select">
-                                    <option value="">- اختر خيار -</option>
-                                    <option value="1" <?php if ($rost_completion == 1) echo "selected"; ?>>نعم
-                                    </option>
-                                    <option value="0"
-                                        <?php if ($rost_completion == 0 and $rost_completion != null) echo "selected"; ?>>
-                                        لا
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-7">
-                                <label for="notes">ملاحظات أخرى</label>
-                                <textarea class="form-control" name="notes" id="notes" rows="3"
-                                    placeholder="أدخل ملاحظات أخرى"><?php echo $notes ?></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-row justify-content-end">
-                            <div class="form-group col-md-2">
-                                <button type="submit" name="editForm"
-                                    class="btn btn-success btn-block btn-lg rounded-pill">تعديل</button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
+                    </div>
+                </fieldset>
+            </form>
         </div>
     </div>
 </body>

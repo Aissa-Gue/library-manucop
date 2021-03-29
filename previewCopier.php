@@ -86,7 +86,7 @@ GROUP BY i_cop_fm.manu_id";
 
         <div class="col-10 my_mr_sidebar pt-3">
             <div class="alert alert-warning text-center h4" role="alert">
-                معلومات الناسخ
+                معلومات الناسخ [ <?php echo $cop_id ?> ]
             </div>
 
             <form action="" method="post" enctype="multipart/form-data">
@@ -270,7 +270,6 @@ GROUP BY i_cop_fm.manu_id";
                 </svg>
                 رجوع
             </button>
-
         </div>
     </div>
     <script src="js/main.js"></script>

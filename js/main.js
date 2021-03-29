@@ -52,7 +52,7 @@ $("#addSubject").click(function () {
     }
 });
 
-// Switch between cop Date with range / exact 
+// Switch between copDate range / exact 
 $("#copDate_range").hide(500);
 
 $(document).ready(function() {

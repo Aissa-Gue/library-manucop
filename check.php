@@ -34,7 +34,7 @@ if (!isset($_SESSION['admin'])) {
 if (!isset($_SESSION['timestamp'])) {
     $_SESSION['timestamp'] = time();
 }
-if (time() - $_SESSION['timestamp'] > 900) { //subtract new timestamp from the old one
+if (time() - $_SESSION['timestamp'] > 1800) { //subtract new timestamp from the old one
     echo "
     <script>alert('انتهت الجلسة، يرجى تسجيل الدخول مجددا !');</script>";
 
