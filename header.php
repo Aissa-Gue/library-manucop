@@ -14,7 +14,6 @@ header('Cache-Control: no cache');
     <link rel="stylesheet" href="bootstrap-4.5.3/bootstrap-icons-1.2.1/font/bootstrap-icons.css">
 
     <!-- FONTS -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/fonts.css">
     <!-- my styles -->
     <link rel="stylesheet" href="css/style.css">
