@@ -148,7 +148,7 @@ if (isset($_POST['editBook'])) {
 </head>
 
 <body class="my_bg">
-    <div class="container-fluid mt-5">
+    <div class="container-fluid mt-5 py-2">
         <?php include "sideBar.php" ?>
 
         <div class="col-10 my_mr_sidebar pt-3">

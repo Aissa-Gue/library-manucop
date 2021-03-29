@@ -64,7 +64,7 @@ if (isset($_GET['book_id'])) {
 </head>
 
 <body class="my_bg">
-    <div class="container-fluid mt-5">
+    <div class="container-fluid mt-5 py-2">
 
         <?php include "sideBar.php" ?>
 

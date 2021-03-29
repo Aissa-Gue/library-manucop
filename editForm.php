@@ -482,7 +482,7 @@ if (isset($_POST['editForm'])) {
 <body class="my_bg">
 
     <!-- START row -->
-    <div class="container-fluid mt-5 pb-3">
+    <div class="container-fluid mt-5 py-2">
 
         <?php include "sideBar.php" ?>
 
