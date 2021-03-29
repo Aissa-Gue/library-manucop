@@ -127,7 +127,7 @@ $manuTotalNbr = mysqli_num_rows($manuTotalNbrResult);
             <div class="tab-content" id="tabContent">
                 <div class="tab-pane fade mt-3" id="statistics">
 
-                    <div class="alert alert-primary text-center" role="alert">
+                    <div class="alert alert-info text-center" role="alert">
                         <h4>إحصائيات وتقارير</h4>
                     </div>
 

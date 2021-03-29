@@ -74,7 +74,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                 <!-- bokks list -->
                 <div class="tab-pane fade mt-3" id="authorsList">
 
-                    <div class="alert alert-primary text-center" role="alert">
+                    <div class="alert alert-info text-center" role="alert">
                         <h4>قائمة المؤلفين</h4>
                     </div>
 
@@ -92,7 +92,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                                 </div>
                                 <input type="text" name="auth_name" class="form-control" placeholder="أدخل اسم المؤلف">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" name="authorSearch" type="submit">بحث</button>
+                                    <button class="btn btn-info" name="authorSearch" type="submit">بحث</button>
                                 </div>
                             </div>
                         </div>

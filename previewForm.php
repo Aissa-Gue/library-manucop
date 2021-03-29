@@ -151,7 +151,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
 
         <div class="col-10 my_mr_sidebar pt-3">
 
-            <div class="alert alert-primary text-center" role="alert">
+            <div class="alert alert-info text-center" role="alert">
                 <h4>معلومات الاستمارة [ <?php echo $manu_id ?> ]</h4>
             </div>
             <form action="" method="post">
@@ -291,7 +291,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                     </div>
 
                     <?php if ($row['other_name1'] != "") { ?>
-                    <div class="row">
+                    <div class="row mb-2">
                         <div class="col-md-3">
                             <h5 class="text-danger">صيغ أخرى لاسم الناسخ: </h5>
                         </div>

@@ -246,7 +246,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                 <!-- clients list -->
                 <div class="tab-pane fade mt-3" id="formsList">
                     <a href="formsList.php?initSessions=true">
-                        <div class="alert alert-primary text-center" role="alert">
+                        <div class="alert alert-info text-center" role="alert">
                             <h4>قائمة الاستمارات</h4>
                         </div>
                     </a>
@@ -288,7 +288,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                                                         placeholder="أدخل عنوان الكتاب"
                                                         value="<?php echo $_SESSION['book_title'] ?>">
                                                     <div class="input-group-append">
-                                                        <button class="btn btn-primary" name="manuSearch"
+                                                        <button class="btn btn-info" name="manuSearch"
                                                             type="submit">بحث</button>
                                                     </div>
                                                 </div>
@@ -720,7 +720,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                                                     </select>
 
                                                     <div class="input-group-append">
-                                                        <button class="btn btn-primary" name="manuSearch"
+                                                        <button class="btn btn-info" name="manuSearch"
                                                             type="submit">بحث</button>
                                                     </div>
                                                 </div>
@@ -733,9 +733,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                         </div>
                         <!-- </form> -->
 
-
-
-                        <div class="alert alert-warning text-center" role="alert">
+                        <div class="alert alert-warning text-center mt-2" role="alert">
                             <strong> عدد النتائج = </strong>
                             <?php echo $search_num_rows ?>
                         </div>

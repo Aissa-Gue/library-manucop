@@ -22,7 +22,7 @@ header('Cache-Control: no cache');
 
 <body>
     <!-- START Navbar -->
-    <nav class="navbar navbar-dark bg-primary fixed-top">
+    <nav class="navbar navbar-dark bg-info fixed-top">
         <a class="navbar-brand" href="insertForm.php#insertForm">
             <img src="img/logo.JPG" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
             <?php echo $ProjTitle ?>

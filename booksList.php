@@ -73,7 +73,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                 <!-- bokks list -->
                 <div class="tab-pane fade mt-3" id="booksList">
 
-                    <div class="alert alert-primary text-center" role="alert">
+                    <div class="alert alert-info text-center" role="alert">
                         <h4>قائمة الكتب</h4>
                     </div>
 
@@ -92,7 +92,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                                 <input type="text" name="book_title" class="form-control"
                                     placeholder="أدخل عنوان الكتاب">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" name="bookSearch" type="submit">بحث</button>
+                                    <button class="btn btn-info" name="bookSearch" type="submit">بحث</button>
                                 </div>
                             </div>
                         </div>

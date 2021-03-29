@@ -136,7 +136,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                 <div class="tab-pane fade mt-3" id="copiersList">
 
                     <a href="copiersList.php?initSessions=true">
-                        <div class="alert alert-primary text-center" role="alert">
+                        <div class="alert alert-info text-center" role="alert">
                             <h4>قائمة النساخ</h4>
                         </div>
                     </a>
@@ -218,7 +218,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                                 </select>
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" name="clientSearch" type="submit">بحث</button>
+                                    <button class="btn btn-info" name="clientSearch" type="submit">بحث</button>
                                 </div>
                             </div>
                         </div>

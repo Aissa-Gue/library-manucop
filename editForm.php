@@ -488,7 +488,7 @@ if (isset($_POST['editForm'])) {
 
         <div class="col-10 my_mr_sidebar pt-3">
 
-            <div class="alert alert-primary text-center" role="alert">
+            <div class="alert alert-info text-center" role="alert">
                 <h4>تعديل الاستمارة</h4>
             </div>
             <form action="" method="post">
