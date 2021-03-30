@@ -60,6 +60,7 @@ legend.scheduler-border {
   z-index: 1030;
   font-size: 15.3px;
   font-weight: bold;
+  /* background-color: #ecfaee; */
 }
 
 .nav-pills .nav-link.active,
