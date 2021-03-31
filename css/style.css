@@ -49,7 +49,9 @@ legend.scheduler-border {
   position: relative;
   display: block;
   padding: 0.35rem 1.25rem;
-  background-color: #ecfaee;
+  /* background-color: #ecfaee; */
+  background-color: #d1ecf1;
+
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   font-weight: bold;
 }
@@ -60,12 +62,12 @@ legend.scheduler-border {
   z-index: 1030;
   font-size: 15.3px;
   font-weight: bold;
-  /* background-color: #ecfaee; */
+  background-color: #ecfaee;
 }
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: #fff;
+  /* color: #fff; */
   background-color: #17a2b8 !important;
 }
 /* END sidebar */
@@ -114,7 +116,10 @@ a,
 
 /* preview */
 .my_bg {
-  background: linear-gradient(rgba(255, 255, 255, 1), rgba(252, 255, 254, 0.9)),
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.7),
+      rgba(252, 255, 254, 0.7)
+    ),
     url(../img/preview.jpg) center / cover no-repeat fixed;
   min-height: 100%;
 }

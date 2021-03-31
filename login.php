@@ -20,63 +20,23 @@ include 'config.php';
     <title><?php echo $ProjTitle ?></title>
 </head>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body a {
-    color: darkorchid;
-    text-decoration: none;
-}
-
 .login-form-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 1200px;
-    height: 600px;
+    width: 1000px;
+    height: 550px;
     margin: 0 auto;
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0px 0px 47px 0px rgba(0, 0, 0, 0.47);
-    margin-top: 20px;
+    margin-top: 45px;
     background: #fff;
 
-    background-image: url(img/login_form.jpg);
-    background-size: cover;
-    background-position: 570px 0px;
+    background-image: url(img/login.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
     object-fit: cover;
-}
-
-.welcome-text p {
-    font-size: 13px;
-}
-
-.left-section {
-    width: 450px;
-    height: 540px;
-    float: left;
-}
-
-.right-section {
-    width: 750px;
-    position: relative;
-    height: 100vh;
-    background-image: url(img/login.png);
-    background-size: cover;
-    /* background-position: 750px 0px; */
-    object-fit: cover;
-}
-
-.welcome-text {
-    position: absolute;
-    max-width: 750px;
-    text-align: center;
-    top: 25%;
-    color: #9F7833;
-    transform: translateY(-50%);
 }
 
 .title {
@@ -87,16 +47,12 @@ body a {
     margin-bottom: 30px;
 }
 
-.form {
-    max-width: 260px;
-    margin: 0 auto;
-    text-align: center;
-}
+
 
 .form input[type=text],
 .form input[type=password] {
     width: 300px;
-    padding: 14px 12px;
+    padding: 12px 9px;
     border-radius: 30px;
     border: 1px solid #ddd;
     margin-bottom: 15px;
@@ -108,10 +64,9 @@ body a {
     display: inline-block;
     border: none;
     width: 170px;
-    padding: 11px;
+    padding: 10px;
     border-radius: 30px;
     cursor: pointer;
-    letter-spacing: 2px;
     margin: 20px 0px;
     transition: 0.3s all ease-in-out;
 }
@@ -124,28 +79,51 @@ body a {
     background: #111;
 }
 
-.create-account {
-    font-weight: 500;
-    font-size: 14px;
-    color: #424242;
-    margin-top: 10px;
+.my_logo {
+    position: relative;
+    transform: scale(0.4);
+    bottom: -55px;
+    right: -175px;
 }
 </style>
 
-<body class="">
+<body class="my_bg">
     <div class="login-form-wrap">
-
-        <div class="right-section">
-            <div class="welcome-text">
-                <!-- <h1>برنامج نساخ المخطوطات</h1> -->
+        <div class="col-md-7 align-self-end">
+            <div class="my_logo">
+                <a href="" data-toggle="modal" data-target="#info">
+                    <img src="./img/aissaGue.png" alt="Developped By Aissa.Gue">
+                </a>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="info" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">برنامج نساخ المخطوطات</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-right">
+                            <p><span class="font-weight-bold">Developped By: </span> Aissa Guellil</p>
+                            <p><span class="font-weight-bold">Phone: </span> +213554005029</p>
+                            <p><span class="font-weight-bold">Email: </span> AissaStarDz@gmail.com</p>
+                            <p class="text-left"><span>- </span>march 2021<span> -</span></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">إغلاق</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="left-section">
+        <div class="col-md-5">
             <div class="title mb-5">
                 <h1>مرحبا !</h1>
             </div>
-            <div class="form">
+            <div class="form text-center">
                 <form class="" action="check.php" method="post">
                     <input type="text" name="username" placeholder="أدخل اسم المستخدم">
                     <input type="password" name="password" placeholder="أدخل كلمة المرور">
@@ -154,8 +132,9 @@ body a {
             </div>
         </div>
     </div>
-    <script src="bootstrap-4.5.3/js/bootstrap.bundle.min.js"></script>
+
     <script src="bootstrap-4.5.3/jquery-3.3.1.js"></script>
+    <script src="bootstrap-4.5.3/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
