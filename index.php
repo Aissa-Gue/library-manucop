@@ -1,2 +1,3 @@
 <?php
-header('location: /insertForm.php#insertForm');
+header('location: ./insertForm.php#insertForm');
+?>
