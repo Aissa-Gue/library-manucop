@@ -1,11 +1,6 @@
 <?php
 include 'config.php';
 
-$dbhost = 'localhost';
-$dbuser = 'root';
-$dbpass = '';
-$dbname = 'library_manucop_db';
-
 $d = date('Y-m-d');
 $dir = 'D:/library_manucop_DB/' . $d . '/';
 $path = $dir . $dbname . '.sql';
