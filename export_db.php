@@ -8,7 +8,7 @@ if (!file_exists($dir)) {
     mkdir($dir, 0777, true);
 }
 
-$command = "C:/xampp/mysql/bin/mysqldump.exe -u root library_manucop_db >" . $path;
+$command = "C:/xampp/mysql/bin/mysqldump.exe -u $username $dbname >" . $path;
 exec($command . ' 2>&1', $output);
 
 if (count($output) == 0) {
