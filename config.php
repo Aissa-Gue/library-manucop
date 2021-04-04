@@ -1,11 +1,18 @@
 <?php
 //ignore php errors
 //error_reporting(E_ERROR | E_PARSE);
-// variables
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "library_manucop_db";
+
+//**** Developpment db ****//
+//$servername = "localhost";
+//$username = "root";
+//$password = "";
+//$dbname = "library_manucop_db";
+
+//**** Production db ****//
+$servername = "remotemysql.com";
+$username = "9lz5upatlm";
+$password = "oHjx2G70Tu";
+$dbname = "9lz5upatlm";
 
 $con = mysqli_connect($servername, $username, $password);
 $db_selected = mysqli_select_db($con, $dbname);
