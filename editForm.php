@@ -7,8 +7,9 @@ $manu_id_get = $_GET['manu_id'];
 
 // select manu book / country / city ...
 $manuSubQry1 = "SELECT e_manuscripts.manu_id, e_manuscripts.book_id, book_title, 
-cop_day, cop_day_nbr, cop_month, cop_syear, cop_eyear, date_type, cop_place,
-signing, cabinets.cabinet_id, cabinet_name, cabinet_nbr, manu_type, index_nbr,
+cop_day, cop_day_nbr, cop_month, cop_syear, cop_eyear,
+cop_day_m, cop_day_nbr_m, cop_month_m, cop_syear_m, cop_eyear_m,
+cop_place, signing, cabinets.cabinet_id, cabinet_name, cabinet_nbr, manu_type, index_nbr,
 font, font_style, regular_lines, lines_notes, paper_size, 
 copied_from, copied_to, manu_level, cop_level, rost_completion, e_manuscripts.city_id, city_name , e_manuscripts.count_id, count_name,
 notes, e_manuscripts.creation_date, e_manuscripts.last_edit_date
@@ -25,13 +26,19 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
 
     $book_id = $row['book_id'];
     $book_title = $row['book_title'];
-
+    //higri
     $cop_day = $row['cop_day'];
     $cop_day_nbr = $row['cop_day_nbr'];
     $cop_month = $row['cop_month'];
     $cop_syear = $row['cop_syear'];
     $cop_eyear = $row['cop_eyear'];
-    $date_type = $row['date_type'];
+    //miladi
+    $cop_day_m = $row['cop_day_m'];
+    $cop_day_nbr_m = $row['cop_day_nbr_m'];
+    $cop_month_m = $row['cop_month_m'];
+    $cop_syear_m = $row['cop_syear_m'];
+    $cop_eyear_m = $row['cop_eyear_m'];
+
     $cop_place = $row['cop_place'];
 
     $signing = $row['signing'];
@@ -162,6 +169,7 @@ if (isset($_POST['editForm'])) {
     } else $editCopQry4 = "SELECT 1";
 
     //********** Insert into Manuscriptions **********/
+    //higri
     if ($_POST['cop_syear_range'] != NULL and $_POST['cop_eyear_range'] != NULL) {
         //==> range
         $cop_day = "";
@@ -169,11 +177,6 @@ if (isset($_POST['editForm'])) {
         $cop_month = "";
         $cop_syear = $_POST['cop_syear_range'];
         $cop_eyear = $_POST['cop_eyear_range'];
-        if ($_POST['cop_syear_range'] == NULL and $_POST['cop_eyear_range'] == NULL) {
-            $date_type = "NULL";
-        } else {
-            $date_type = $_POST['date_type_range'];
-        }
     } else {
         // Exact date
         $cop_day = $_POST['cop_day'];
@@ -190,11 +193,31 @@ if (isset($_POST['editForm'])) {
             $cop_syear = "NULL";
             $cop_eyear = $cop_syear;
         }
+    }
 
-        if ($_POST['cop_day'] == NULL and  $_POST['cop_day_nbr'] == NULL and $_POST['cop_month'] == NULL and $_POST['cop_syear'] == NULL) {
-            $date_type = "NULL";
+    //miladi
+    if ($_POST['cop_syear_range_m'] != NULL and $_POST['cop_eyear_range_m'] != NULL) {
+        //==> range
+        $cop_day_m = "";
+        $cop_day_nbr_m = "NULL";
+        $cop_month_m = "";
+        $cop_syear_m = $_POST['cop_syear_range_m'];
+        $cop_eyear_m = $_POST['cop_eyear_range_m'];
+    } else {
+        // Exact date
+        $cop_day_m = $_POST['cop_day_m'];
+
+        if ($_POST['cop_day_nbr_m'] != "") $cop_day_nbr_m = $_POST['cop_day_nbr_m'];
+        else $cop_day_nbr_m = "NULL";
+
+        $cop_month_m = $_POST['cop_month_m'];
+
+        if ($_POST['cop_syear_m'] != NULL) {
+            $cop_syear_m = $_POST['cop_syear_m'];
+            $cop_eyear_m = $cop_syear_m;
         } else {
-            $date_type = $_POST['date_type'];
+            $cop_syear_m = "NULL";
+            $cop_eyear_m = $cop_syear_m;
         }
     }
 
@@ -259,7 +282,7 @@ if (isset($_POST['editForm'])) {
     $creation_date = $date;
     $last_edit_date = $date;
 
-    $editManuQry = "UPDATE e_manuscripts SET manu_id= '$manu_id', book_id= '$book_id', cop_day= '$cop_day', cop_day_nbr= $cop_day_nbr, cop_month= '$cop_month', cop_syear= $cop_syear, cop_eyear= $cop_eyear, date_type= $date_type, cop_place= '$cop_place', signing=  $signing, cabinet_id= $cabinet_id, cabinet_nbr= $cabinet_nbr, manu_type= '$manu_type', index_nbr= $index_nbr, font= '$font', font_style= '$font_style', regular_lines= $regular_lines, lines_notes= '$lines_notes', paper_size= $paper_size, copied_from= '$copied_from', copied_to= '$copied_to', manu_level= '$manu_level', cop_level= '$cop_level', rost_completion= $rost_completion, count_id= $count_id, city_id= $city_id, notes= '$notes', last_edit_date= '$last_edit_date' WHERE manu_id= $prev_manu_id";
+    $editManuQry = "UPDATE e_manuscripts SET manu_id= '$manu_id', book_id= '$book_id', cop_day= '$cop_day', cop_day_nbr= $cop_day_nbr, cop_month= '$cop_month', cop_syear= $cop_syear, cop_eyear= $cop_eyear, cop_day_m= '$cop_day_m', cop_day_nbr_m= $cop_day_nbr_m, cop_month_m= '$cop_month_m', cop_syear_m= $cop_syear_m, cop_eyear_m= $cop_eyear_m, cop_place= '$cop_place', signing=  $signing, cabinet_id= $cabinet_id, cabinet_nbr= $cabinet_nbr, manu_type= '$manu_type', index_nbr= $index_nbr, font= '$font', font_style= '$font_style', regular_lines= $regular_lines, lines_notes= '$lines_notes', paper_size= $paper_size, copied_from= '$copied_from', copied_to= '$copied_to', manu_level= '$manu_level', cop_level= '$cop_level', rost_completion= $rost_completion, count_id= $count_id, city_id= $city_id, notes= '$notes', last_edit_date= '$last_edit_date' WHERE manu_id= $prev_manu_id";
 
 
     //********** Insert into j_manuscripts_motifs **********/
@@ -726,12 +749,11 @@ if (isset($_POST['editForm'])) {
                             <label for="cop_month">&nbsp;</label>
                             <select name="cop_month" id="cop_month" class="custom-select">
                                 <option value="" selected>-أدخل الشهر-</option>
-                                <?php for ($i = 0; $i <= 23; $i++) { ?>
+                                <?php for ($i = 0; $i <= 11; $i++) { ?>
                                 <option value="<?php echo $months[$i] ?>"
                                     <?php if ($cop_month == $months[$i]) echo "selected" ?>>
                                     <?php echo $months[$i]; ?>
                                 </option>
-                                <?php if ($i == 11) echo "<option disabled>──────────</option>" ?>
                                 <?php } ?>
                             </select>
                         </div>
@@ -741,17 +763,56 @@ if (isset($_POST['editForm'])) {
                                 value="<?php if ($cop_syear == $cop_eyear) echo $cop_syear ?>" id="cop_syear"
                                 placeholder="أدخل السنة">
                         </div>
-                        <div class="form-group col-md-2">
-                            <label for="date_type">نوع التقويم</label>
-                            <select name="date_type" id="date_type" class="custom-select">
-                                <option value="1" <?php if ($date_type == 1) echo "selected" ?>>
-                                    ميلادي</option>
-                                <option value="0" <?php if ($date_type == 0) echo "selected" ?>>هجري
-                                </option>
-                            </select>
+                        <div class="form-group col-md-2 mt-2">
+                            <label for="date_type">&nbsp;</label>
+                            <p>[هجري]</p>
                         </div>
                     </div>
 
+                    <!-- START miladi date -->
+                    <div class="form-row" id="copDate_exact_m">
+                        <div class="form-group col-md-2">
+                            <select name="cop_day_m" id="cop_day" class="custom-select">
+                                <option value="" selected>-أدخل اليوم-</option>
+                                <?php for ($i = 0; $i <= 6; $i++) { ?>
+                                <option value="<?php echo $days[$i] ?>"
+                                    <?php if ($cop_day_m == $days[$i]) echo "selected" ?>>
+                                    <?php echo $days[$i]; ?>
+                                </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <select name="cop_day_nbr_m" id="cop_day_nbr" class="custom-select">
+                                <option value="" selected>- أدخل اليوم -</option>
+                                <?php for ($i = 1; $i <= 31; $i++) { ?>
+                                <option value="<?php echo $i ?>" <?php if ($cop_day_nbr_m == $i) echo "selected" ?>>
+                                    <?php echo $i ?>
+                                </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <select name="cop_month_m" id="cop_month" class="custom-select">
+                                <option value="" selected>-أدخل الشهر-</option>
+                                <?php for ($i = 0; $i <= 11; $i++) { ?>
+                                <option value="<?php echo $months_m[$i] ?>"
+                                    <?php if ($cop_month_m == $months_m[$i]) echo "selected" ?>>
+                                    <?php echo $months_m[$i]; ?>
+                                </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="number" class="form-control" name="cop_syear_m"
+                                value="<?php if ($cop_syear_m == $cop_eyear_m) echo $cop_syear_m ?>" id="cop_syear"
+                                placeholder="أدخل السنة">
+                        </div>
+                        <div class="form-group col-md-2 mt-2">
+                            <p>[ميلادي]</p>
+                        </div>
+                    </div>
+                    <!-- END miladi date -->
 
                     <div class="form-row" id="copDate_range">
                         <div class="form-group col-md-auto">
@@ -764,29 +825,50 @@ if (isset($_POST['editForm'])) {
                             <input type="number" class="form-control" name="cop_eyear_range" id="cop_date"
                                 value="<?php if ($cop_syear !== $cop_eyear) echo $cop_eyear ?>" placeholder="إلى سنة">
                         </div>
-                        <div class="form-group col-md-2">
-                            <label for="date_type">نوع التقويم</label>
-                            <select name="date_type_range" id="date_type" class="custom-select">
-                                <option value="1" <?php if ($date_type == 1) echo "selected" ?>>ميلادي</option>
-                                <option value="0" <?php if ($date_type == 0) echo "selected" ?>>هجري</option>
-                            </select>
+                        <div class="form-group col-md-2 mt-2">
+                            <label for="date_type">&nbsp;</label>
+                            <p>[هجري]</p>
                         </div>
                     </div>
 
+                    <!--START miladi date range-->
+                    <div class="form-row" id="copDate_range_m">
+                        <div class="form-group col-md-auto">
+                            <input type="number" class="form-control" name="cop_syear_range_m" id="cop_date"
+                                value="<?php if ($cop_syear_m !== $cop_eyear_m) echo $cop_syear_m ?>"
+                                placeholder="من سنة">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <input type="number" class="form-control" name="cop_eyear_range_m" id="cop_date"
+                                value="<?php if ($cop_syear_m !== $cop_eyear_m) echo $cop_eyear_m ?>"
+                                placeholder="إلى سنة">
+                        </div>
+                        <div class="form-group col-md-2 mt-2">
+                            <p>[ميلادي]</p>
+                        </div>
+                    </div>
+                    <!--END miladi date range-->
+
                     <script>
                     $("#copDate_range").hide();
+                    $("#copDate_range_m").hide();
+
                     $("#copDate_exact").hide();
+                    $("#copDate_exact_m").hide();
                     </script>
-                    <?php if ($cop_syear == $cop_eyear) { ?>
-                    <script>
-                    $(document).ready(function() {
-                        $("#copDate_exact").show();
-                    });
-                    </script>
-                    <?php } else { ?>
+
+                    <?php if ($cop_syear != $cop_eyear or $cop_syear_m != $cop_eyear_m) { ?>
                     <script>
                     $(document).ready(function() {
                         $("#copDate_range").show();
+                        $("#copDate_range_m").show();
+                    });
+                    </script>
+                    <?php } elseif ($cop_syear == $cop_eyear or $cop_syear_m == $cop_eyear_m) { ?>
+                    <script>
+                    $(document).ready(function() {
+                        $("#copDate_exact").show();
+                        $("#copDate_exact_m").show();
                     });
                     </script>
                     <?php } ?>
@@ -1124,15 +1206,15 @@ if (isset($_POST['editForm'])) {
                     </div>
 
                     <div class="form-row mt-4">
-                        <div class="form-group col-md-auto">
-                            <label for="manu_level">مستوى النسخة من حيث الجودة والضبط</label>
-                            <select name="manu_level" id="manu_level" class="custom-select mt-2">
+                        <div class="form-group col-md-4">
+                            <label for="cop_level">مستوى النسخة من حيث الجودة والضبط</label>
+                            <select name="cop_level" id="cop_level" class="custom-select">
                                 <option value="">- اختر مستوى -</option>
-                                <option value="جيد" <?php if ($manu_level == 'جيد') echo "selected"; ?>>جيد</option>
-                                <option value="حسن" <?php if ($manu_level == 'حسن') echo "selected"; ?>>حسن</option>
-                                <option value="متوسط" <?php if ($manu_level == 'متوسط') echo "selected"; ?>>متوسط
+                                <option value="جيد" <?php if ($cop_level == 'جيد') echo "selected"; ?>>جيد</option>
+                                <option value="حسن" <?php if ($cop_level == 'حسن') echo "selected"; ?>>حسن</option>
+                                <option value="متوسط" <?php if ($cop_level == 'متوسط') echo "selected"; ?>>متوسط
                                 </option>
-                                <option value="رديء" <?php if ($manu_level == 'رديء') echo "selected"; ?>>رديء
+                                <option value="رديء" <?php if ($cop_level == 'رديء') echo "selected"; ?>>رديء
                                 </option>
                             </select>
                         </div>
@@ -1158,15 +1240,15 @@ if (isset($_POST['editForm'])) {
 
 
                     <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label for="cop_level">مستوى ضبط الناسخ</label>
-                            <select name="cop_level" id="cop_level" class="custom-select">
+                        <div class="form-group col-md-4">
+                            <label for="manu_level">مستوى النسخة من حيث الوضوح والرداءة</label>
+                            <select name="manu_level" id="manu_level" class="custom-select mt-2">
                                 <option value="">- اختر مستوى -</option>
-                                <option value="جيد" <?php if ($cop_level == 'جيد') echo "selected"; ?>>جيد</option>
-                                <option value="حسن" <?php if ($cop_level == 'حسن') echo "selected"; ?>>حسن</option>
-                                <option value="متوسط" <?php if ($cop_level == 'متوسط') echo "selected"; ?>>متوسط
+                                <option value="جيد" <?php if ($manu_level == 'جيد') echo "selected"; ?>>جيد</option>
+                                <option value="حسن" <?php if ($manu_level == 'حسن') echo "selected"; ?>>حسن</option>
+                                <option value="متوسط" <?php if ($manu_level == 'متوسط') echo "selected"; ?>>متوسط
                                 </option>
-                                <option value="رديء" <?php if ($cop_level == 'رديء') echo "selected"; ?>>رديء
+                                <option value="رديء" <?php if ($manu_level == 'رديء') echo "selected"; ?>>رديء
                                 </option>
                             </select>
                         </div>

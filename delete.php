@@ -122,3 +122,17 @@ if (isset($_GET['del_city_id'])) {
         echo "<script> window.location.href= 'insertCountry.php#insertCountry'</script>";
     }
 }
+
+if (isset($_GET['del_motif_id'])) {
+    $motif_id = $_GET['del_motif_id'];
+    $motif_name = $_GET['motif_name'];
+
+    $deleteMotifQry = "DELETE FROM d_motifs WHERE motif_id='$motif_id'";
+    if (mysqli_query($conn, $deleteMotifQry)) {
+        echo "<script> alert('تم حذف الزخرفة $motif_id => $motif_name بنجاح') </script>";
+        echo "<script> window.location.href= 'settings.php#settings'</script>";
+    } else {
+        echo "<script> alert('حدثت مشكلة: لم يتم حذف الزخرفة ... تأكد من كونها غير موجودة في استمارة !') </script>";
+        echo "<script> window.location.href= 'settings.php#settings'</script>";
+    }
+}

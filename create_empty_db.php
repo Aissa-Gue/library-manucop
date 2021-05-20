@@ -103,12 +103,19 @@ $d_motifsQry = "CREATE TABLE IF NOT EXISTS `d_motifs` (
 $e_manuscriptsQry = "CREATE TABLE IF NOT EXISTS `e_manuscripts` (
 	`manu_id` int(11) NOT NULL,
 	`book_id` int(11) NOT NULL,
+	
 	`cop_day` varchar(8) NOT NULL,
 	`cop_day_nbr` int(11) DEFAULT NULL,
 	`cop_month` varchar(15) NOT NULL,
 	`cop_syear` int(11) DEFAULT NULL,
 	`cop_eyear` int(11) DEFAULT NULL,
-	`date_type` tinyint(1) DEFAULT NULL,
+
+	`cop_day_m` VARCHAR(8) NOT NULL COLLATE,
+	`cop_day_nbr_m` INT(11) NULL DEFAULT NULL,
+	`cop_month_m` VARCHAR(15) NOT NULL COLLATE,
+	`cop_syear_m` INT(11) NULL DEFAULT NULL,
+	`cop_eyear_m` INT(11) NULL DEFAULT NULL,
+
 	`cop_place` varchar(35) NOT NULL,
 	`signing` tinyint(1) DEFAULT NULL,
 	`cabinet_id` int(11) DEFAULT NULL,

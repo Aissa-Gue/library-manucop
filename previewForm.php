@@ -6,8 +6,9 @@ $manu_id_get = $_GET['manu_id'];
 
 // select manu book / country / city ...
 $manuSubQry1 = "SELECT e_manuscripts.manu_id, e_manuscripts.book_id, book_title,
-cop_day, cop_day_nbr, cop_month, cop_syear, cop_eyear, date_type, cop_place,
-signing, cabinet_name, cabinet_nbr, manu_type, index_nbr,
+cop_day, cop_day_nbr, cop_month, cop_syear, cop_eyear,
+cop_day_m, cop_day_nbr_m, cop_month_m, cop_syear_m, cop_eyear_m,
+cop_place, signing, cabinet_name, cabinet_nbr, manu_type, index_nbr,
 font, font_style, regular_lines, lines_notes, paper_size,
 copied_from, copied_to, manu_level, cop_level, rost_completion, city_name , count_name,
 notes, e_manuscripts.creation_date, e_manuscripts.last_edit_date
@@ -26,15 +27,19 @@ while ($row = mysqli_fetch_array($manuSubQry1Result)) {
     $book_id = $row['book_id'];
     $book_title = $row['book_title'];
 
+    //higri
     $cop_day = $row['cop_day'];
     $cop_day_nbr = $row['cop_day_nbr'];
     $cop_month = $row['cop_month'];
     $cop_syear = $row['cop_syear'];
     $cop_eyear = $row['cop_eyear'];
 
-    $date_type = $row['date_type'];
-    if ($date_type == 1) $date_type = "ميلادي";
-    elseif ($date_type == 0 and $date_type != null) $date_type = "هجري";
+    //miladi
+    $cop_day_m = $row['cop_day_m'];
+    $cop_day_nbr_m = $row['cop_day_nbr_m'];
+    $cop_month_m = $row['cop_month_m'];
+    $cop_syear_m = $row['cop_syear_m'];
+    $cop_eyear_m = $row['cop_eyear_m'];
 
     $cop_place = $row['cop_place'];
 
@@ -442,7 +447,7 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         <div class="col-md-auto">
                             <?php if ($cop_day or $cop_day_nbr or $cop_month or $cop_syear or $cop_eyear) { ?>
                             <p>
-                                <?php echo $cop_day . ' ' . $cop_day_nbr . ' ' . $cop_month . ' ' . $cop_syear . ' / ' . $date_type  ?>
+                                <?php echo $cop_day . ' ' . $cop_day_nbr . ' ' . $cop_month . ' ' . $cop_syear . ' / ' . 'هجري'  ?>
                             </p>
                             <?php } else { ?>
                             <p class="text-success">/ / /</p>
@@ -455,7 +460,34 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         </div>
                         <div class="col-md-auto">
                             <p>
-                                <?php echo ' من سنة: ' . $cop_syear . ' إلى سنة: ' . $cop_eyear . ' / ' . $date_type  ?>
+                                <?php echo ' من سنة: ' . $cop_syear . ' إلى سنة: ' . $cop_eyear . ' / ' . 'هجري'  ?>
+                            </p>
+                        </div>
+                        <?php } ?>
+                    </div>
+
+                    <div class="row mb-2">
+                        <?php if ($cop_syear_m == $cop_eyear_m) { ?>
+                        <div class="col-md-2">
+                            <h5 class="text-danger"></h5>
+                        </div>
+                        <div class="col-md-auto">
+                            <?php if ($cop_day_m or $cop_day_nbr_m or $cop_month_m or $cop_syear_m or $cop_eyear_m) { ?>
+                            <p>
+                                <?php echo $cop_day_m . ' ' . $cop_day_nbr_m . ' ' . $cop_month_m . ' ' . $cop_syear_m . ' / ' . 'ميلادي'  ?>
+                            </p>
+                            <?php } else { ?>
+                            <p class="text-success">/ / /</p>
+                            <?php } ?>
+                        </div>
+
+                        <?php } else { ?>
+                        <div class="col-md-2">
+                            <h5 class="text-danger"></h5>
+                        </div>
+                        <div class="col-md-auto">
+                            <p>
+                                <?php echo ' من سنة: ' . $cop_syear_m . ' إلى سنة: ' . $cop_eyear_m . ' / ' . 'ميلادي'  ?>
                             </p>
                         </div>
                         <?php } ?>
@@ -662,13 +694,14 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         </div>
                     </div>
 
+
                     <div class="row mb-2">
                         <div class="col-md-auto">
                             <h5 class="text-danger">مستوى النسخة من حيث الجودة والضبط: </h5>
                         </div>
                         <div class="col-md-auto">
-                            <?php if ($manu_level) { ?>
-                            <p><?php echo $manu_level; ?></p>
+                            <?php if ($cop_level) { ?>
+                            <p><?php echo $cop_level ?></p>
                             <?php } else { ?>
                             <p class="text-success">/ / /</p>
                             <?php } ?>
@@ -704,14 +737,13 @@ $manuSubQry8Result = mysqli_query($conn, $manuSubQry8);
                         </div>
                     </div>
 
-
                     <div class="row mb-2">
                         <div class="col-md-auto">
-                            <h5 class="text-danger">مستوى ضبط الناسخ: </h5>
+                            <h5 class="text-danger">مستوى النسخة من حيث الوضوح والرداءة: </h5>
                         </div>
                         <div class="col-md-auto">
-                            <?php if ($cop_level) { ?>
-                            <p><?php echo $cop_level ?></p>
+                            <?php if ($manu_level) { ?>
+                            <p><?php echo $manu_level; ?></p>
                             <?php } else { ?>
                             <p class="text-success">/ / /</p>
                             <?php } ?>

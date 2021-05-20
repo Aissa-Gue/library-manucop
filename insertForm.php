@@ -49,6 +49,7 @@ if (isset($_POST['insertForm'])) {
 
 
     //********** Insert into Manuscriptions **********/
+    //higri date
     if ($_POST['cop_syear_range'] != NULL and $_POST['cop_eyear_range'] != NULL) {
         //==> range
         $cop_day = "";
@@ -56,11 +57,6 @@ if (isset($_POST['insertForm'])) {
         $cop_month = "";
         $cop_syear = $_POST['cop_syear_range'];
         $cop_eyear = $_POST['cop_eyear_range'];
-        if ($_POST['cop_syear_range'] == NULL and $_POST['cop_eyear_range'] == NULL) {
-            $date_type = "NULL";
-        } else {
-            $date_type = $_POST['date_type_range'];
-        }
     } else {
         // Exact date
         $cop_day = $_POST['cop_day'];
@@ -77,11 +73,31 @@ if (isset($_POST['insertForm'])) {
             $cop_syear = "NULL";
             $cop_eyear = $cop_syear;
         }
+    }
 
-        if ($_POST['cop_day'] == NULL and  $_POST['cop_day_nbr'] == NULL and $_POST['cop_month'] == NULL and $_POST['cop_syear'] == NULL) {
-            $date_type = "NULL";
+    //miladi date
+    if ($_POST['cop_syear_range_m'] != NULL and $_POST['cop_eyear_range_m'] != NULL) {
+        //==> range
+        $cop_day_m = "";
+        $cop_day_nbr_m = "NULL";
+        $cop_month_m = "";
+        $cop_syear_m = $_POST['cop_syear_range_m'];
+        $cop_eyear_m = $_POST['cop_eyear_range_m'];
+    } else {
+        // Exact date
+        $cop_day_m = $_POST['cop_day_m'];
+
+        if ($_POST['cop_day_nbr_m'] != "") $cop_day_nbr_m = $_POST['cop_day_nbr_m'];
+        else $cop_day_nbr_m = "NULL";
+
+        $cop_month_m = $_POST['cop_month_m'];
+
+        if ($_POST['cop_syear_m'] != NULL) {
+            $cop_syear_m = $_POST['cop_syear_m'];
+            $cop_eyear_m = $cop_syear_m;
         } else {
-            $date_type = $_POST['date_type'];
+            $cop_syear_m = "NULL";
+            $cop_eyear_m = $cop_syear_m;
         }
     }
 
@@ -148,7 +164,7 @@ if (isset($_POST['insertForm'])) {
     $creation_date = $date;
     $last_edit_date = $date;
 
-    $insertManuQry = "INSERT INTO e_manuscripts values('$manu_id', '$book_id', '$cop_day', $cop_day_nbr, '$cop_month', $cop_syear, $cop_eyear, $date_type, '$cop_place', $signing, $cabinet_id, $cabinet_nbr,'$manu_type', $index_nbr, '$font', '$font_style', $regular_lines, '$lines_notes', $paper_size, '$copied_from', '$copied_to', '$manu_level', '$cop_level', $rost_completion, $count_id, $city_id, '$notes','$creation_date','$last_edit_date')";
+    $insertManuQry = "INSERT INTO e_manuscripts values('$manu_id', '$book_id', '$cop_day', $cop_day_nbr, '$cop_month', $cop_syear, $cop_eyear, '$cop_day_m', $cop_day_nbr_m, '$cop_month_m', $cop_syear_m, $cop_eyear_m, '$cop_place', $signing, $cabinet_id, $cabinet_nbr,'$manu_type', $index_nbr, '$font', '$font_style', $regular_lines, '$lines_notes', $paper_size, '$copied_from', '$copied_to', '$manu_level', '$cop_level', $rost_completion, $count_id, $city_id, '$notes','$creation_date','$last_edit_date')";
 
     //********** Insert into j_manuscripts_motifs **********/
     if (isset($_POST['motif1']) and $_POST['motif1'] != "") {
@@ -501,10 +517,9 @@ if (isset($_POST['insertForm'])) {
                                     <label for="cop_month">&nbsp;</label>
                                     <select name="cop_month" id="cop_month" class="custom-select">
                                         <option value="" selected>-أدخل الشهر-</option>
-                                        <?php for ($i = 0; $i <= 23; $i++) { ?>
-                                        <option value="<?php echo $months[$i]; ?>"><?php echo $months[$i]; ?>
+                                        <?php for ($i = 0; $i <= 11; $i++) { ?>
+                                        <option value="<?php echo $months[$i] ?>"><?php echo $months[$i]; ?>
                                         </option>
-                                        <?php if ($i == 11) echo "<option disabled>──────────</option>" ?>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -513,14 +528,50 @@ if (isset($_POST['insertForm'])) {
                                     <input type="number" class="form-control" name="cop_syear" id="cop_syear"
                                         placeholder="أدخل السنة">
                                 </div>
-                                <div class="form-group col-md-2">
-                                    <label for="date_type">نوع التقويم</label>
-                                    <select name="date_type" id="date_type" class="custom-select">
-                                        <option value="1">ميلادي</option>
-                                        <option value="0" selected>هجري</option>
-                                    </select>
+                                <div class="form-group col-md-2 mt-2">
+                                    <label for="date_type">&nbsp;</label>
+                                    <p>[هجري]</p>
                                 </div>
                             </div>
+
+                            <!-- START Miladi date -->
+                            <div class="form-row" id="copDate_exact_m">
+                                <div class="form-group col-md-2">
+                                    <select name="cop_day_m" id="cop_day" class="custom-select">
+                                        <option value="" selected>-أدخل اليوم-</option>
+                                        <?php for ($i = 0; $i <= 6; $i++) { ?>
+                                        <option value="<?php echo $days[$i]; ?>"><?php echo $days[$i]; ?>
+                                        </option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <select name="cop_day_nbr_m" id="cop_day_nbr" class="custom-select">
+                                        <option value="" selected>- أدخل اليوم -</option>
+                                        <?php for ($i = 1; $i <= 31; $i++) { ?>
+                                        <option value="<?php echo $i ?>"><?php echo $i ?>
+                                        </option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <select name="cop_month_m" id="cop_month" class="custom-select">
+                                        <option value="" selected>-أدخل الشهر-</option>
+                                        <?php for ($i = 0; $i <= 11; $i++) { ?>
+                                        <option value="<?php echo $months_m[$i] ?>"><?php echo $months_m[$i]; ?>
+                                        </option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="number" class="form-control" name="cop_syear_m" id="cop_syear"
+                                        placeholder="أدخل السنة">
+                                </div>
+                                <div class="form-group col-md-2 mt-2">
+                                    <p>[ميلادي]</p>
+                                </div>
+                            </div>
+                            <!-- END miladi date -->
 
 
                             <div class="form-row" id="copDate_range">
@@ -534,14 +585,27 @@ if (isset($_POST['insertForm'])) {
                                     <input type="number" class="form-control" name="cop_eyear_range" id="cop_date"
                                         placeholder="إلى سنة">
                                 </div>
-                                <div class="form-group col-md-2">
-                                    <label for="date_type">نوع التقويم</label>
-                                    <select name="date_type_range" id="date_type" class="custom-select">
-                                        <option value="1">ميلادي</option>
-                                        <option value="0" selected>هجري</option>
-                                    </select>
+                                <div class="form-group col-md-2 mt-2">
+                                    <label for="date_type">&nbsp;</label>
+                                    <p>[هجري]</p>
                                 </div>
                             </div>
+
+                            <!--miladi date range-->
+                            <div class="form-row" id="copDate_range_m">
+                                <div class="form-group col-md-auto">
+                                    <input type="number" class="form-control" name="cop_syear_range_m" id="cop_date"
+                                        placeholder="من سنة">
+                                </div>
+                                <div class="form-group col-md-auto">
+                                    <input type="number" class="form-control" name="cop_eyear_range_m" id="cop_date"
+                                        placeholder="إلى سنة">
+                                </div>
+                                <div class="form-group col-md-2 mt-2">
+                                    <p>[ميلادي]</p>
+                                </div>
+                            </div>
+                            <!--END miladi date range -->
 
                             <div class="mb-2">
                                 <button type="button" class="btn btn-info rounded-pill" id="hide_Exact">تاريخ
@@ -759,9 +823,9 @@ if (isset($_POST['insertForm'])) {
                             </div>
 
                             <div class="form-row mt-3">
-                                <div class="form-group col-md-auto">
-                                    <label for="manu_level">مستوى النسخة من حيث الجودة والضبط</label>
-                                    <select name="manu_level" id="manu_level" class="custom-select mt-2">
+                                <div class="form-group col-md-4">
+                                    <label for="cop_level">مستوى النسخة من حيث الجودة والضبط</label>
+                                    <select name="cop_level" id="cop_level" class="custom-select">
                                         <option selected value="">- اختر مستوى -</option>
                                         <option value="جيد">جيد</option>
                                         <option value="حسن">حسن</option>
@@ -790,11 +854,11 @@ if (isset($_POST['insertForm'])) {
                             </div>
 
                             <div class="form-row">
-                                <div class="form-group col-md-3">
-                                    <label for="cop_level">مستوى ضبط الناسخ</label>
-                                    <select name="cop_level" id="cop_level" class="custom-select">
+                                <div class="form-group col-md-4">
+                                    <label for="manu_level">مستوى النسخة من حيث الوضوح والرداءة</label>
+                                    <select name="manu_level" id="manu_level" class="custom-select mt-2">
                                         <option selected value="">- اختر مستوى -</option>
-                                        <option value="جيد">جيد</option>
+                                        <option value="جيد">جبد</option>
                                         <option value="حسن">حسن</option>
                                         <option value="متوسط">متوسط</option>
                                         <option value="رديء">رديء</option>

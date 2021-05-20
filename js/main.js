@@ -53,17 +53,22 @@ $("#addSubject").click(function () {
 });
 
 // Switch between copDate range / exact 
-$("#copDate_range").hide(500);
+$("#copDate_range").hide(400);
+$("#copDate_range_m").hide(400);
 
 $(document).ready(function() {
     $("#hide_Exact").click(function() {
-        $("#copDate_exact").show(500);
-        $("#copDate_range").hide(500);
+        $("#copDate_exact").show(400);
+        $("#copDate_exact_m").show(400);
+        $("#copDate_range").hide(400);
+        $("#copDate_range_m").hide(400);
         
     });
     $("#hide_range").click(function() {
-        $("#copDate_range").show(500);
-        $("#copDate_exact").hide(500);
+        $("#copDate_range").show(400);
+        $("#copDate_range_m").show(400);
+        $("#copDate_exact").hide(400);
+        $("#copDate_exact_m").hide(400);
     });
 });
 

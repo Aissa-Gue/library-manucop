@@ -251,7 +251,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                                     <td><?php echo $row['last_name'] ?></td>
                                     <td class="text-center"><?php echo $row['manu_nbr'] ?></td>
                                     <td class="text-center">
-                                        <a class="btn btn-outline-danger"
+                                        <a class="btn btn-outline-success"
                                             href="previewCopier.php?cop_id=<?php echo $row['cop_id'] ?>">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
@@ -262,7 +262,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                                     </td>
 
                                     <td class="text-center">
-                                        <a class="btn btn-outline-danger"
+                                        <a class="btn btn-outline-primary"
                                             href="editCopier.php?cop_id=<?php echo $row['cop_id'] ?>">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">

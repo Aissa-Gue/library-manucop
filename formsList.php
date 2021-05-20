@@ -755,7 +755,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                                     <td><?php echo $row['book_title'] ?>
                                     </td>
                                     <td class="text-center">
-                                        <a class="btn btn-outline-danger"
+                                        <a class="btn btn-outline-success"
                                             href="previewForm.php?manu_id=<?php echo $row['manu_id'] ?>">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
@@ -765,7 +765,7 @@ $searchResult = mysqli_query($conn, $searchQry);
                                         </a>
                                     </td>
                                     <td class="text-center">
-                                        <a class="btn btn-outline-danger"
+                                        <a class="btn btn-outline-primary"
                                             href="editForm.php?manu_id=<?php echo $row['manu_id'] ?>">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
