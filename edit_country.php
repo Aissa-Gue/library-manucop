@@ -8,10 +8,12 @@ if (isset($_POST['editCountry'])) {
     $editCountryQry = "UPDATE countries set count_name = '$count_name' WHERE count_id = '$count_id'";
     if (mysqli_query($conn, $editCountryQry)) {
         echo "<script>alert('تم تعديل اسم البلد: $count_name بنجاح')</script>";
-        echo '<script>window.location.href = "insertCountry.php#insertCountry"</script>';
+        //echo '<script>window.location.href = "insertCountry.php#insertCountry"</script>';
+        echo '<script>window.location.href = "formsList.php#formsList"</script>';
     } else {
         echo "<script>alert('فشلت عملية تعديل اسم البلد!')</script>";
-        echo '<script>window.location.href = "insertCountry.php#insertCountry"</script>';
+        //echo '<script>window.location.href = "insertCountry.php#insertCountry"</script>';
+        echo '<script>window.location.href = "formsList.php#formsList"</script>';
     }
 }
 ?>
