@@ -81,9 +81,9 @@ include 'config.php';
 
 .my_logo {
     position: relative;
-    transform: scale(0.4);
-    bottom: -55px;
-    right: -175px;
+    transform: scale(0.34);
+    bottom: -65px;
+    right: -195px;
 }
 </style>
 

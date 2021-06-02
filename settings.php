@@ -78,7 +78,7 @@ $motifsResult = mysqli_query($conn, $motifsQry);
                                                 <div class="input-group">
                                                     <input type="submit" name="drop" class="btn btn-danger"
                                                         value="   حذف قاعدة البيانات   "
-                                                        onclick="return confirm('هل أنت متأكد؟')">
+                                                        onclick="return confirm('انتبه، هل أنت متأكد؟ سيتم حذف جميع البيانات ولن يتم استرجاعها مجددا')">
                                                 </div>
                                             </div>
                                         </div>
